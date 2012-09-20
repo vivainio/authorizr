@@ -13,7 +13,7 @@ CreateSession (
 	auth_endpoint="https://accounts.google.com/o/oauth2/auth",	
     token_endpoint="https://accounts.google.com/o/oauth2/token",
     resource_endpoint="https://www.googleapis.com/oauth2/v1",
-    redirect_uri="http://authorizr.biz/oauth2callback")  <== from service
+    
 )
 ```
 
@@ -23,6 +23,10 @@ RESULT:
 sessionid=<some opaque number that acts as handle to this session>
 loginurl=<the url that you should open in browser>
 ```
+
+Note how we didn't specify redirect_uri in arguments, it's configured on 
+the web interface (for oauth2, 
+redirect_uri="http://authorizr.biz/oauth2callback") 
 
 ## Fetch access token for session:
 
