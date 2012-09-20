@@ -16,8 +16,12 @@ executing the oauth2 handshake at an external web server. Moreover,
 Application ID and API Secret are hosted at Authorizr server,
 so you don't have to ship the secret with your source code; this
 makes using the service more secure, assuming that you trust the admins 
-authorizr to not abuse the api secret. 
+authorizr to not abuse the api secret. The source code only contains cred_id 
+to be used with CreateSession below. 
 
+You specify the application credentials on the admin interface 
+at Authorizr web service. You can only modify and view services that you
+have created yourself.
 
 # Authorizr web service, api design
 
