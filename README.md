@@ -45,7 +45,7 @@ access_token=<the token you can start using in your requests>
 E.g. if access_token you got is 7777abc, you can invoke request 
 for google user info:
 
-https://www.googleapis.com/oauth2/v1/userinfo#access_token_key=7777abc
+https://www.googleapis.com/oauth2/v1/userinfo?access_token_key=7777abc
 
 NOTE: FetchAccessToken will wait until access token is available, this 
 may take a while as the user will enter their credentials in web browser.
