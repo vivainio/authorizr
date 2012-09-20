@@ -7,6 +7,7 @@ Create service:
 
 Request start login:
 
+```
 CreateSession (
 	cred_id,	 
 	auth_endpoint="https://accounts.google.com/o/oauth2/auth",	
@@ -14,21 +15,28 @@ CreateSession (
     resource_endpoint="https://www.googleapis.com/oauth2/v1",
     redirect_uri="http://authorizr.biz/oauth2callback")  <== from service
 )
+```
 
 RESULT:
 
+```
 sessionid=<some opaque number that acts as handle to this session>
 loginurl=<the url that you should open in browser>
+```
 
 Fetch access token for session:
 
+```
 FetchAccessToken (
 	session_id
 )
+```
 
 RESULT:
 
+```
 access_token=<the token you can start using in your requests>
+```
 
 E.g. if access_token you got is 7777abc, you can invoke request 
 for google user info:
