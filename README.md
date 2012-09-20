@@ -1,6 +1,6 @@
-Authorizr web service, api design
+# Authorizr web service, api design
 
-Create service:
+## Create service:
  - on web ui, specify app id and app secret, see generated cred_id
  - cred_id is opaque handle to app id and app secret stored on server
  - cred_id also stores protocol used (only oauth2 so far) and redirect_uri
@@ -24,7 +24,7 @@ sessionid=<some opaque number that acts as handle to this session>
 loginurl=<the url that you should open in browser>
 ```
 
-Fetch access token for session:
+## Fetch access token for session:
 
 ```
 FetchAccessToken (
@@ -46,7 +46,7 @@ https://www.googleapis.com/oauth2/v1/userinfo#access_token_key=7777abc
 NOTE: FetchAccessToken will wait until access token is available, this 
 may take a while as the user will enter their credentials in web browser.
 
-Future investigation:
+## Future investigation:
 
 - Allow non-oauth flows through email verification? Unlock services per device
 
