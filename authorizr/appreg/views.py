@@ -37,7 +37,7 @@ def startlogin(request):
                  )
     
     c = mkclient()
-    url = c.auth_uri(scope_req)
+    url = c.auth_uri(scope_req, state = 666)
     return render_to_response("appreg/startlogin.html", { "loginurl" : url})
     
         
@@ -46,6 +46,7 @@ def googlelogin(request):
     c = mkclient()
     rdict = request.REQUEST
     print "requesting token"
+    print "State",rdict['state']
     d = {'code' : rdict["code"]}
     c.request_token(None, **d)
     print "token received!"

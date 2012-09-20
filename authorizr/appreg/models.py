@@ -5,7 +5,9 @@ from django.db import models
 class AppOwner(models.Model):
     uid = models.CharField(primary_key = True, max_length = 255)    
     desc = models.CharField(max_length = 255)
-    
+
+class AuthSession(models.Model):
+    access_token = models.CharField(max_length = 255)
 
 class AppCredentials(models.Model):
     app_desc = models.CharField(max_length = 255)
