@@ -1,6 +1,9 @@
 <body>
 
-{% load socialaccount %}
-<a href="{% provider_login_url "facebook" method="oauth2" %}">Facebook OAuth2</a>
+Welcome {{ user.username }}
+
+<p><a href="accounts/login">Sign in!</a></p>
+
+<p><a href="login/startlogin">Auth at google</a></p>
 
 </body>

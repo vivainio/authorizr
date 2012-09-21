@@ -14,9 +14,10 @@ config = {
           
           }
 
-def index(request):
-    
+def frontpage(request):
     return render_to_response('appreg/index.html', {'request': request})
+def index(request):
+        return render_to_response('appreg/index.html', {'request': request})
 
 def myapps(request):    
     return render_to_response('appreg/myapps.html', {'request': request})
