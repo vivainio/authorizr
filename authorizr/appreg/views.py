@@ -2,7 +2,7 @@
 
 from django.http import HttpResponse
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,render
 
 from models import AppCredentials
 
@@ -14,10 +14,8 @@ config = {
           
           }
 
-def frontpage(request):
-    return render_to_response('appreg/index.html', {'request': request})
-def index(request):
-        return render_to_response('appreg/index.html', {'request': request})
+def frontpage(request):    
+    return render(request, 'appreg/index.html')
 
 def myapps(request):    
     return render_to_response('appreg/myapps.html', {'request': request})

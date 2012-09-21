@@ -1,6 +1,12 @@
 <body>
 
+{% if user.is_authenticated %}
 Welcome {{ user.username }}
+{% else %}
+
+Welcome, new user
+
+{% endif %}
 
 <p><a href="accounts/login">Sign in!</a></p>
 
