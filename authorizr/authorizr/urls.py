@@ -13,11 +13,13 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'authorizr.views.home', name='home'),
     # url(r'^authorizr/', include('authorizr.foo.urls')),
+    url("^$", "appreg.views.frontpage"),
     url("^appreg/$", "appreg.views.index"),
     url("^appreg/myapps/", "appreg.views.myapps"),
     #url(r'^accounts/', include('allauth.urls')),
     url(r'^login/google/', 'appreg.views.googlelogin'),
     url(r'^login/startlogin/', 'appreg.views.startlogin'),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

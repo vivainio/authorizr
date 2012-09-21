@@ -2,11 +2,13 @@
 
 from django.http import HttpResponse
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,render
 
 from models import AppCredentials
 
 from sanction.client import Client
+
+import urllib
 
 config = {
           'google.client_id': "1037435290190.apps.googleusercontent.com",
@@ -14,9 +16,19 @@ config = {
           
           }
 
-def index(request):
+def frontpage(request):
+    tg = urllib.urlencode( {
+        "auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
+        "token_endpoint":"https://accounts.google.com/o/oauth2/token",
+        "resource_endpoint":"https://www.googleapis.com/oauth2/v1",
+        "redirect_uri": "http://localhost:8000/login/google" })
     
-    return render_to_response('appreg/index.html', {'request': request})
+    url = "create_session?" + tg
+    print tg
+    
+    
+                          
+    return render(request, 'appreg/index.html')
 
 def myapps(request):    
     return render_to_response('appreg/myapps.html', {'request': request})
