@@ -8,13 +8,26 @@ from models import AppCredentials
 
 from sanction.client import Client
 
+import urllib
+
 config = {
           'google.client_id': "1037435290190.apps.googleusercontent.com",
           'google.client_secret' : "1AG4Y2knGVYBvuPHi1sEFpJ8"
           
           }
 
-def frontpage(request):    
+def frontpage(request):
+    tg = urllib.urlencode( {
+        "auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
+        "token_endpoint":"https://accounts.google.com/o/oauth2/token",
+        "resource_endpoint":"https://www.googleapis.com/oauth2/v1",
+        "redirect_uri": "http://localhost:8000/login/google" })
+    
+    url = "create_session?" + tg
+    print tg
+    
+    
+                          
     return render(request, 'appreg/index.html')
 
 def myapps(request):    
