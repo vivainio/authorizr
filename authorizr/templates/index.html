@@ -1,15 +1,33 @@
-<body>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{% block title %} Index {% endblock %}</title>
+		<!-- Bootstrap -->
+		<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>	
+		
+		{% block content %}
+					
+		{% if user.is_authenticated %}
+		Welcome {{ user.username }}
+		{% else %}
 
-{% if user.is_authenticated %}
-Welcome {{ user.username }}
-{% else %}
+		Welcome, new user
 
-Welcome, new user
+		{% endif %}
+		<p>
+			<a href="accounts/login">Sign in!</a>
+		</p>
 
-{% endif %}
+		<p>
+			<a href="login/startlogin">Auth at google</a>
+		</p>
 
-<p><a href="accounts/login">Sign in!</a></p>
-
-<p><a href="login/startlogin">Auth at google</a></p>
-
-</body>
+		{% endblock %}
+		
+		
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+	</body>
+</html>

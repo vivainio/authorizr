@@ -28,7 +28,7 @@ def frontpage(request):
     
     
                           
-    return render(request, 'appreg/index.html')
+    return render(request, 'index.html')
 
 def myapps(request):    
     return render_to_response('appreg/myapps.html', {'request': request})
