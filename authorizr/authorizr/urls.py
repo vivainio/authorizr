@@ -19,7 +19,14 @@ urlpatterns = patterns('',
     #url(r'^accounts/', include('allauth.urls')),
     url(r'^login/google/', 'appreg.views.googlelogin'),
     url(r'^login/startlogin/', 'appreg.views.startlogin'),
+    
+    #Authentication    
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^accounts/logout/$', 'appreg.views.logout_view'),
+    
+    #After login, user is redirected to profile. Let's make it to point fron page
+    url(r'^accounts/profile/$', 'appreg.views.frontpage'), 
+    
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

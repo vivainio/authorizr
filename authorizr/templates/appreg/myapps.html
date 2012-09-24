@@ -3,6 +3,15 @@
 {% block title %}My apps{% endblock %}
 
 {% block content %}
-<p>Some content</p>
+
+
+<h1>{{ poll.question }}</h1>
+<ul>
+{% for choice in appreg.credentials.all %}
+    <li>{{ choice.choice }}</li>
+{% endfor %}
+</ul>
+
+
 
 {% endblock %}

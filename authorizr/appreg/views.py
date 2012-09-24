@@ -2,11 +2,17 @@
 
 from django.http import HttpResponse
 
+from django.http import HttpResponseRedirect
+
 from django.shortcuts import render_to_response,render
 
 from models import AppCredentials
 
 from sanction.client import Client
+
+
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 import urllib
 
@@ -30,8 +36,14 @@ def frontpage(request):
                           
     return render(request, 'index.html')
 
-def myapps(request):    
-    return render_to_response('appreg/myapps.html', {'request': request})
+@login_required
+def myapps(request):  
+    myCredentials = AppCredentials.obejcts();
+    
+    return render_to_response('appreg/myapps.html', {'request': request, 'credentials': myCredentials})
+
+
+
 
 def mkclient():
     c = Client(auth_endpoint="https://accounts.google.com/o/oauth2/auth",
@@ -51,6 +63,11 @@ def startlogin(request):
     c = mkclient()
     url = c.auth_uri(scope_req, state = 666)
     return render_to_response("appreg/startlogin.html", { "loginurl" : url})
+    
+def logout_view(request):
+  auth.logout(request)
+  # Redirect to a success page.
+  return HttpResponseRedirect("/")
     
         
 def googlelogin(request):
