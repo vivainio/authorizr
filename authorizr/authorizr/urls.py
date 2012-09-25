@@ -20,11 +20,13 @@ urlpatterns = patterns('',
     url(r'^login/google/', 'appreg.views.googlelogin'),
     url(r'^login/startlogin/', 'appreg.views.startlogin'),
     
+    url(r'^api/v1/create_session/', 'appreg.views.create_session'),
+    
     #Authentication    
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'appreg.views.logout_view'),
     
-    #After login, user is redirected to profile. Let's make it to point fron page
+    #After login, user is redirected to profile. Let's make it to point front page
     url(r'^accounts/profile/$', 'appreg.views.frontpage'), 
     
     # Uncomment the admin/doc line below to enable admin documentation:
