@@ -1,20 +1,18 @@
 # Create your views here.
 
+import urllib
 from django.http import HttpResponse
-
 from django.http import HttpResponseRedirect
-
 from django.shortcuts import render_to_response,render
 
-from models import AppCredentials
 
 from sanction.client import Client
-
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
-import urllib
+from models import AppCredentials, AppOwner
+
 
 config = {
           'google.client_id': "1037435290190.apps.googleusercontent.com",
@@ -37,10 +35,12 @@ def frontpage(request):
     return render(request, 'index.html')
 
 @login_required
-def myapps(request):  
-    myCredentials = AppCredentials.obejcts();
-    
-    return render_to_response('appreg/myapps.html', {'request': request, 'credentials': myCredentials})
+def myapps(request):       
+    appOwner = AppOwner.objects.filter(uid = 'app_owner_uid')    
+    credentials = AppCredentials.objects.filter(owner = appOwner)
+    print 'Credentials', len(credentials)
+    print credentials
+    return render_to_response('appreg/myapps.html', {'request': request, 'credentials': credentials})
 
 
 
