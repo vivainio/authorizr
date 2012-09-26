@@ -24,11 +24,14 @@ def logout_view(request):
   return HttpResponseRedirect("/")
   
   
-@login_required
+#@login_required
 def myapps(request):       
     #user=request.user
-    appOwner = AppOwner.objects.filter(uid = 'myuid')    
-    credentials = AppCredentials.objects.filter(owner = appOwner)
+    #appOwner = AppOwner.objects.filter(uid = 'myuid')    
+    #credentials = AppCredentials.objects.filter(owner = appOwner)
+    
+    credentials = AppCredentials.objects.all()
+    
     print 'Credentials', len(credentials)
     print credentials
     
@@ -36,4 +39,33 @@ def myapps(request):
 
     #return render_to_response('appreg/myapps.html', {'credentials': credentials})
 
+#@login_required
+def editapp(request, appuid):       
+    #user=request.user
+    #appOwner = AppOwner.objects.filter(uid = 'myuid')    
+    #credentials = AppCredentials.objects.filter(owner = appOwner)
         
+    print "appuid: "+ appuid
+    
+    credentials = AppCredentials.objects.get(uid = appuid)
+    
+    print 'Credentials', credentials
+    
+    return render(request, 'appreg/editapp.html', {'credentials': credentials})
+
+    #return render_to_response('appreg/myapps.html', {'credentials': credentials})
+    
+def updateapp(request, appuid):       
+
+    print "appuid: "+ appuid
+    
+    credentials = AppCredentials.objects.get(uid = appuid)
+    
+    credentials.app_api_key = request.POST['app_api_key']
+    credentials.app_secret = request.POST['app_api_secret']
+    
+    credentials.save()
+    print 'Credentials', credentials
+        
+    return HttpResponseRedirect("/appreg/editapp/"+appuid+"/")
+    
