@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% block title %} My apps {% endblock %}
+
+{% block content %}
+
+
+<a href="/">Home</a>
+
+<h1>Editing Application:</h1>
+
+
+
+<h3>{{ credentials.app_desc }}</h3>
+
+<form action="/appreg/editapp/{{ credentials.uid }}/update/" method="post">
+	 {% csrf_token %} 
+<ul>
+    <li><input type="text" name="app_api_key" value="{{ credentials.app_api_key }}" /></li>
+    <li><input type="text" name="app_api_secret" value="{{ credentials.app_secret }}" /></li>    
+</ul>
+
+<input type="submit" value="save"/>
+</form>
+
+{% endblock %}

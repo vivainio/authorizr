@@ -16,6 +16,9 @@ urlpatterns = patterns('',
     url("^$", "appreg.views.frontpage"),
     url("^appreg/$", "appreg.views.frontpage"),
     url("^appreg/myapps/", "appreg.views.myapps"),
+    url("^appreg/editapp/(?P<appuid>\w{1,255})/$", "appreg.views.editapp"),
+    url("^appreg/editapp/(?P<appuid>\d{1,255})/update/$", "appreg.views.updateapp"),
+
     #url(r'^accounts/', include('allauth.urls')),
     
     #Authentication    
@@ -25,8 +28,7 @@ urlpatterns = patterns('',
     
     #After login, user is redirected to profile. Let's make it to point front page
     url(r'^accounts/profile/$', 'appreg.views.frontpage'), 
-    
-    
+        
     #REST API URLs
     url(r'^login/google/', 'restapi.views.googlelogin'),
     url(r'^api/v1/create_session/', 'restapi.views.create_session'),
