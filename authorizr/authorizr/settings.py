@@ -6,6 +6,8 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+_PRJ_ROOT_DIR = "/home/ville/p/authorizr"
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -59,7 +61,7 @@ MEDIA_URL = ''
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 
-STATIC_ROOT = '/home/salento/authorizr/authorizr/static'
+STATIC_ROOT = _PRJ_ROOT_DIR + '/authorizr/static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -70,7 +72,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/salento/authorizr/authorizr/appreg/static',    
+    _PRJ_ROOT_DIR + '/authorizr/appreg/static',    
 )
 
 # List of finder classes that know how to find static files in
@@ -107,7 +109,7 @@ ROOT_URLCONF = 'authorizr.urls'
 WSGI_APPLICATION = 'authorizr.wsgi.application'
 
 TEMPLATE_DIRS = (
-	'/home/salento/authorizr/authorizr/templates',	
+	_PRJ_ROOT_DIR + '/authorizr/templates',	
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
