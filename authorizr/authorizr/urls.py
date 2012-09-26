@@ -17,17 +17,21 @@ urlpatterns = patterns('',
     url("^appreg/$", "appreg.views.frontpage"),
     url("^appreg/myapps/", "appreg.views.myapps"),
     #url(r'^accounts/', include('allauth.urls')),
-    url(r'^login/google/', 'appreg.views.googlelogin'),
-    url(r'^login/startlogin/', 'appreg.views.startlogin'),
-    
-    url(r'^api/v1/create_session/', 'appreg.views.create_session'),
     
     #Authentication    
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'appreg.views.logout_view'),
+    url(r'^login/startlogin/', 'appreg.views.startlogin'),    
     
     #After login, user is redirected to profile. Let's make it to point front page
     url(r'^accounts/profile/$', 'appreg.views.frontpage'), 
+    
+    
+    #REST API URLs
+    url(r'^login/google/', 'restapi.views.googlelogin'),
+    url(r'^api/v1/create_session/', 'restapi.views.create_session'),
+    url(r'^api/v1/fetch_access_token/', 'restapi.views.fetch_access_token'),
+    
     
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
