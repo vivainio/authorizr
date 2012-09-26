@@ -27,7 +27,7 @@ def logout_view(request):
 @login_required
 def myapps(request):       
     #user=request.user
-    appOwner = AppOwner.objects.filter(uid = 'Ilkkas_uid')    
+    appOwner = AppOwner.objects.filter(uid = 'myuid')    
     credentials = AppCredentials.objects.filter(owner = appOwner)
     print 'Credentials', len(credentials)
     print credentials
