@@ -6,7 +6,7 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
-_PRJ_ROOT_DIR = "/home/ville/p/authorizr"
+_PRJ_ROOT_DIR = "/home/salento/authorizr"
 
 MANAGERS = ADMINS
 
