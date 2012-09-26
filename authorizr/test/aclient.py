@@ -2,11 +2,15 @@ import urllib
 import os
 
 def main():
+    
+    
+    
     tg = urllib.urlencode( {
         "auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
         "token_endpoint":"https://accounts.google.com/o/oauth2/token",
         "resource_endpoint":"https://www.googleapis.com/oauth2/v1",
-        "redirect_uri": "http://localhost:8000/login/google" })
+        "redirect_uri": "http://localhost:8000/login/google",
+        "cred_id": "100" })
         
     url = "http://localhost:8000/api/v1/create_session?"+tg
     
@@ -37,8 +41,8 @@ def main():
     
     print "Received data: "+access_token +"\n"
      
-     
-    test_url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token="+access_token
+    test_url = " https://www.googleapis.com/drive/v2/files?access_token="+access_token 
+    #test_url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token="+access_token
     
     test_resp = urllib.urlopen(test_url).read()
     

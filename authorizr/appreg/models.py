@@ -28,6 +28,7 @@ class AppCredentials(models.Model):
     def __unicode__(self):
         return self.app_desc
     
+    uid = models.CharField(primary_key = True, max_length = 255)
     app_desc = models.CharField(max_length = 255)
     app_api_key = models.CharField(max_length = 255)
     app_secret = models.CharField(max_length = 255)
