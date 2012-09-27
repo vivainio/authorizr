@@ -16,30 +16,20 @@ from django.contrib.auth.decorators import login_required
 
 from appreg.models import AppCredentials, AppOwner, AuthSession
 
-'''
-config = {
-          'google.client_id': "1037435290190.apps.googleusercontent.com",
-          'google.client_secret' : "1AG4Y2knGVYBvuPHi1sEFpJ8"          
-          }
-'''
-def mkclient(args):
-  
-  
-    c = Client(auth_endpoint=args['auth_endpoint'],
-    token_endpoint=args['token_endpoint'],
-    resource_endpoint=args['resource_endpoint'],
-    client_id=args["client_id"],
-    client_secret=args["client_secret"],
-    redirect_uri=args['redirect_uri'])
-    
-    return c
 
+def make_client_from_auth_session(auth):
+    c = Client(
+        auth_endpoint = auth.auth_endpoint,
+        token_endpoint= auth.token_endpoint,
+        resource_endpoint =auth.resource_endpoint,
+        client_id = auth.client_id,
+        client_secret = auth.client_secret,
+        redirect_uri = auth.redirect_uri)        
+    return c
+    
 
 def create_session(request):
-    
-   
-    
-    
+        
     scope_req = ("https://www.googleapis.com/auth/drive",                
                  )
     '''
@@ -47,57 +37,46 @@ def create_session(request):
                  "https://www.googleapis.com/auth/userinfo.profile"
                  )
     '''
+    
     args = dict(request.REQUEST.iteritems())
     
-    
-    cred_id = args['cred_id']
-    
+    #Get Credentials used for this session     
+    cred_id = args['cred_id']    
     credentials = AppCredentials.objects.get(uid=cred_id)
         
+    #Make unique ID for request    
     uid = uuid.uuid4().hex
-    
-    #args['session_id'] = uid
-    #session_id=uid,
-    
+
+    #Store it to DB TODO: foreign key link to AuthSession.. api key and secret duplicated
     authSession = AuthSession(
                     session_id = uid,
-                    auth_endpoint=args['auth_endpoint'],
+                    auth_endpoint = args['auth_endpoint'],
                     access_token = '',
-                    token_endpoint=args['token_endpoint'],
-                    resource_endpoint=args['resource_endpoint'],
-                    client_id=credentials.app_api_key,
-                    client_secret=credentials.app_secret,
+                    token_endpoint = args['token_endpoint'],
+                    resource_endpoint = args['resource_endpoint'],
+                    client_id = credentials.app_api_key,
+                    client_secret = credentials.app_secret,
                     redirect_uri = args['redirect_uri']
                     )
     
     authSession.save()
     
-    
-    args["client_id"] =credentials.app_api_key
-    args["client_secret"] =credentials.app_secret
-    
-    
-    
-    c = mkclient(args)
+    #Construct authentication URI using Sanction    
+    c = make_client_from_auth_session(authSession)    
     url = c.auth_uri(scope_req, state = uid)
     
     return HttpResponse("sessionid=%s\nloginurl=%s"%(uid,url), "text/plain")
+        
         
 def googlelogin(request):
     
     sid = request.REQUEST['state']
     print "sid "+ sid
     
-    auths = AuthSession.objects.filter(session_id = sid)
-    a = auths[0];
+    a = AuthSession.objects.get(session_id = sid)
+            
+    c = make_client_from_auth_session(a)    
         
-    c = Client(a.auth_endpoint,
-    a.token_endpoint,
-    a.resource_endpoint,
-    a.client_id,
-    a.client_secret,
-    a.redirect_uri)
-    
     rdict = request.REQUEST
     print "requesting token"
     print "State",rdict['state']
@@ -110,7 +89,7 @@ def googlelogin(request):
     a.access_token = c.access_token;    
     a.save();
         
-    return HttpResponse("You may close ther browser now and return to app", "text/plain")   
+    return HttpResponse("You may close the browser now and return to app", "text/plain")   
 
 
 def fetch_access_token(request):
@@ -119,9 +98,8 @@ def fetch_access_token(request):
     sid = request.REQUEST['sessionid']
     print "sessionid "+ sid
     
-    auths = AuthSession.objects.filter(session_id = sid)
-    a = auths[0];
-    access_token = a.access_token
+    auths = AuthSession.objects.get(session_id = sid)
+    access_token = auths.access_token
     return HttpResponse(access_token , "text/plain")
 
                                
