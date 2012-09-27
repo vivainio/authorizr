@@ -1,12 +1,6 @@
 # Django settings for authorizr project.
 import os
 import django
-import dj_database_url
-
-# keep as false for dev on local machine for now...
-
-_HEROKU = False
-
 # calculated paths for django and the site
 # used as starting points for various other paths
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
@@ -21,20 +15,17 @@ ADMINS = (
 
 
 MANAGERS = ADMINS
-if _HEROKU:
-	DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
-	
-else: 
-	DATABASES = {
-	    'default': {
-		'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-		'NAME': '/var/db/authorizr.db',                      # Or path to database file if using sqlite3.
-		'USER': '',                      # Not used with sqlite3.
-		'PASSWORD': '',                  # Not used with sqlite3.
-		'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-		'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-	    }
-	}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '/var/db/authorizr.db',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -87,7 +78,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(SITE_ROOT,'appreg','static)'),    
+    os.path.join(SITE_ROOT,'appreg','static'),    
 )
 
 # List of finder classes that know how to find static files in
