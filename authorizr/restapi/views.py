@@ -68,7 +68,7 @@ def create_session(request):
     return HttpResponse("sessionid=%s\nloginurl=%s"%(uid,url), "text/plain")
         
         
-def googlelogin(request):
+def login_callback(request):
     
     sid = request.REQUEST['state']
     print "sid "+ sid
