@@ -13,7 +13,6 @@ from django.contrib import auth
 from django.contrib.auth.models import User 
 from django.contrib.auth.decorators import login_required
 
-
 from appreg.models import AppCredentials, AppOwner, AuthSession
 
 
@@ -38,12 +37,21 @@ def create_session(request):
                  )
     '''
     
-    args = dict(request.REQUEST.iteritems())
     
-    #Get Credentials used for this session     
-    cred_id = args['cred_id']    
-    credentials = AppCredentials.objects.get(uid=cred_id)
+    args = dict(request.REQUEST.iteritems())
         
+        
+    try:    
+        #Get Credentials used for this session     
+        cred_id = args['cred_id']        
+    except KeyError:
+        return HttpResponse(content="Application identifier (cred_id) parameter missing", status=400)
+    
+    try:       
+        credentials = AppCredentials.objects.get(uid=cred_id)
+    except AppCredentials.DoesNotExist:
+        return HttpResponse(content="Application identifier not found", status=404)
+       
     #Make unique ID for request    
     uid = uuid.uuid4().hex
 
@@ -70,10 +78,17 @@ def create_session(request):
         
 def login_callback(request):
     
+        
     sid = request.REQUEST['state']
+    
     print "sid "+ sid
     
-    a = AuthSession.objects.get(session_id = sid)
+    
+    try:       
+        a = AuthSession.objects.get(session_id = sid)
+    except AuthSession.DoesNotExist:
+        return HttpResponse(content="Session not found", status=404)
+        
             
     c = make_client_from_auth_session(a)    
         
@@ -94,11 +109,18 @@ def login_callback(request):
 
 def fetch_access_token(request):
     print "Fetch access token \n"
+     
+    try:         
+        sid = request.REQUEST['sessionid']
+        print "sessionid "+ sid       
+    except KeyError:
+        return HttpResponse(content="Session identifier (sessionid) parameter missing", status=400)
+       
+    try:       
+        a = AuthSession.objects.get(session_id = sid)
+    except AuthSession.DoesNotExist:
+        return HttpResponse(content="Session not found", status=404)
     
-    sid = request.REQUEST['sessionid']
-    print "sessionid "+ sid
-    
-    auths = AuthSession.objects.get(session_id = sid)
     access_token = auths.access_token
     return HttpResponse(access_token , "text/plain")
 
