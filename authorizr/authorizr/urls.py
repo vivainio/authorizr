@@ -30,7 +30,7 @@ urlpatterns = patterns('',
     url(r'^accounts/profile/$', 'appreg.views.frontpage'), 
         
     #REST API URLs
-    url(r'^login/google/', 'restapi.views.googlelogin'),
+    url(r'^login/google/', 'restapi.views.login_callback'),
     url(r'^api/v1/create_session/', 'restapi.views.create_session'),
     url(r'^api/v1/fetch_access_token/', 'restapi.views.fetch_access_token'),
     
