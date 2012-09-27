@@ -1,18 +1,24 @@
 import urllib
 import os
 
+
+_HEROKU = True
+
 def main():
     
-    
-    
+    if _HEROKU:    
+        server_url = "http://shrouded-hamlet-6341.herokuapp.com"
+    else:
+        server_url = "http://127.0.0.1:8000"
+       
     tg = urllib.urlencode( {
         "auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
         "token_endpoint":"https://accounts.google.com/o/oauth2/token",
         "resource_endpoint":"https://www.googleapis.com/oauth2/v1",
-        "redirect_uri": "http://localhost:8000/login/google",
+        "redirect_uri": server_url+"/login/google",
         "cred_id": "100" })
         
-    url = "http://localhost:8000/api/v1/create_session?"+tg
+    url = server_url+"/api/v1/create_session?"+tg
     
     print "URL to open: "+url+"\n"                        
     
@@ -27,13 +33,13 @@ def main():
     dummy,url = rows[1].split("=",1)
     
     print sid, url
-        
+            
     
     os.system('xdg-open "%s"'%url)
     
     raw_input("Press enter")
     
-    access_token_url = "http://localhost:8000/api/v1/fetch_access_token/?sessionid="+sid    
+    access_token_url = server_url+"/api/v1/fetch_access_token/?sessionid="+sid    
     
     
     access_token = urllib.urlopen(access_token_url).read()
