@@ -1,4 +1,11 @@
 # Django settings for authorizr project.
+import os
+import django
+# calculated paths for django and the site
+# used as starting points for various other paths
+DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
+SITE_ROOT = os.path.abspath(os.path.dirname(os.path.realpath(__file__)) + "/..")
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -6,7 +13,6 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
-_PRJ_ROOT_DIR = "/home/salento/authorizr"
 
 MANAGERS = ADMINS
 
@@ -61,7 +67,7 @@ MEDIA_URL = ''
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 
-STATIC_ROOT = _PRJ_ROOT_DIR + '/authorizr/static'
+STATIC_ROOT = os.path.join(SITE_ROOT)
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -72,7 +78,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    _PRJ_ROOT_DIR + '/authorizr/appreg/static',    
+    os.path.join(SITE_ROOT,'appreg','static)'),    
 )
 
 # List of finder classes that know how to find static files in
@@ -109,7 +115,7 @@ ROOT_URLCONF = 'authorizr.urls'
 WSGI_APPLICATION = 'authorizr.wsgi.application'
 
 TEMPLATE_DIRS = (
-	_PRJ_ROOT_DIR + '/authorizr/templates',	
+	os.path.join(SITE_ROOT, "templates"),	
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
