@@ -17,6 +17,7 @@ from models import AppCredentials, AppOwner, AuthSession
 from forms import AppCredentialForm
 
 from django.views.generic.list import ListView
+import uuid
 
 def frontpage(request):   
     return render(request, 'index.html')
@@ -69,5 +70,19 @@ def edit_app_credentials(request, appuid):
     
     return render(request, 'appreg/credform.html', context)
 
+def add_application(request):
+    uid = uuid.uuid4().hex
+    # xxx fix
+    owner = AppOwner.objects.all()[0]
+    cred = AppCredentials(
+        uid = uid,
+        app_desc = "",
+        app_api_key = "",
+        app_secret = "",
+        owner = owner)
+    cred.save()
+    return HttpResponseRedirect("/appreg/editapp/" + uid)
+    
+    
    
     
