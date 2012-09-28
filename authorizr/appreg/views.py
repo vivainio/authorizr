@@ -66,7 +66,7 @@ def edit_app_credentials(request, appuid):
     else:
         form = AppCredentialForm(instance=cred)
         
-    context = Context({'title': 'Editing Application:'+cred.app_desc , 'form': form})
+    context = Context({'title': 'Editing Application:'+cred.app_desc ,'btn_text':'Save', 'form': form})
     
     return render(request, 'appreg/credform.html', context)
 
@@ -97,7 +97,7 @@ def add_application(request):
         form = AppCredentialForm()
         print "using app cred form"
         
-    context = Context({'title': 'New Application', 'form': form})
+    context = Context({'title': 'New Application', 'btn_text':'Add Application', 'form': form})
     return render(request, 'appreg/credform.html', context)   
   
     
