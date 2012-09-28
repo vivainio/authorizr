@@ -3,6 +3,8 @@ from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+import appreg.views
+
 admin.autodiscover()
 
 #from allauth.account.views import logout
@@ -16,7 +18,7 @@ urlpatterns = patterns('',
     # url(r'^authorizr/', include('authorizr.foo.urls')),
     url("^$", "appreg.views.frontpage"),
     url("^appreg/$", "appreg.views.frontpage"),
-    url("^appreg/myapps/", "appreg.views.myapps"),
+    ("^appreg/myapps/", appreg.views.AppListView.as_view()),
     url("^appreg/editapp/(?P<appuid>\w{1,255})/$", "appreg.views.editapp"),
     url("^appreg/editapp/(?P<appuid>\d{1,255})/update/$", "appreg.views.updateapp"),
 
