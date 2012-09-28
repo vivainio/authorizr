@@ -21,7 +21,8 @@ urlpatterns = patterns('',
  
     url("^appreg/myapps/", appreg.views.AppListView.as_view()),
     url("^appreg/editapp/(?P<appuid>\w{1,255})/$", "appreg.views.edit_app_credentials"),
-    url("^appreg/addapp", "appreg.views.add_application"),
+    url("^appreg/addapp/", "appreg.views.add_application"),
+    
     
     #Authentication    
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
