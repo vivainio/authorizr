@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{% block title %} Index {% endblock %}</title>
+		<!-- Bootstrap -->
+		<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>	
+
+		<div class="navbar">
+		  <div class="navbar-inner">
+		    <a class="brand" href="/">Authorizr</a>
+		    <ul class="nav">
+		      <li><a href="/appreg/myapps">My apps</a></li>
+		      <li><a href="#">About</a></li>
+		      {% if user.is_authenticated %}	
+		      <li><a href="#" class="pull-right">{{ user.username }}</a></li>
+		      {% else %}
+		      <li><a href="/accounts/login">Sign in!</a></li>
+		      {% endif %}
+		    </ul>
+		  </div>
+		</div>				
+		{% block content %}
+
+
+		
+		<p>
+			<a href="accounts/logout">Sign out!</a>
+		</p>
+		 
+		
+		
+	
+		{% endblock %}
+		
+		
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+	</body>
+</html>

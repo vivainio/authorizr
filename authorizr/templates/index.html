@@ -1,41 +1,24 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>{% block title %} Index {% endblock %}</title>
-		<!-- Bootstrap -->
-		<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
-	</head>
-	<body>	
+{% extends "base.html" %}
+{% block content %}
 
-		<div class="navbar">
-		  <div class="navbar-inner">
-		    <a class="brand" href="/">Authorizr</a>
-		    <ul class="nav">
-		      <li><a href="appreg/myapps">My apps</a></li>
-		      <li><a href="#">About</a></li>
-		      {% if user.is_authenticated %}	
-		      <li><a href="#" class="pull-right">{{ user.username }}</a></li>
-		      {% else %}
-		      <li><a href="accounts/login">Sign in!</a></li>
-		      {% endif %}
-		    </ul>
-		  </div>
-		</div>				
-		{% block content %}
-					
-		
-		
-		<p>
-			<a href="accounts/logout">Sign out!</a>
-		</p>
-		 
-		
-		
+<div class="hero-unit">
+	<h1>Authorizr</h1>
+	<p>We know oAuth can be a pain on mobile. That's why we created
+		Authorizr, that lets you authenticate wherever you want, 
+		whenever you want, for API's that matter you the most.</p>
 	
-		{% endblock %}
+	<p><a href="/appreg/myapps">Register your application now!</a>		
+	
+</div>
+
+
+
+<p>
+	<a href="accounts/logout">Sign out!</a>
+</p>
+ 
+
+
+
+{% endblock %}
 		
-		
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
-	</body>
-</html>
