@@ -4,16 +4,26 @@
 
 {% block content %}
 
+<<<<<<< HEAD
 
 <a href="/">Home</a>
 
 <h1>{{ title }}</h1>
+=======
+<h1>Editing Application: {{app_desc}}</h1>
+>>>>>>> 0e7fdc27152c9503406e2259e73f59a1d4e86f3a
 <form method='post' action='.'>
  {% csrf_token %} 
 	  
+	  <table class="table">
        <!-- display the form fields -->
+<<<<<<< HEAD
        {{ form.as_ul }}
  
+=======
+       {{ form.as_table }}
+ 	   </table>
+>>>>>>> 0e7fdc27152c9503406e2259e73f59a1d4e86f3a
        <!-- submit button -->
        <input type='submit' value="save">
 </form>
