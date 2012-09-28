@@ -6,31 +6,32 @@
 		<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body>	
-		
+
+		<div class="navbar">
+		  <div class="navbar-inner">
+		    <a class="brand" href="/">Authorizr</a>
+		    <ul class="nav">
+		      <li><a href="appreg/myapps">My apps</a></li>
+		      <li><a href="#">About</a></li>
+		      {% if user.is_authenticated %}	
+		      <li><a href="#" class="pull-right">{{ user.username }}</a></li>
+		      {% else %}
+		      <li><a href="accounts/login">Sign in!</a></li>
+		      {% endif %}
+		    </ul>
+		  </div>
+		</div>				
 		{% block content %}
 					
-		{% if user.is_authenticated %}
-		Welcome {{ user.username }}
 		
-		<p>
-			<a href="appreg/myapps">My Applications</a>
-		</p>
+		
 		<p>
 			<a href="accounts/logout">Sign out!</a>
 		</p>
 		 
 		
 		
-		{% else %}
-
-		Welcome, new user
-
-		<p>
-			<a href="accounts/login">Sign in!</a>
-		</p>
-		
-		{% endif %}
-
+	
 		{% endblock %}
 		
 		
