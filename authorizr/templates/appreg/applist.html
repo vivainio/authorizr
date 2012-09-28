@@ -13,18 +13,18 @@
 	</p>
 	
 </div>
-<h1>My Applications:</h1>
+<table class="table">
 
 {% for credential in object_list %}
 
-<h3><a href="/appreg/editapp/{{credential.uid}}/">{{ credential.app_desc }}</a></h3>
-<ul>
-    <li>{{ credential.app_api_key }}</li>
-    <li>{{ credential.app_secret }}</li>   
-</ul>
+<tr>
+	<td><a href="/appreg/editapp/{{credential.uid}}/">{{ credential.app_desc }}</a></td>
+    <td>{{ credential.app_api_key }}</td>
+    <td>{{ credential.app_secret }}</td>	
+</tr>
+
 {% endfor %}
 
-
-
+</table>
 
 {% endblock %}
