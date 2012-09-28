@@ -4,16 +4,23 @@
 
 {% block content %}
 
-<h1>Editing Application: {{app_desc}}</h1>
+
+
+<a href="/">Home</a>
+
+<h1>{{ title }}</h1>
+
 <form method='post' action='.'>
  {% csrf_token %} 
 	  
 	  <table class="table">
        <!-- display the form fields -->
+
        {{ form.as_table }}
  	   </table>
+
        <!-- submit button -->
-       <input type='submit'>
+       <input type='submit' value="save">
 </form>
 
 
