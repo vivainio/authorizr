@@ -10,8 +10,32 @@
 
 <h1>{{ title }}</h1>
 
+
 {% if appuid %}
-<a href="/appreg/deleteapp/{{ appuid }}/">Remove this application</a>
+
+<div id="modal-from-dom" class="modal hide fade">
+    <div class="modal-header">
+      <a href="javascript:$('#modal-from-dom').modal('hide')" class="close">&times;</a>
+      <h3>Delete Application</h3>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete this application?</p>      
+    </div>
+    <div class="modal-footer">
+      <a href="/appreg/deleteapp/{{ appuid }}/" class="btn danger">Yes</a>
+      <a href="javascript:$('#modal-from-dom').modal('hide')" class="btn secondary">No</a>
+    </div>
+</div>
+
+<a href="#" class="confirm-delete">Remove this application</a>
+
+<script type="text/javascript">		
+$('.confirm-delete').click(function(e) {
+	e.preventDefault();
+	$('#modal-from-dom').modal('show');
+});	
+</script>
+
 {% endif %}
 
 <form method='post' action='.'>
