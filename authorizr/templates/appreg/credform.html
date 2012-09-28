@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+
+{% block title %}Edit Credentials {% endblock %}
+
+{% block content %}
+
+
+<a href="/">Home</a>
+
+<h1>Editing Application: {{app_desc}}</h1>
+<form method='post' action='.'>
+ {% csrf_token %} 
+	  
+       <!-- display the form fields -->
+       {{ form.as_p }}
+ 
+       <!-- submit button -->
+       <input type='submit'>
+</form>
+
+
+
+{% endblock %}

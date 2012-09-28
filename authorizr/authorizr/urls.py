@@ -17,10 +17,7 @@ urlpatterns = patterns('',
     url("^$", "appreg.views.frontpage"),
     url("^appreg/$", "appreg.views.frontpage"),
     url("^appreg/myapps/", "appreg.views.myapps"),
-    url("^appreg/editapp/(?P<appuid>\w{1,255})/$", "appreg.views.editapp"),
-    url("^appreg/editapp/(?P<appuid>\d{1,255})/update/$", "appreg.views.updateapp"),
-
-    #url(r'^accounts/', include('allauth.urls')),
+    url("^appreg/editapp/(?P<appuid>\w{1,255})/$", "appreg.views.edit_app_credentials"),
     
     #Authentication    
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
