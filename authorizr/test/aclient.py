@@ -2,7 +2,7 @@ import urllib
 import os
 
 
-_HEROKU = True
+_HEROKU = False
 
 def main():
     
@@ -22,8 +22,11 @@ def main():
     
     print "URL to open: "+url+"\n"                        
     
-    data = urllib.urlopen(url).read()
+    d = urllib.urlopen(url)
+    print d.getcode()
     
+    data = d.read()
+
     print "Received data: "+data +"\n"
     
     
@@ -39,7 +42,7 @@ def main():
     
     raw_input("Press enter")
     
-    access_token_url = server_url+"/api/v1/fetch_access_token/?sessionid="+sid    
+    access_token_url = server_url+"/api/v1/fetch_access_token/#?sessionid="+sid    
     
     
     access_token = urllib.urlopen(access_token_url).read()

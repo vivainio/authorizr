@@ -1,8 +1,10 @@
 # Create your views here.
 
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response,render
+from django.http import HttpResponse,HttpResponseRedirect
+
+from django.shortcuts import render_to_response,render, get_object_or_404
+
+from django.template import Context
 
 from django.contrib import auth
 from django.contrib.auth.models import User 
@@ -10,6 +12,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from models import AppCredentials, AppOwner, AuthSession
+
+from forms import AppCredentialForm
+
+
 
 
 def frontpage(request):   
@@ -39,33 +45,22 @@ def myapps(request):
 
     #return render_to_response('appreg/myapps.html', {'credentials': credentials})
 
-#@login_required
-def editapp(request, appuid):       
-    #user=request.user
-    #appOwner = AppOwner.objects.filter(uid = 'myuid')    
-    #credentials = AppCredentials.objects.filter(owner = appOwner)
-        
-    print "appuid: "+ appuid
-    
-    credentials = AppCredentials.objects.get(uid = appuid)
-    
-    print 'Credentials', credentials
-    
-    return render(request, 'appreg/editapp.html', {'credentials': credentials})
 
-    #return render_to_response('appreg/myapps.html', {'credentials': credentials})
+def edit_app_credentials(request, appuid):
     
-def updateapp(request, appuid):       
-
-    print "appuid: "+ appuid
+    cred = get_object_or_404(AppCredentials, uid=appuid)
     
-    credentials = AppCredentials.objects.get(uid = appuid)
-    
-    credentials.app_api_key = request.POST['app_api_key']
-    credentials.app_secret = request.POST['app_api_secret']
-    
-    credentials.save()
-    print 'Credentials', credentials
+    if request.method == "POST":
+        form = AppCredentialForm(request.POST, instance=cred)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/appreg/editapp/'+appuid)
+    else:
+        form = AppCredentialForm(instance=cred)
         
-    return HttpResponseRedirect("/appreg/editapp/"+appuid+"/")
+    context = Context({'app_desc': cred.app_desc, 'form': form})
+    
+    return render(request, 'appreg/credform.html', context)
+
+   
     
