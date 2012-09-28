@@ -10,6 +10,10 @@
 
 <h1>{{ title }}</h1>
 
+{% if appuid %}
+<a href="/appreg/deleteapp/{{ appuid }}/">Remove this application</a>
+{% endif %}
+
 <form method='post' action='.'>
  {% csrf_token %} 
 	  
@@ -22,7 +26,6 @@
        <!-- submit button -->
        <input type='submit' value="{{ btn_text }}">
 </form>
-
 
 
 {% endblock %}

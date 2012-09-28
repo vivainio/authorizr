@@ -66,7 +66,10 @@ def edit_app_credentials(request, appuid):
     else:
         form = AppCredentialForm(instance=cred)
         
-    context = Context({'title': 'Editing Application:'+cred.app_desc ,'btn_text':'Save', 'form': form})
+    context = Context({'title': 'Editing Application:'+cred.app_desc ,
+                       'btn_text':'Save',
+                       'appuid': cred.uid, 
+                       'form': form})
     
     return render(request, 'appreg/credform.html', context)
 
@@ -100,4 +103,12 @@ def add_application(request):
     context = Context({'title': 'New Application', 'btn_text':'Add Application', 'form': form})
     return render(request, 'appreg/credform.html', context)   
   
+def delete_application(request, appuid):
+    
+    cred = get_object_or_404(AppCredentials, uid=appuid)
+    
+    cred.delete()
+    
+    return HttpResponseRedirect('/appreg/myapps/')
+
     
