@@ -13,22 +13,29 @@ from django.contrib.auth.decorators import login_required
 
 from models import AppCredentials, AppOwner, AuthSession
 
+
 from forms import AppCredentialForm
 
-
-
+from django.views.generic.list import ListView
 
 def frontpage(request):   
     return render(request, 'index.html')
-
+ 
 def startlogin(request):
     return render(request, "appreg/startlogin.html", { "loginurl" : '' })
     
 def logout_view(request):
-  auth.logout(request)
-  # Redirect to a success page.
-  return HttpResponseRedirect("/")
+    auth.logout(request)
+    # Redirect to a success page.
+    return HttpResponseRedirect("/")
   
+class AppListView(ListView):
+    model = AppCredentials
+    template_name = "appreg/applist.html"
+    def get_queryset(self):
+        return self.model.objects.all()
+
+            
   
 #@login_required
 def myapps(request):       
