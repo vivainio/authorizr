@@ -7,7 +7,7 @@ _HEROKU = False
 def main():
     
     if _HEROKU:    
-        server_url = "http://shrouded-hamlet-6341.herokuapp.com"
+        server_url = "http://authorizr.herokuapp.com/"
     else:
         server_url = "http://127.0.0.1:8000"
        
