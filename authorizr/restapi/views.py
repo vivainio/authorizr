@@ -29,8 +29,9 @@ def make_client_from_auth_session(auth):
 
 def create_session(request):
         
-    scope_req = ("https://www.googleapis.com/auth/drive",                
-                 )
+    scope_req = ('user_likes',)
+    #scope_req = ("https://www.googleapis.com/auth/drive",                
+    #             )
     '''
     scope_req = ("https://www.googleapis.com/auth/userinfo.email",
                  "https://www.googleapis.com/auth/userinfo.profile"
