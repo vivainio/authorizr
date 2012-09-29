@@ -10,13 +10,17 @@ def main():
         server_url = "http://authorizr.herokuapp.com/"
     else:
         server_url = "http://127.0.0.1:8000"
-       
+
+
+           
+
     tg = urllib.urlencode( {
-        "auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
-        "token_endpoint":"https://accounts.google.com/o/oauth2/token",
-        "resource_endpoint":"https://www.googleapis.com/oauth2/v1",
+        "auth_endpoint" : "https://www.facebook.com/dialog/oauth",
+        "token_endpoint" : "https://graph.facebook.com/oauth/access_token",
+        "resource_endpoint" : "https://graph.facebook.com",
         "redirect_uri": server_url+"/login/google",
-        "cred_id": "100" })
+        "cred_id" : "5fbaae1fa35a4c7792fa37fd7aee7f21"
+    })
         
     url = server_url+"/api/v1/create_session?"+tg
     
