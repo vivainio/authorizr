@@ -15,6 +15,10 @@ from django.contrib.auth.decorators import login_required
 
 from appreg.models import AppCredentials, AppOwner, AuthSession
 
+import json 
+from urlparse import parse_qsl
+
+
 
 def make_client_from_auth_session(auth):
     c = Client(
@@ -97,7 +101,16 @@ def login_callback(request):
     print "requesting token"
     print "State",rdict['state']
     d = {'code' : rdict["code"]}
-    c.request_token(None, **d)
+    
+    def tries_parser(s):
+        try:
+            val = json.loads(s)
+        except ValueError:
+            val = dict(parse_qsl(s))
+        print "Parsed",val
+        return val
+    
+    c.request_token(tries_parser, **d)
     print "token received!"
     print c
     print "google login",rdict
@@ -125,4 +138,4 @@ def fetch_access_token(request):
     access_token = auths.access_token
     return HttpResponse(access_token , "text/plain")
 
-                               
+                                
