@@ -9,7 +9,7 @@ def main():
     if _HEROKU:    
         server_url = "http://authorizr.herokuapp.com"
     else:
-        server_url = "http://localhost:8000"
+        server_url = "http://localhost:8000/"
 
 
            
@@ -22,7 +22,7 @@ def main():
         "cred_id" : "e94175be936e49749af483cb88370d15" #"5fbaae1fa35a4c7792fa37fd7aee7f21"
     })
         
-    url = server_url+"/api/v1/create_session?"+tg
+    url = server_url+"api/v1/create_session?"+tg
     
     print "URL to open: "+url+"\n"                        
     
