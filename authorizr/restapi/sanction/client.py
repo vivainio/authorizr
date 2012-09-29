@@ -79,9 +79,10 @@ class Client(object):
             kwargs.update({'redirect_uri': self.redirect_uri})
 
         print "Args",kwargs
-        
-        resp = parser(urlopen(self.token_endpoint, urlencode(
-            kwargs)).read())
+        raw_resp = urlopen(self.token_endpoint, urlencode(
+            kwargs)).read()
+        print "Raw token resp",raw_resp
+        resp = parser(raw_resp)
 
         for key in resp:
             setattr(self, key, resp[key])
