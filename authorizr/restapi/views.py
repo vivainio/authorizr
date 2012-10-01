@@ -19,7 +19,6 @@ import json
 from urlparse import parse_qsl
 
 
-
 def make_client_from_auth_session(auth):
     c = Client(
         auth_endpoint = auth.auth_endpoint,
@@ -32,18 +31,13 @@ def make_client_from_auth_session(auth):
     
 
 def create_session(request):
-        
-    scope_req = ('user_likes',)
-    #scope_req = ("https://www.googleapis.com/auth/drive",                
-    #             )
-    '''
-    scope_req = ("https://www.googleapis.com/auth/userinfo.email",
-                 "https://www.googleapis.com/auth/userinfo.profile"
-                 )
-    '''
-    
-    
+     
     args = dict(request.REQUEST.iteritems())
+        
+    try:          
+        scope = tuple(args['scope'].split(" "))        
+    except KeyError:
+        return HttpResponse(content="Request scope parameter missing ", status=400)    
         
         
     try:    
@@ -76,7 +70,7 @@ def create_session(request):
     
     #Construct authentication URI using Sanction    
     c = make_client_from_auth_session(authSession)    
-    url = c.auth_uri(scope_req, state = uid)
+    url = c.auth_uri(scope, state = uid)
     
     return HttpResponse("sessionid=%s\nloginurl=%s"%(uid,url), "text/plain")
         
@@ -131,11 +125,11 @@ def fetch_access_token(request):
         return HttpResponse(content="Session identifier (sessionid) parameter missing", status=400)
        
     try:       
-        a = AuthSession.objects.get(session_id = sid)
+        auth = AuthSession.objects.get(session_id = sid)
     except AuthSession.DoesNotExist:
         return HttpResponse(content="Session not found", status=404)
     
-    access_token = auths.access_token
+    access_token = auth.access_token
     return HttpResponse(access_token , "text/plain")
 
                                 
