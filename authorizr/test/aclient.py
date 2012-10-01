@@ -2,12 +2,12 @@ import urllib
 import os
 
 
-_HEROKU = False
+_HEROKU = True
 
 def main():
     
     if _HEROKU:    
-        server_url = "http://authorizr.herokuapp.com/"
+        server_url = "http://authorizr.herokuapp.com"
     else:
         server_url = "http://127.0.0.1:8000"
        
@@ -44,8 +44,9 @@ def main():
     
     raw_input("Press enter")
     
-    access_token_url = server_url+"/api/v1/fetch_access_token/#?sessionid="+sid    
+    access_token_url = server_url+"/api/v1/fetch_access_token/?sessionid="+sid    
     
+    print "access token url: "+ access_token_url +"\n"
     
     access_token = urllib.urlopen(access_token_url).read()
     
