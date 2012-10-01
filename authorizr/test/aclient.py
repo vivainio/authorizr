@@ -2,7 +2,7 @@ import urllib
 import os
 
 
-_HEROKU = True
+_HEROKU = False
 
 def main():
     
@@ -16,6 +16,7 @@ def main():
         "token_endpoint":"https://accounts.google.com/o/oauth2/token",
         "resource_endpoint":"https://www.googleapis.com/oauth2/v1",
         "redirect_uri": server_url+"/login/google",
+        "scope": "https://www.googleapis.com/auth/drive",
         "cred_id": "100" })
         
     url = server_url+"/api/v1/create_session?"+tg
@@ -28,7 +29,7 @@ def main():
     data = d.read()
 
     print "Received data: "+data +"\n"
-    
+        
     
     rows = data.split("\n")
     
@@ -37,7 +38,8 @@ def main():
     
     print sid, url
             
-    
+
+
     os.system('xdg-open "%s"'%url)
     
     raw_input("Press enter")
