@@ -5,6 +5,9 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 import appreg.views
 
+from django.contrib.auth.decorators import login_required
+
+
 admin.autodiscover()
 
 #from allauth.account.views import logout
@@ -19,7 +22,7 @@ urlpatterns = patterns('',
     url("^$", "appreg.views.frontpage"),
     url("^appreg/$", "appreg.views.frontpage"),
  
-    url("^appreg/myapps/", appreg.views.AppListView.as_view()),
+    url("^appreg/myapps/", login_required(appreg.views.AppListView.as_view())),
     url("^appreg/editapp/(?P<appuid>\w{1,255})/$", "appreg.views.edit_app_credentials"),
     url("^appreg/deleteapp/(?P<appuid>\w{1,255})/$", "appreg.views.delete_application"),
     url("^appreg/addapp/", "appreg.views.add_application"),
