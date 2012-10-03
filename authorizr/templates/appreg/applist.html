@@ -6,24 +6,35 @@
 
 <div class="hero-unit">
 	<h1>Manage applications</h1>
-	<p>Here, you can create or modify your registered applications</p>
+	<p>
+		Here, you can create or modify your registered applications
+	</p>
 	<p>
 		<a href="/appreg/addapp" class="btn btn-primary btn-large">New application</a>
-		
+
 	</p>
-	
+
 </div>
-<table class="table">
+<table class="table table-striped">
 
-{% for credential in object_list %}
+	{% for credential in object_list %}
+	<thead>
+		<tr>
+			<th>Application</th>
+			<th>cred_id</th>
+			<th>Key </th>
+			<th>Secret</th>
+		</tr>
+	</thead>
+	<tr>
+		<td><a href="/appreg/editapp/{{credential.uid}}/">{{ credential.app_desc }}</a></td>
+		<td>{{credential.uid}}</td>
+		<td>{{ credential.app_api_key }}</td>
+		<td>{{ credential.app_secret }}</td>
 
-<tr>
-	<td><a href="/appreg/editapp/{{credential.uid}}/">{{ credential.app_desc }}</a></td>
-    <td>{{ credential.app_api_key }}</td>
-    <td>{{ credential.app_secret }}</td>	
-</tr>
+	</tr>
 
-{% endfor %}
+	{% endfor %}
 
 </table>
 
