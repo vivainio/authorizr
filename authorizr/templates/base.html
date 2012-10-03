@@ -6,37 +6,47 @@
 		<link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
 	</head>
-	<body>	
+	<body>
 
 		<div class="navbar">
-		  <div class="navbar-inner">
-		    <a class="brand" href="/">Authorizr</a>
-		    <ul class="nav">
-		      <li><a href="/appreg/myapps">My apps</a></li>
-		      <li><a href="https://github.com/vivainio/authorizr">About</a></li>
-		      {% if user.is_authenticated %}	
-		      <li><a href="#" class="pull-right">{{ user.username }}</a></li>
-		      {% else %}
-		      <li><a href="/accounts/login">Sign in!</a></li>
-		      {% endif %}
-		    </ul>
-		  </div>
-		</div>				
+			<div class="navbar-inner">
+				<a class="brand" href="/">Authorizr</a>
+				
+				<ul class="nav nav-pills">
+					{% if user.is_authenticated %}
+					<li>
+						<a href="/appreg/myapps">My apps</a>
+					</li>
+					{% endif %}
+					<li>
+						<a href="https://github.com/vivainio/authorizr">About</a>
+					</li>
+					<li class="divider-vertical"></li>
+						
+					{% if user.is_authenticated %}
+					<li class="dropdown">
+						<a class="dropdown-toggle"
+						data-toggle="dropdown"
+						href="#"> {{ user.username }} <b class="caret"></b> </a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="/accounts/logout">Sign out!</a>
+							</li>
+						</ul>
+					</li>
+					{% else %}
+					<li>
+						<a href="/accounts/login">Sign in!</a>
+					</li>
+					{% endif %}
+					
+				</ul>
+			</div>
+		</div>
 		{% block content %}
 
-
-		
-		<p>
-			<a href="accounts/logout">Sign out!</a>
-		</p>
-		 
-		
-		
-	
 		{% endblock %}
-		
-		
-		
+
 		<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 	</body>
 </html>

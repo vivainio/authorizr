@@ -1,5 +1,5 @@
 from django import forms
-from appreg.models import AppCredentials, AppOwner
+from appreg.models import AppCredentials
 
 class AppCredentialForm(forms.ModelForm):
     class Meta:

@@ -13,7 +13,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User 
 from django.contrib.auth.decorators import login_required
 
-from appreg.models import AppCredentials, AppOwner, AuthSession
+from appreg.models import AppCredentials, AuthSession
 
 import json 
 from urlparse import parse_qsl
