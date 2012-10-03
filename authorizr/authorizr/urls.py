@@ -3,7 +3,10 @@ from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+
 import appreg.views
+
+import userreg.views
 
 from django.contrib.auth.decorators import login_required
 
@@ -26,6 +29,10 @@ urlpatterns = patterns('',
     url("^appreg/editapp/(?P<appuid>\w{1,255})/$", "appreg.views.edit_app_credentials"),
     url("^appreg/deleteapp/(?P<appuid>\w{1,255})/$", "appreg.views.delete_application"),
     url("^appreg/addapp/", "appreg.views.add_application"),
+            
+    #Google Login 
+    url("^userreg/login/", "userreg.views.create_google_session"),
+    url("^userreg/userlogincallback/", "userreg.views.google_profile_callback"),
             
     #Authentication    
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
