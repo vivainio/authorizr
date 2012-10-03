@@ -82,7 +82,6 @@ def login_callback(request):
     
     print "sid "+ sid
     
-    
     try:       
         a = AuthSession.objects.get(session_id = sid)
     except AuthSession.DoesNotExist:

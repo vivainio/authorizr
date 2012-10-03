@@ -145,7 +145,8 @@ INSTALLED_APPS = (
     #'allauth.socialaccount.providers.facebook',
     #'allauth.facebook',
     
-    'appreg',  
+    'appreg',
+    #'userreg'  
     
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
