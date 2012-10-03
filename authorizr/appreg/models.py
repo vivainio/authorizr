@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-
+'''
 class AppOwner(models.Model):
 
     def __unicode__(self):
@@ -12,6 +12,7 @@ class AppOwner(models.Model):
     uid = models.CharField(primary_key = True, max_length = 255)    
     desc = models.CharField(max_length = 255)
     
+  '''  
 
 class AuthSession(models.Model):
     session_id = models.CharField(primary_key = True,max_length = 255)
@@ -21,7 +22,16 @@ class AuthSession(models.Model):
     client_secret = models.CharField(max_length = 255)
     token_endpoint = models.CharField(max_length = 255)
     resource_endpoint = models.CharField(max_length = 255)
-    redirect_uri = models.CharField(max_length = 255)
+    redirect_uri = models.CharField(max_length = 255)   
+
+
+
+# override default manager. 
+class AppCredentialsManager(models.Manager):
+    def for_user(self, user):
+        print user 
+        return self.get_query_set().filter(owner=user.pk)
+    
 
 class AppCredentials(models.Model):
     
@@ -32,6 +42,9 @@ class AppCredentials(models.Model):
     app_desc = models.CharField(max_length = 255)
     app_api_key = models.CharField(max_length = 255)
     app_secret = models.CharField(max_length = 255)
-    owner = models.ForeignKey(AppOwner)
+    owner = models.ForeignKey(User)
     
+    
+    objects = models.Manager() # The default manager.
+    users_objects = AppCredentialsManager() # The user-specific manager.
     

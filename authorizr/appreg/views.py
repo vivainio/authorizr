@@ -1,23 +1,23 @@
 # Create your views here.
 
 from django.http import HttpResponse,HttpResponseRedirect
-
 from django.shortcuts import render_to_response,render, get_object_or_404
 
 from django.template import Context
 
 from django.contrib import auth
-from django.contrib.auth.models import User 
-
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from models import AppCredentials, AppOwner, AuthSession
-
-
+from models import AppCredentials, AuthSession
 from forms import AppCredentialForm
 
 from django.views.generic.list import ListView
+#from myproject.apps.users.models import LoggedInMixin
+
 import uuid
+
+
 
 def frontpage(request):   
     return render(request, 'index.html')
@@ -30,11 +30,15 @@ def logout_view(request):
     # Redirect to a success page.
     return HttpResponseRedirect("/")
   
+#ListView
 class AppListView(ListView):
     model = AppCredentials
     template_name = "appreg/applist.html"
+    
     def get_queryset(self):
-        return self.model.objects.all()
+        print self.request.user
+        return self.model.objects.filter(owner=self.request.user)
+        #return self.model.users_objects.for_user(self.request.user)
 
             
   
@@ -44,14 +48,14 @@ def myapps(request):
     #appOwner = AppOwner.objects.filter(uid = 'myuid')    
     #credentials = AppCredentials.objects.filter(owner = appOwner)
     
-    credentials = AppCredentials.objects.all()
+    credentials = AppCredentials.users_objects.for_user(request.user)
     
+    #credentials = AppCredentials.objects.all()
+    print requst.user,
     print 'Credentials', len(credentials)
     print credentials
     
     return render(request, 'appreg/myapps.html', {'credentials': credentials})
-
-    #return render_to_response('appreg/myapps.html', {'credentials': credentials})
 
 
 def edit_app_credentials(request, appuid):
@@ -62,7 +66,7 @@ def edit_app_credentials(request, appuid):
         form = AppCredentialForm(request.POST, instance=cred)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/appreg/editapp/'+appuid)
+            return HttpResponseRedirect('/appreg/myapps/')
     else:
         form = AppCredentialForm(instance=cred)
         
@@ -80,33 +84,24 @@ def add_application(request):
         if form.is_valid():
              # create a new item
             uid = uuid.uuid4().hex
-            # xxx fix
-            owner = AppOwner.objects.all()[0]
-            
+        
             item = AppCredentials.objects.create(
-                                                 uid = uid,
-                                                 app_desc = form.cleaned_data['app_desc'],
-                                                 app_api_key = form.cleaned_data['app_api_key'],
-                                                 app_secret = form.cleaned_data['app_secret'],
-                                                 owner = owner
-                                                 )            
-            #red.save()
-            
-            print "form save is valid jne"
+                     uid = uid,
+                     app_desc = form.cleaned_data['app_desc'],
+                     app_api_key = form.cleaned_data['app_api_key'],
+                     app_secret = form.cleaned_data['app_secret'],
+                     owner = request.user
+                     )            
             return HttpResponseRedirect('/appreg/myapps/')
-        else:
-            print "form not valid"
     else:
         form = AppCredentialForm()
-        print "using app cred form"
         
     context = Context({'title': 'New Application', 'btn_text':'Add Application', 'form': form})
     return render(request, 'appreg/credform.html', context)   
   
 def delete_application(request, appuid):
     
-    cred = get_object_or_404(AppCredentials, uid=appuid)
-    
+    cred = get_object_or_404(AppCredentials, uid=appuid)    
     cred.delete()
     
     return HttpResponseRedirect('/appreg/myapps/')
