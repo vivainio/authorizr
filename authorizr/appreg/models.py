@@ -42,9 +42,16 @@ class AppCredentials(models.Model):
     app_desc = models.CharField(max_length = 255)
     app_api_key = models.CharField(max_length = 255)
     app_secret = models.CharField(max_length = 255)
+    
+    scope = models.CharField(max_length = 1024, blank=True)    
+    auth_endpoint = models.CharField(max_length = 255, blank=True)
+    token_endpoint = models.CharField(max_length = 255, blank=True)
+    resource_endpoint = models.CharField(max_length = 255, blank=True)
+    redirect_uri = models.CharField(max_length = 255, blank=True)
+    
     owner = models.ForeignKey(User)
     
-    
+        
     objects = models.Manager() # The default manager.
     users_objects = AppCredentialsManager() # The user-specific manager.
     

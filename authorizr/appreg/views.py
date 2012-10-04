@@ -90,6 +90,13 @@ def add_application(request):
                      app_desc = form.cleaned_data['app_desc'],
                      app_api_key = form.cleaned_data['app_api_key'],
                      app_secret = form.cleaned_data['app_secret'],
+                     
+                     scope = form.cleaned_data['scope'],
+                     auth_endpoint = form.cleaned_data['auth_endpoint'],
+                     token_endpoint = form.cleaned_data['token_endpoint'],
+                     resource_endpoint = form.cleaned_data['resource_endpoint'],
+                     redirect_uri = form.cleaned_data['redirect_uri'],
+                     
                      owner = request.user
                      )            
             return HttpResponseRedirect('/appreg/myapps/')
