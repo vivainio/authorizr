@@ -30,46 +30,46 @@ def make_client_from_auth_session(auth):
     return c
     
 
-def create_session(request):
+def make_auth_session(cred, args, uid):
+    authSession = AuthSession(
+                    session_id = uid,
+                    auth_endpoint = args.get('auth_endpoint', 
+                                             cred.auth_endpoint),
+                    access_token = '',
+                    token_endpoint = args.get('token_endpoint', 
+                                              cred.token_endpoint),
+                    resource_endpoint = args.get('resource_endpoint', 
+                                                 cred.resource_endpoint),
+                    client_id = cred.app_api_key,
+                    client_secret = cred.app_secret,
+                    redirect_uri = args.get('redirect_uri', 
+                                            cred.redirect_uri),
+                    )
+    
+    authSession.save()
+    return authSession
+    
+
+
+def create_session(request, appid):
      
+    credential_uid = appid
     args = dict(request.REQUEST.iteritems())
         
-    try:          
-        scope = tuple(args['scope'].split(" "))        
-    except KeyError:
-        return HttpResponse(content="Request scope parameter missing ", status=400)    
-        
-        
-    try:    
-        #Get Credentials used for this session     
-        cred_id = args['cred_id']        
-    except KeyError:
-        return HttpResponse(content="Application identifier (cred_id) parameter missing", status=400)
-    
     try:       
-        credentials = AppCredentials.objects.get(uid=cred_id)
+        credentials = AppCredentials.objects.get(uid=credential_uid)
     except AppCredentials.DoesNotExist:
         return HttpResponse(content="Application identifier not found", status=404)
        
     #Make unique ID for request    
     uid = uuid.uuid4().hex
-
-    #Store it to DB TODO: foreign key link to AuthSession.. api key and secret duplicated
-    authSession = AuthSession(
-                    session_id = uid,
-                    auth_endpoint = args['auth_endpoint'],
-                    access_token = '',
-                    token_endpoint = args['token_endpoint'],
-                    resource_endpoint = args['resource_endpoint'],
-                    client_id = credentials.app_api_key,
-                    client_secret = credentials.app_secret,
-                    redirect_uri = args['redirect_uri']
-                    )
     
-    authSession.save()
+    auth_session = make_auth_session(credentials, args, uid)
+    
+    scope = tuple(args.get('scope', credentials.scope).split(" "))    
     
     #Construct authentication URI using Sanction    
-    c = make_client_from_auth_session(authSession)    
+    c = make_client_from_auth_session(auth_session)    
     url = c.auth_uri(scope, state = uid)
     
     return HttpResponse("sessionid=%s\nloginurl=%s"%(uid,url), "text/plain")
@@ -114,17 +114,11 @@ def login_callback(request):
     return HttpResponse("You may close the browser now and return to app", "text/plain")   
 
 
-def fetch_access_token(request):
+def fetch_access_token(request, sessionid):
     print "Fetch access token \n"
-     
-    try:         
-        sid = request.REQUEST['sessionid']
-        print "sessionid "+ sid       
-    except KeyError:
-        return HttpResponse(content="Session identifier (sessionid) parameter missing", status=400)
-       
+                
     try:       
-        auth = AuthSession.objects.get(session_id = sid)
+        auth = AuthSession.objects.get(session_id = sessionid)
     except AuthSession.DoesNotExist:
         return HttpResponse(content="Session not found", status=404)
     

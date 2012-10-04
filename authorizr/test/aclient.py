@@ -2,24 +2,34 @@ import urllib
 import os
 
 
-_HEROKU = True
+_HEROKU = False
+
+_URL_PARAMS = False
+
+
+_APP_ID = '0af718a07fdd4d22bb21524b7038cd84'
 
 def main():
     
     if _HEROKU:    
         server_url = "http://authorizr.herokuapp.com"
-    else:
+    else:       
         server_url = "http://127.0.0.1:8000"
-       
-    tg = urllib.urlencode( {
-        "auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
-        "token_endpoint":"https://accounts.google.com/o/oauth2/token",
-        "resource_endpoint":"https://www.googleapis.com/oauth2/v1",
-        "redirect_uri": server_url+"/login/google",
-        "scope": "https://www.googleapis.com/auth/drive",
-        "cred_id": "100" })
-        
-    url = server_url+"/api/v1/create_session?"+tg
+    
+    url= ''
+    
+    if _URL_PARAMS:
+        tg = urllib.urlencode( {
+            "auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
+            "token_endpoint":"https://accounts.google.com/o/oauth2/token",
+            "resource_endpoint":"https://www.googleapis.com/oauth2/v1",
+            "redirect_uri": server_url+"/login/oauth2callback",
+            #"scope": "https://www.googleapis.com/auth/drive",
+            "scope": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
+         })
+        url = server_url+"/api/v1/create_session/"+_APP_ID+"/?"+tg
+    else:
+        url = server_url+"/api/v1/create_session/"+_APP_ID+"/"
     
     print "URL to open: "+url+"\n"                        
     
@@ -44,7 +54,7 @@ def main():
     
     raw_input("Press enter")
     
-    access_token_url = server_url+"/api/v1/fetch_access_token/?sessionid="+sid    
+    access_token_url = server_url+"/api/v1/fetch_access_token/"+sid+"/"    
     
     print "access token url: "+ access_token_url +"\n"
     
@@ -52,9 +62,11 @@ def main():
     
     
     print "Received data: "+access_token +"\n"
-     
-    test_url = " https://www.googleapis.com/drive/v2/files?access_token="+access_token 
-    #test_url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token="+access_token
+    
+    if _URL_PARAMS: 
+        test_url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token="+access_token
+    else:
+        test_url = " https://www.googleapis.com/drive/v2/files?access_token="+access_token 
     
     test_resp = urllib.urlopen(test_url).read()
     
