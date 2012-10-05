@@ -18,7 +18,7 @@ class AppCredentialForm(forms.ModelForm):
             field = self.fields.get(field_name)  
             
             if field:
-                if type(field.widget) in (forms.TextInput, forms.DateInput):
+                if type(field.widget) is forms.TextInput:
                     field.widget = forms.TextInput(attrs={
                                                           'placeholder': field.label,                                                          
                                                           'class':'input-xxlarge'})    
