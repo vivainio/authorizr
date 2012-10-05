@@ -12,7 +12,31 @@ var endpoints ={
 	        "token_endpoint" : "https://graph.facebook.com/oauth/access_token",
 	        "resource_endpoint" : "https://graph.facebook.com",
 	        "redirect_uri": "http://authorizr.herokuapp.com/login/oauth2callback"   
-	}	
+	},
+	"Stack exchange" : {	
+		"auth_endpoint" : "https://stackexchange.com/oauth",
+		"token_endpoint" : "https://stackexchange.com/oauth/access_token",
+        "resource_endpoint" : "https://api.stackexchange.com/2.0",
+        "redirect_uri": "http://authorizr.herokuapp.com/login/oauth2callback"
+     },
+  	"Foursquare" : {
+        "auth_endpoint" : "https://foursquare.com/oauth2/authenticate",
+        "token_endpoint" : "https://foursquare.com/oauth2/access_token",
+        "resource_endpoint" : "https://api.foursquare.com/v2",
+        "redirect_uri": "http://authorizr.herokuapp.com/login/oauth2callback"  		
+  	},
+  	"Github" : {
+        "auth_endpoint" : "https://github.com/login/oauth/authorize",
+        "token_endpoint" : "https://github.com/login/oauth/access_token",
+        "resource_endpoint" : "https://api.github.com",
+        "redirect_uri": "http://authorizr.herokuapp.com/login/oauth2callback"
+     },
+     "Instagram" : {
+       	"auth_endpoint" : "https://api.instagram.com/oauth/authorize/",
+        "token_endpoint" : "https://api.instagram.com/oauth/access_token",
+        "resource_endpoint" : "https://api.instagram.com/v1",
+        "redirect_uri": "http://authorizr.herokuapp.com/login/oauth2callback"
+     }
 };
 
 
