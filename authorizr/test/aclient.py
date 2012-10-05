@@ -4,7 +4,7 @@ import os
 
 _HEROKU = False
 
-_URL_PARAMS = False
+_URL_PARAMS = True
 
 
 _APP_ID = '0af718a07fdd4d22bb21524b7038cd84'
@@ -20,10 +20,10 @@ def main():
     
     if _URL_PARAMS:
         tg = urllib.urlencode( {
-            "auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
-            "token_endpoint":"https://accounts.google.com/o/oauth2/token",
-            "resource_endpoint":"https://www.googleapis.com/oauth2/v1",
-            "redirect_uri": server_url+"/login/oauth2callback",
+            #"auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
+            #"token_endpoint":"https://accounts.google.com/o/oauth2/token",
+            #"resource_endpoint":"https://www.googleapis.com/oauth2/v1",
+            #"redirect_uri": server_url+"/login/oauth2callback",
             #"scope": "https://www.googleapis.com/auth/drive",
             "scope": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
          })
