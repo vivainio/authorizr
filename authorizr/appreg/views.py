@@ -51,7 +51,7 @@ def myapps(request):
     credentials = AppCredentials.users_objects.for_user(request.user)
     
     #credentials = AppCredentials.objects.all()
-    print requst.user,
+    print request.user,
     print 'Credentials', len(credentials)
     print credentials
     

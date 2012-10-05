@@ -57,11 +57,13 @@ $('.discard').click(function(e) {
 <form method='post' action='.'>
  {% csrf_token %} 
 	  
-	  <table class="table">
+	  
        <!-- display the form fields -->
 
-       {{ form.as_table }}
- 	   </table>
+		<div id="cred_form_container">
+       {{ form.as_p }}
+       </div>
+ 	  
 
        <!-- submit button -->
        <input type='submit' value="{{ btn_text }}">
