@@ -2,10 +2,15 @@
 
 {% block title %}Edit Credentials {% endblock %}
 
+
+{% block scripts %}		
+		<script src="{{ STATIC_URL }}js/prefills.js"></script> 
+{% endblock %}
+
+
 {% block content %}
 
 <h1>{{ title }}</h1>
-
 
 {% if appuid %}
 
@@ -25,7 +30,8 @@
 
 <a href="#" class="confirm-delete">Remove this application</a>
 
-<script type="text/javascript">		
+
+<script type="application/javascript">
 $('.confirm-delete').click(function(e) {
 	e.preventDefault();
 	$('#modal-from-dom').modal('show');
@@ -33,10 +39,20 @@ $('.confirm-delete').click(function(e) {
 $('.discard').click(function(e) {
 	e.preventDefault();
 	$('#modal-from-dom').modal('hide');
-});	
+});		
 </script>
 
 {% endif %}
+
+<div class="btn-group">
+    <button class="btn">Provider</button>
+    <button class="btn dropdown-toggle" data-toggle="dropdown">
+    	<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" id="dropdownLinks">        
+   	</ul>
+</div>
+
 
 <form method='post' action='.'>
  {% csrf_token %} 
