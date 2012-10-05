@@ -28,24 +28,14 @@
     </div>
 </div>
 
-<a href="#" class="confirm-delete">Remove this application</a>
 
 
-<script type="application/javascript">
-$('.confirm-delete').click(function(e) {
-	e.preventDefault();
-	$('#modal-from-dom').modal('show');
-});	
-$('.discard').click(function(e) {
-	e.preventDefault();
-	$('#modal-from-dom').modal('hide');
-});		
-</script>
+
 
 {% endif %}
 
-<div class="btn-group">
-    <button class="btn">Provider</button>
+<div id="prefiller" class="btn-group">
+    <button class="btn">Prefill fields</button>
     <button class="btn dropdown-toggle" data-toggle="dropdown">
     	<span class="caret"></span>
     </button>
@@ -67,7 +57,20 @@ $('.discard').click(function(e) {
 
        <!-- submit button -->
        <input type='submit' value="{{ btn_text }}">
+       <a id="btn-delete-app" href="#" class="btn btn-danger confirm-delete">Remove this application</a>
 </form>
+
+<script type="application/javascript">
+$('.confirm-delete').click(function(e) {
+	e.preventDefault();
+	$('#modal-from-dom').modal('show');
+});	
+$('.discard').click(function(e) {
+	e.preventDefault();
+	$('#modal-from-dom').modal('hide');
+});		
+</script>
+
 
 
 {% endblock %}
