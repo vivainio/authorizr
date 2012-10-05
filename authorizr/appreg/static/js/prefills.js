@@ -23,7 +23,9 @@ $(function() {
   		$("#dropdownLinks").append($('<li><a href="#'+provider+'">'+provider+'</a></li>'));
     }
 	          
-    $("#dropdownLinks a").click(function() {    	
+    $("#dropdownLinks a").click(function(event) {
+    
+    	event.preventDefault();
   		
   		key = $(this).attr('href').substring(1); 		  		   		
   		
@@ -32,6 +34,7 @@ $(function() {
      	for(var k in endpoint ){	     
       		$("#id_"+k).val(endpoint[k]);
     	}
+    	
     });
     
 });
