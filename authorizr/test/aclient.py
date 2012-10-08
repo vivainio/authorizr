@@ -1,13 +1,13 @@
 import urllib
 import os
-
+import json
 
 _HEROKU = False
 
 _URL_PARAMS = True
 
 
-_APP_ID = '0af718a07fdd4d22bb21524b7038cd84'
+_APP_ID = 'bb7af0ad9cf1440583ad7da8a44718c2'
 
 def main():
     
@@ -25,9 +25,12 @@ def main():
             #"resource_endpoint":"https://www.googleapis.com/oauth2/v1",
             #"redirect_uri": server_url+"/login/oauth2callback",
             #"scope": "https://www.googleapis.com/auth/drive",
-            "scope": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
+            #"scope": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
          })
-        url = server_url+"/api/v1/create_session/"+_APP_ID+"/?"+tg
+        url = server_url+"/api/v1/create_session/"+_APP_ID+"/" 
+         
+         #?"+tg
+         
     else:
         url = server_url+"/api/v1/create_session/"+_APP_ID+"/"
     
@@ -39,13 +42,11 @@ def main():
     data = d.read()
 
     print "Received data: "+data +"\n"
-        
+   
+    data = json.loads(data)
     
-    rows = data.split("\n")
-    
-    dummy,sid = rows[0].split("=",1)
-    dummy,url = rows[1].split("=",1)
-    
+    sid =  data["session_id"]
+    url =  data["url"]
     print sid, url
             
 
@@ -58,8 +59,11 @@ def main():
     
     print "access token url: "+ access_token_url +"\n"
     
-    access_token = urllib.urlopen(access_token_url).read()
+    resp = urllib.urlopen(access_token_url).read()
     
+    at = json.loads(resp)
+    
+    access_token = at["access_token"]
     
     print "Received data: "+access_token +"\n"
     

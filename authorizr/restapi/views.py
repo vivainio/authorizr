@@ -72,7 +72,9 @@ def create_session(request, appid):
     c = make_client_from_auth_session(auth_session)    
     url = c.auth_uri(scope, state = uid)
     
-    return HttpResponse("sessionid=%s\nloginurl=%s"%(uid,url), "text/plain")
+    json_response = json.dumps({"session_id": uid, "url": url})
+    
+    return HttpResponse(json_response, "application/json")
         
         
 def login_callback(request):
@@ -123,6 +125,10 @@ def fetch_access_token(request, sessionid):
         return HttpResponse(content="Session not found", status=404)
     
     access_token = auth.access_token
-    return HttpResponse(access_token , "text/plain")
+    json_response = json.dumps({"access_token": access_token})
+    
+    return HttpResponse(json_response, "application/json")
+        
+    
 
                                 
