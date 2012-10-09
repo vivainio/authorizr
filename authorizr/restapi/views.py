@@ -112,8 +112,9 @@ def login_callback(request):
     
     a.access_token = c.access_token;    
     a.save();
-        
-    return HttpResponse("You may close the browser now and return to app", "text/plain")   
+    
+    return render(request, 'restapi/callback.html', {})        
+       
 
 
 def fetch_access_token(request, sessionid):
