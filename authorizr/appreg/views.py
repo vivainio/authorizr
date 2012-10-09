@@ -17,6 +17,8 @@ from django.views.generic.list import ListView
 
 import uuid
 
+#Callback URL
+from django.conf import settings
 
 
 def frontpage(request):   
@@ -95,8 +97,8 @@ def add_application(request):
                      auth_endpoint = form.cleaned_data['auth_endpoint'],
                      token_endpoint = form.cleaned_data['token_endpoint'],
                      resource_endpoint = form.cleaned_data['resource_endpoint'],
-                     redirect_uri = form.cleaned_data['redirect_uri'],
-                     
+                     user_callback_page = form.cleaned_data['user_callback_page'],
+                     redirect_uri = settings._CALLBACK_URL,
                      owner = request.user
                      )            
             return HttpResponseRedirect('/appreg/myapps/')

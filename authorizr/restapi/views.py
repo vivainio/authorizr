@@ -22,8 +22,8 @@ from urlparse import parse_qsl
 def make_client_from_auth_session(auth):
     c = Client(
         auth_endpoint = auth.auth_endpoint,
-        token_endpoint= auth.token_endpoint,
-        resource_endpoint =auth.resource_endpoint,
+        token_endpoint = auth.token_endpoint,
+        resource_endpoint = auth.resource_endpoint,
         client_id = auth.client_id,
         client_secret = auth.client_secret,
         redirect_uri = auth.redirect_uri)        
@@ -40,10 +40,12 @@ def make_auth_session(cred, args, uid):
                                               cred.token_endpoint),
                     resource_endpoint = args.get('resource_endpoint', 
                                                  cred.resource_endpoint),
+                    user_callback_page = args.get('user_callback_page', 
+                                            cred.user_callback_page),
+                    
                     client_id = cred.app_api_key,
                     client_secret = cred.app_secret,
-                    redirect_uri = args.get('redirect_uri', 
-                                            cred.redirect_uri),
+                    redirect_uri = cred.redirect_uri,
                     )
     
     authSession.save()
@@ -113,7 +115,11 @@ def login_callback(request):
     a.access_token = c.access_token;    
     a.save();
     
-    return render(request, 'restapi/callback.html', {})        
+    
+    if a.user_callback_page:
+        return HttpResponseRedirect(a.user_callback_page)
+    else:
+        return render(request, 'restapi/callback.html', {})        
        
 
 

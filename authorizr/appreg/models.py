@@ -23,7 +23,7 @@ class AuthSession(models.Model):
     token_endpoint = models.CharField(max_length = 255)
     resource_endpoint = models.CharField(max_length = 255)
     redirect_uri = models.CharField(max_length = 255)   
-
+    user_callback_page = models.CharField(max_length = 255)   
 
 
 # override default manager. 
@@ -47,8 +47,11 @@ class AppCredentials(models.Model):
     auth_endpoint = models.CharField(max_length = 255, blank=True)
     token_endpoint = models.CharField(max_length = 255, blank=True)
     resource_endpoint = models.CharField(max_length = 255, blank=True)
+    
     redirect_uri = models.CharField(max_length = 255, blank=True)
     
+    user_callback_page = models.CharField(max_length = 255, blank=True)
+        
     owner = models.ForeignKey(User)
     
         

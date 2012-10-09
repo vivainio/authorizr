@@ -7,6 +7,12 @@ import dj_database_url
 
 _HEROKU = False
 
+if _HEROKU:
+	_CALLBACK_URL = 'http://authorizr.herokuapp.com/login/oauth2callback'
+else:
+    _CALLBACK_URL = 'http://127.0.0.1:8000/login/oauth2callback'
+ 
+
 # calculated paths for django and the site
 # used as starting points for various other paths
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
@@ -23,8 +29,7 @@ ADMINS = (
 MANAGERS = ADMINS
 if _HEROKU:
 	DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
-	
-else: 
+else:   
 	DATABASES = {
 	    'default': {
 		'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -35,6 +40,7 @@ else:
 		'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
 	    }
 	}
+    
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

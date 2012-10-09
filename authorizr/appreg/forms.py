@@ -25,6 +25,6 @@ class AppCredentialForm(forms.ModelForm):
     
     class Meta:
         model = AppCredentials
-        exclude = ('uid','owner',)
+        exclude = ('uid','owner','redirect_uri')
         
     

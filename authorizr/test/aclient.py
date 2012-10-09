@@ -7,7 +7,7 @@ _HEROKU = False
 _URL_PARAMS = True
 
 
-_APP_ID = 'bb7af0ad9cf1440583ad7da8a44718c2'
+_APP_ID = '8e790950542d44b192002c7c1879848c'
 
 def main():
     

@@ -48,6 +48,10 @@
 							<td>{{ credential.uid }}</td>
 						</tr>
 						<tr>
+							<td>OAuth Callback URL</td>
+							<td>{{ credential.redirect_uri }}</td>
+						</tr>						
+						<tr>
 							<td>API Key</td>
 							<td>{{ credential.app_api_key }}</td>							
 						</tr>
@@ -72,8 +76,8 @@
 							<td>{{ credential.resource_endpoint }}</td>							
 						</tr>
 						<tr>
-							<td>Redirect URI</td>
-							<td>{{ credential.redirect_uri }}</td>							
+							<td>Redirect site</td>
+							<td>{{ credential.user_callback_page }}</td>							
 						</tr>
 											
 				</table>
