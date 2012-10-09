@@ -41,54 +41,64 @@
 		</div>
 		<div id="col_{{credential.uid}}" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<h5>Details</h5>			
-				<table class="table table-bordered table-condensed table-striped">					
-						<tr>
-							<td>Authorizr handle</td>
-							<td>{{ credential.uid }}</td>
-						</tr>
-						<tr>
-							<td>OAuth Callback URL</td>
-							<td>{{ credential.redirect_uri }}</td>
-						</tr>						
-						<tr>
-							<td>API Key</td>
-							<td>{{ credential.app_api_key }}</td>							
-						</tr>
-						<tr>
-							<td>Application Secret</td>
-							<td>{{ credential.app_secret }}</td>							
-						</tr>
-						<tr>
-							<td>Scope</td>
-							<td>{{ credential.scope }}</td>							
-						</tr>
-						<tr>
-							<td>Authentication endpoint</td>
-							<td>{{ credential.auth_endpoint }}</td>							
-						</tr>
-						<tr>
-							<td>Token endpoint</td>
-							<td>{{ credential.token_endpoint }}</td>							
-						</tr>					
-						<tr>
-							<td>Resource endpoint</td>
-							<td>{{ credential.resource_endpoint }}</td>							
-						</tr>
-						<tr>
-							<td>Redirect site</td>
-							<td>{{ credential.user_callback_page }}</td>							
-						</tr>
-											
-				</table>
-				<div class="btn-group">
-					<a class="btn" href="/appreg/editapp/{{credential.uid}}/">Edit</a>
+				<div class="row">
 					
-					<a href="#" class="btn btn-danger confirm_delete" data-target="{{credential.uid}}" >Remove</a>					
-				</div>	
+				<div class="span9">
+						
+					<h5>Authorizer parameters</h5>			
+					<table class="table table-bordered table-condensed table-striped">					
+							<tr>
+								<td>Handle</td>
+								<td>{{ credential.uid }}</td>
+							</tr>
+							<tr>
+								<td>Callback URL</td>
+								<td>{{ credential.redirect_uri }}</td>
+							</tr>						
+					</table>
+					
+					<h5>Application Details</h5>
+					<table class="table table-bordered table-condensed table-striped">
+					        <tr>
+								<td>API Key</td>
+								<td>{{ credential.app_api_key }}</td>							
+							</tr>
+							<tr>
+								<td>Application Secret</td>
+								<td>{{ credential.app_secret }}</td>							
+							</tr>
+							<tr>
+								<td>Scope</td>
+								<td>{{ credential.scope }}</td>							
+							</tr>
+							<tr>
+								<td>Authentication endpoint</td>
+								<td>{{ credential.auth_endpoint }}</td>							
+							</tr>
+							<tr>
+								<td>Token endpoint</td>
+								<td>{{ credential.token_endpoint }}</td>							
+							</tr>					
+							<tr>
+								<td>Resource endpoint</td>
+								<td>{{ credential.resource_endpoint }}</td>							
+							</tr>
+							<tr>
+								<td>Redirect site</td>
+								<td>{{ credential.user_callback_page }}</td>							
+							</tr>
+												
+					</table>
+					<div class="btn-group">
+						<a class="btn" href="/appreg/editapp/{{credential.uid}}/">Edit</a>					
+						<a href="#" class="btn btn-danger confirm_delete" data-target="{{credential.uid}}" >Remove</a>					
+					</div>	
+				</div>
+				</div>
 				
 				<br />
-				
+				<div class="row">
+					
 				<blockquote class="well">
 				Usage example:
 				<ol>
@@ -110,6 +120,7 @@
 					</li>
 				</ol>
 				</blockquote> 
+				</div>
 			
 			</div>
 		</div>
