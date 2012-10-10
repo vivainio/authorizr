@@ -17,6 +17,7 @@ from appreg.models import AppCredentials, AuthSession
 
 import json 
 from urlparse import parse_qsl
+from httplib2 import Credentials
 
 
 def make_client_from_auth_session(auth):
@@ -72,7 +73,15 @@ def create_session(request, appid):
     
     #Construct authentication URI using Sanction    
     c = make_client_from_auth_session(auth_session)    
-    url = c.auth_uri(scope, state = uid)
+    
+    #custom parameters so that we can get refresh_token
+    #google calls this offline access
+    params = {'access_type': "offline"}
+    
+    
+    url = c.auth_uri(scope, state = uid,**params)
+    
+    
     
     json_response = json.dumps({"session_id": uid, "url": url})
     
@@ -84,7 +93,7 @@ def login_callback(request):
         
     sid = request.REQUEST['state']
     
-    print "sid "+ sid
+    print "SID: "+ sid
     
     try:       
         a = AuthSession.objects.get(session_id = sid)
@@ -95,24 +104,35 @@ def login_callback(request):
     c = make_client_from_auth_session(a)    
         
     rdict = request.REQUEST
-    print "requesting token"
-    print "State",rdict['state']
+    print "REQUEST:"
+    print rdict
+        
     d = {'code' : rdict["code"]}
     
     def tries_parser(s):
+        print "Data to parse: "+s
         try:
+            print "USing JSON parser"
             val = json.loads(s)
         except ValueError:
+            print "Using URL parser"
             val = dict(parse_qsl(s))
-        print "Parsed",val
+        
         return val
     
     c.request_token(tries_parser, **d)
     print "token received!"
-    print c
-    print "google login",rdict
+    print c.access_token
     
+    
+    try:
+        print "refresh token received!: "+ c.refresh_token
+        a.refresh_token = c.refresh_token
+    except AttributeError:
+        print "no refresh token here"
+            
     a.access_token = c.access_token;    
+    
     a.save();
     
     
@@ -132,10 +152,67 @@ def fetch_access_token(request, sessionid):
         return HttpResponse(content="Session not found", status=404)
     
     access_token = auth.access_token
-    json_response = json.dumps({"access_token": access_token})
+    refresh_token = auth.refresh_token
+    json_response = json.dumps({"access_token": access_token, "refresh_token":refresh_token})
     
     return HttpResponse(json_response, "application/json")
         
+
+def refresh_access_token(request, appid):
     
+    credential_uid = appid
+    args = dict(request.REQUEST.iteritems())
+        
+    try:       
+        credentials = AppCredentials.objects.get(uid=credential_uid)
+    except AppCredentials.DoesNotExist:
+        return HttpResponse(content="Application identifier not found", status=404)
+       
+       
+    #initialize client with needed values 
+    c = Client(   
+        token_endpoint = credentials.token_endpoint,       
+        client_id = credentials.app_api_key,
+        client_secret = credentials.app_secret,
+        )
+        
+    #provide addtional parameters needed to refresh token
+    refresh_token = args.get('refresh_token', "")   
+     
+    params = {'grant_type': "refresh_token",
+              'refresh_token': refresh_token}
+          
+          
+    def tries_parser(s):
+        print "Data to parse: "+s
+        try:
+            print "USing JSON parser"
+            val = json.loads(s)
+        except ValueError:
+            print "Using URL parser"
+            val = dict(parse_qsl(s))
+        
+        return val
+    
+    #request a new access token 
+    c.request_token(tries_parser, **params)
+    
+    print "New Access token"
+    print c.access_token
+        
+    new_refresh_token = ""
+    
+    try:
+        print "New refresh token received!: "+ c.refresh_token
+        new_refresh_token = c.refresh_token
+    except AttributeError:
+        print "no refresh token here"
+     
+    json_response = json.dumps({"access_token": c.access_token, "refresh_token": new_refresh_token })
+     
+    return HttpResponse(json_response, "application/json")
+    #https://accounts.google.com/o/oauth2/revoke?token={token}
+    
+        
 
                                 

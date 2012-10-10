@@ -17,6 +17,7 @@ class AppOwner(models.Model):
 class AuthSession(models.Model):
     session_id = models.CharField(primary_key = True,max_length = 255)
     access_token = models.CharField(max_length = 255)
+    refresh_token = models.CharField(max_length = 255)
     auth_endpoint = models.CharField(max_length = 255)
     client_id = models.CharField(max_length = 255)
     client_secret = models.CharField(max_length = 255)
@@ -48,10 +49,10 @@ class AppCredentials(models.Model):
     token_endpoint = models.CharField(max_length = 255, blank=True)
     resource_endpoint = models.CharField(max_length = 255, blank=True)
     
-    redirect_uri = models.CharField(max_length = 255, blank=True)
     
-    user_callback_page = models.CharField(max_length = 255, blank=True)
-        
+    redirect_uri = models.CharField(max_length = 255, blank=True) #fixed to Authorizr URL    
+    user_callback_page = models.CharField(max_length = 255, blank=True) #points to users page
+            
     owner = models.ForeignKey(User)
     
         

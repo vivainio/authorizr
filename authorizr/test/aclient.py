@@ -7,7 +7,7 @@ _HEROKU = False
 _URL_PARAMS = True
 
 
-_APP_ID = '8e790950542d44b192002c7c1879848c'
+_APP_ID = '12968c7f11844baabe9ae48f500472f3'
 
 def main():
     
@@ -61,12 +61,16 @@ def main():
     
     resp = urllib.urlopen(access_token_url).read()
     
+    print "Received data:" +resp
+
     at = json.loads(resp)
     
     access_token = at["access_token"]
+    refresh_token = at["refresh_token"]
     
-    print "Received data: "+access_token +"\n"
-    
+    print "Revoke Link:"
+    print "https://accounts.google.com/o/oauth2/revoke?token="+access_token
+   
     if _URL_PARAMS: 
         test_url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token="+access_token
     else:
@@ -74,7 +78,13 @@ def main():
     
     test_resp = urllib.urlopen(test_url).read()
     
-    print test_resp
     
+    raw_input("Press enter to test token refresh")
+    
+    refresh_token_url = server_url+"/api/v1/refresh_access_token/"+_APP_ID+"/?refresh_token="+refresh_token
+
+    ref_response = urllib.urlopen(refresh_token_url).read()
+    
+    print ref_response
     
 main()    

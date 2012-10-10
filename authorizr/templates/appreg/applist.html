@@ -34,67 +34,67 @@
 
 <div class="accordion" id="app_accordion">
 	{% for credential in object_list %}
-	<div class="accordion-group"> 
+	<div class="accordion-group">
 		<div class="accordion-heading">
 			<a class="accordion-toggle" data-toggle="collapse" data-parent="#app_accordion" href="#col_{{credential.uid}}"><h4> {{ credential.app_desc }} </h4></a>
 		</div>
 		<div id="col_{{credential.uid}}" class="accordion-body collapse">
 			<div class="accordion-inner">
-				
-  				<div class="row">									
-						<div class="span6">
-							<h5>Application Details:</h5>
-							<table class="table table-bordered table-condensed table-striped">
-								<tr>
-									<td>API Key</td>
-									<td>{{ credential.app_api_key }}</td>
-								</tr>
-								<tr>
-									<td>Application Secret</td>
-									<td>{{ credential.app_secret }}</td>
-								</tr>
-								<tr>
-									<td>Scope</td>
-									<td>{{ credential.scope }}</td>
-								</tr>
-								<tr>
-									<td>Authentication endpoint</td>
-									<td>{{ credential.auth_endpoint }}</td>
-								</tr>
-								<tr>
-									<td>Token endpoint</td>
-									<td>{{ credential.token_endpoint }}</td>
-								</tr>
-								<tr>
-									<td>Resource endpoint</td>
-									<td>{{ credential.resource_endpoint }}</td>
-								</tr>
-								<tr>
-									<td>Redirect site</td>
-									<td>{{ credential.user_callback_page }}</td>
-								</tr>
 
-							</table>
-							<div class="btn-group">
-								<a class="btn" href="/appreg/editapp/{{credential.uid}}/">Edit</a>
-								<a href="#" class="btn btn-danger confirm_delete" data-target="{{credential.uid}}" >Remove</a>
-							</div>
+				<div class="row">
+					<div class="span6">
+						<h5>Application Details:</h5>
+						<table class="table table-bordered table-condensed table-striped">
+							<tr>
+								<td>API Key</td>
+								<td>{{ credential.app_api_key }}</td>
+							</tr>
+							<tr>
+								<td>Application Secret</td>
+								<td>{{ credential.app_secret }}</td>
+							</tr>
+							<tr>
+								<td>Scope</td>
+								<td>{{ credential.scope }}</td>
+							</tr>
+							<tr>
+								<td>Authentication endpoint</td>
+								<td>{{ credential.auth_endpoint }}</td>
+							</tr>
+							<tr>
+								<td>Token endpoint</td>
+								<td>{{ credential.token_endpoint }}</td>
+							</tr>
+							<tr>
+								<td>Resource endpoint</td>
+								<td>{{ credential.resource_endpoint }}</td>
+							</tr>
+							<tr>
+								<td>Redirect site</td>
+								<td>{{ credential.user_callback_page }}</td>
+							</tr>
+
+						</table>
+						<div class="btn-group">
+							<a class="btn" href="/appreg/editapp/{{credential.uid}}/">Edit</a>
+							<a href="#" class="btn btn-danger confirm_delete" data-target="{{credential.uid}}" >Remove</a>
 						</div>
-						<div class="span6">
-							<h5>Authorizer parameters for this application:</h5>
-							<table class="table table-bordered table-condensed table-striped">
-								<tr>
-									<td>Handle</td>
-									<td>{{ credential.uid }}</td>
-								</tr>
-								<tr>
-									<td>Callback URL</td>
-									<td>{{ credential.redirect_uri }}</td>
-								</tr>
-							</table>
-						</div>
+					</div>
+					<div class="span6">
+						<h5>Authorizer parameters for this application:</h5>
+						<table class="table table-bordered table-condensed table-striped">
+							<tr>
+								<td>Handle</td>
+								<td>{{ credential.uid }}</td>
+							</tr>
+							<tr>
+								<td>Callback URL</td>
+								<td>{{ credential.redirect_uri }}</td>
+							</tr>
+						</table>
+					</div>
 				</div>
-				<div class="row">						
+				<div class="row">
 					<div class="span12">
 						<div class="well">
 							Usage example:
@@ -108,13 +108,17 @@
 
 								</li>
 								<li>
-									Use browser to open the <code>
-										url</code>
+									Use browser to open the
+									<code>
+										url
+									</code>
 									received from Authrorizer
 								</li>
 								<li>
-									After user has completed log-in, fetch access token by making a request to Authorizr using <code>
-										sid</code>
+									After user has completed log-in, fetch access token by making a request to Authorizr using
+									<code>
+										sid
+									</code>
 									reveiced in step 1.
 									<br>
 									<code>
@@ -125,8 +129,8 @@
 						</div>
 					</div>
 				</div>
-			
-		</div>
+
+			</div>
 		</div>
 	</div>
 	{% endfor %}
