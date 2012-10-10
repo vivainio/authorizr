@@ -34,8 +34,7 @@
 
 <div class="accordion" id="app_accordion">
 	{% for credential in object_list %}
-
-	<div class="accordion-group">
+	<div class="accordion-group"> 
 		<div class="accordion-heading">
 			<a class="accordion-toggle" data-toggle="collapse" data-parent="#app_accordion" href="#col_{{credential.uid}}"><h4> {{ credential.app_desc }} </h4></a>
 		</div>
@@ -127,6 +126,7 @@
 					</div>
 				</div>
 			
+		</div>
 		</div>
 	</div>
 	{% endfor %}
