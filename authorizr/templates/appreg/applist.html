@@ -15,22 +15,22 @@
 	</p>
 </div>
 
-
 <!-- Delete confirm dialog -->
 <div id="modal-from-dom" class="modal hide fade">
-    <div class="modal-header">
-      <a href="#" class="close discard">&times;</a>
-      <h3>Delete Application</h3>
-    </div>
-    <div class="modal-body">
-      <p>Are you sure you want to delete this application?</p>      
-    </div>
-    <div class="modal-footer">
-      <a href="#" id="delete_app_lnk" class="btn danger">Yes</a>
-      <a href="#" class="btn secondary discard">No</a>
-    </div>
+	<div class="modal-header">
+		<a href="#" class="close discard">&times;</a>
+		<h3>Delete Application</h3>
+	</div>
+	<div class="modal-body">
+		<p>
+			Are you sure you want to delete this application?
+		</p>
+	</div>
+	<div class="modal-footer">
+		<a href="#" id="delete_app_lnk" class="btn danger">Yes</a>
+		<a href="#" class="btn secondary discard">No</a>
+	</div>
 </div>
-
 
 <div class="accordion" id="app_accordion">
 	{% for credential in object_list %}
@@ -41,108 +41,112 @@
 		</div>
 		<div id="col_{{credential.uid}}" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<div class="row">
-					
-				<div class="span9">
-						
-					<h5>Authorizer parameters</h5>			
-					<table class="table table-bordered table-condensed table-striped">					
-							<tr>
-								<td>Handle</td>
-								<td>{{ credential.uid }}</td>
-							</tr>
-							<tr>
-								<td>Callback URL</td>
-								<td>{{ credential.redirect_uri }}</td>
-							</tr>						
-					</table>
-					
-					<h5>Application Details</h5>
-					<table class="table table-bordered table-condensed table-striped">
-					        <tr>
-								<td>API Key</td>
-								<td>{{ credential.app_api_key }}</td>							
-							</tr>
-							<tr>
-								<td>Application Secret</td>
-								<td>{{ credential.app_secret }}</td>							
-							</tr>
-							<tr>
-								<td>Scope</td>
-								<td>{{ credential.scope }}</td>							
-							</tr>
-							<tr>
-								<td>Authentication endpoint</td>
-								<td>{{ credential.auth_endpoint }}</td>							
-							</tr>
-							<tr>
-								<td>Token endpoint</td>
-								<td>{{ credential.token_endpoint }}</td>							
-							</tr>					
-							<tr>
-								<td>Resource endpoint</td>
-								<td>{{ credential.resource_endpoint }}</td>							
-							</tr>
-							<tr>
-								<td>Redirect site</td>
-								<td>{{ credential.user_callback_page }}</td>							
-							</tr>
-												
-					</table>
-					<div class="btn-group">
-						<a class="btn" href="/appreg/editapp/{{credential.uid}}/">Edit</a>					
-						<a href="#" class="btn btn-danger confirm_delete" data-target="{{credential.uid}}" >Remove</a>					
-					</div>	
-				</div>
-				</div>
 				
-				<br />
-				<div class="row">
-					
-				<blockquote class="well">
-				Usage example:
-				<ol>
-					<li>
-						Make request using Authorizr Handle:<br>
-						<code>
-							[sid, url] = http://authorizr.herokuapp.com/api/v1/create_session/{{credential.uid}}/
-						</code>
+  				<div class="row">									
+						<div class="span6">
+							<h5>Application Details:</h5>
+							<table class="table table-bordered table-condensed table-striped">
+								<tr>
+									<td>API Key</td>
+									<td>{{ credential.app_api_key }}</td>
+								</tr>
+								<tr>
+									<td>Application Secret</td>
+									<td>{{ credential.app_secret }}</td>
+								</tr>
+								<tr>
+									<td>Scope</td>
+									<td>{{ credential.scope }}</td>
+								</tr>
+								<tr>
+									<td>Authentication endpoint</td>
+									<td>{{ credential.auth_endpoint }}</td>
+								</tr>
+								<tr>
+									<td>Token endpoint</td>
+									<td>{{ credential.token_endpoint }}</td>
+								</tr>
+								<tr>
+									<td>Resource endpoint</td>
+									<td>{{ credential.resource_endpoint }}</td>
+								</tr>
+								<tr>
+									<td>Redirect site</td>
+									<td>{{ credential.user_callback_page }}</td>
+								</tr>
 
-					</li>
-					<li>
-						Use browser to open the <code>url</code> received from Authrorizer
-					</li>
-					<li>
-						After user has completed log-in, fetch access token by making a request to Authorizr using <code>sid</code> reveiced in step 1. <br>
-						<code>
-							token = http://authorizr.herokuapp.com/api/v1/fetch_access_token/"+sid+"/"
-						</code>
-					</li>
-				</ol>
-				</blockquote> 
+							</table>
+							<div class="btn-group">
+								<a class="btn" href="/appreg/editapp/{{credential.uid}}/">Edit</a>
+								<a href="#" class="btn btn-danger confirm_delete" data-target="{{credential.uid}}" >Remove</a>
+							</div>
+						</div>
+						<div class="span6">
+							<h5>Authorizer parameters for this application:</h5>
+							<table class="table table-bordered table-condensed table-striped">
+								<tr>
+									<td>Handle</td>
+									<td>{{ credential.uid }}</td>
+								</tr>
+								<tr>
+									<td>Callback URL</td>
+									<td>{{ credential.redirect_uri }}</td>
+								</tr>
+							</table>
+						</div>
+				</div>
+				<div class="row">						
+					<div class="span12">
+						<div class="well">
+							Usage example:
+							<ol>
+								<li>
+									Make request using Authorizr Handle:
+									<br>
+									<code>
+										[sid, url] = http://authorizr.herokuapp.com/api/v1/create_session/{{credential.uid}}/
+									</code>
+
+								</li>
+								<li>
+									Use browser to open the <code>
+										url</code>
+									received from Authrorizer
+								</li>
+								<li>
+									After user has completed log-in, fetch access token by making a request to Authorizr using <code>
+										sid</code>
+									reveiced in step 1.
+									<br>
+									<code>
+										token = http://authorizr.herokuapp.com/api/v1/fetch_access_token/"+sid+"/"
+									</code>
+								</li>
+							</ol>
+						</div>
+					</div>
 				</div>
 			
-			</div>
 		</div>
 	</div>
 	{% endfor %}
 </div>
 
 <script type="application/javascript">
-$('.confirm_delete').click(function(e) {
-	console.log("Called");
-	e.preventDefault();
-	appid = $(this).data('target')
-	console.log(appid);
-	$("#delete_app_lnk").attr("href", "/appreg/deleteapp/"+appid+"/")
-	
-	$('#modal-from-dom').modal('show');
-});	
+	$('.confirm_delete').click(function(e) {
+		console.log("Called");
+		e.preventDefault();
+		appid = $(this).data('target');
+		console.log(appid);
+		$("#delete_app_lnk").attr("href", "/appreg/deleteapp/" + appid + "/");
 
-$('.discard').click(function(e) {
-	e.preventDefault();
-	$('#modal-from-dom').modal('hide');
-});		
+		$('#modal-from-dom').modal('show');
+	});
+
+	$('.discard').click(function(e) {
+		e.preventDefault();
+		$('#modal-from-dom').modal('hide');
+	}); 
 </script>
 
 {% endblock %}

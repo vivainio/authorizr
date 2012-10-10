@@ -11,3 +11,18 @@
 #btn-delete-app {
 	float: right;
 }
+
+/*For applist*/
+.table{
+	margin-bottom: 8px;
+	width:100%
+}
+
+.btn-group {
+  position: relative;
+  *margin-left: .3em;
+  font-size: 0;
+  white-space: nowrap;
+  vertical-align: middle;
+  margin-bottom: 25px;
+}
