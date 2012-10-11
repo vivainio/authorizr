@@ -68,6 +68,10 @@ def main():
     access_token = at["access_token"]
     refresh_token = at["refresh_token"]
     
+    refresh_token_url = server_url+"/api/v1/refresh_access_token/"+_APP_ID+"/?refresh_token="+refresh_token
+    print "Refresh token URL:"    
+    print refresh_token_url
+    
     print "Revoke Link:"
     print "https://accounts.google.com/o/oauth2/revoke?token="+access_token
    
@@ -77,14 +81,5 @@ def main():
         test_url = " https://www.googleapis.com/drive/v2/files?access_token="+access_token 
     
     test_resp = urllib.urlopen(test_url).read()
-    
-    
-    raw_input("Press enter to test token refresh")
-    
-    refresh_token_url = server_url+"/api/v1/refresh_access_token/"+_APP_ID+"/?refresh_token="+refresh_token
-
-    ref_response = urllib.urlopen(refresh_token_url).read()
-    
-    print ref_response
-    
+            
 main()    

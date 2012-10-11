@@ -76,13 +76,12 @@ def create_session(request, appid):
     
     #custom parameters so that we can get refresh_token
     #google calls this offline access
-    params = {'access_type': "offline"}
+    params = {'access_type': 'offline',
+              'approval_prompt':'force'}
     
     
     url = c.auth_uri(scope, state = uid,**params)
-    
-    
-    
+      
     json_response = json.dumps({"session_id": uid, "url": url})
     
     return HttpResponse(json_response, "application/json")
@@ -108,23 +107,12 @@ def login_callback(request):
     print rdict
         
     d = {'code' : rdict["code"]}
+       
+    c.request_token(token_response_parser, **d)
     
-    def tries_parser(s):
-        print "Data to parse: "+s
-        try:
-            print "USing JSON parser"
-            val = json.loads(s)
-        except ValueError:
-            print "Using URL parser"
-            val = dict(parse_qsl(s))
-        
-        return val
-    
-    c.request_token(tries_parser, **d)
     print "token received!"
     print c.access_token
-    
-    
+             
     try:
         print "refresh token received!: "+ c.refresh_token
         a.refresh_token = c.refresh_token
@@ -168,23 +156,45 @@ def refresh_access_token(request, appid):
     except AppCredentials.DoesNotExist:
         return HttpResponse(content="Application identifier not found", status=404)
        
-       
+    try:
+        refresh_token = args['refresh_token']   
+    except KeyError:
+        return HttpResponse(content="Refresh token not provided", status=404)
+        
+    #provide addtional parameters needed to refresh token
+     
+    params = {'grant_type': "refresh_token",
+              'refresh_token': refresh_token}
+    
     #initialize client with needed values 
     c = Client(   
         token_endpoint = credentials.token_endpoint,       
         client_id = credentials.app_api_key,
         client_secret = credentials.app_secret,
-        )
+        )                    
+
+    #request a new access token 
+    c.request_token(token_response_parser, **params)
+            
+    #to check if we received a new refresh token as well
+    try:
+        new_refresh_token = c.refresh_token
+    except AttributeError:
+        new_refresh_token = ""
         
-    #provide addtional parameters needed to refresh token
-    refresh_token = args.get('refresh_token', "")   
      
-    params = {'grant_type': "refresh_token",
-              'refresh_token': refresh_token}
-          
-          
-    def tries_parser(s):
+    json_response = json.dumps({"access_token": c.access_token,
+                                "refresh_token": new_refresh_token })
+     
+    return HttpResponse(json_response, "application/json")
+    #https://accounts.google.com/o/oauth2/revoke?token={token}
+    
+    
+# response parser for Sanction         
+def token_response_parser(s):
+    
         print "Data to parse: "+s
+        
         try:
             print "USing JSON parser"
             val = json.loads(s)
@@ -193,26 +203,4 @@ def refresh_access_token(request, appid):
             val = dict(parse_qsl(s))
         
         return val
-    
-    #request a new access token 
-    c.request_token(tries_parser, **params)
-    
-    print "New Access token"
-    print c.access_token
-        
-    new_refresh_token = ""
-    
-    try:
-        print "New refresh token received!: "+ c.refresh_token
-        new_refresh_token = c.refresh_token
-    except AttributeError:
-        print "no refresh token here"
-     
-    json_response = json.dumps({"access_token": c.access_token, "refresh_token": new_refresh_token })
-     
-    return HttpResponse(json_response, "application/json")
-    #https://accounts.google.com/o/oauth2/revoke?token={token}
-    
-        
-
                                 
