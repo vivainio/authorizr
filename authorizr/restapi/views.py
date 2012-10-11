@@ -20,66 +20,76 @@ from urlparse import parse_qsl
 from httplib2 import Credentials
 
 
-def make_client_from_auth_session(auth):
+def make_client(credentials):
     c = Client(
-        auth_endpoint = auth.auth_endpoint,
-        token_endpoint = auth.token_endpoint,
-        resource_endpoint = auth.resource_endpoint,
-        client_id = auth.client_id,
-        client_secret = auth.client_secret,
-        redirect_uri = auth.redirect_uri)        
+        auth_endpoint = credentials.auth_endpoint,
+        token_endpoint = credentials.token_endpoint,
+        resource_endpoint = credentials.resource_endpoint,
+        client_id = credentials.app_api_key,
+        client_secret = credentials.app_secret,
+        redirect_uri = credentials.redirect_uri)        
     return c
     
 
 def make_auth_session(cred, args, uid):
     authSession = AuthSession(
                     session_id = uid,
-                    auth_endpoint = args.get('auth_endpoint', 
-                                             cred.auth_endpoint),
                     access_token = '',
-                    token_endpoint = args.get('token_endpoint', 
-                                              cred.token_endpoint),
-                    resource_endpoint = args.get('resource_endpoint', 
-                                                 cred.resource_endpoint),
-                    user_callback_page = args.get('user_callback_page', 
-                                            cred.user_callback_page),
-                    
-                    client_id = cred.app_api_key,
-                    client_secret = cred.app_secret,
-                    redirect_uri = cred.redirect_uri,
+                    refresh_token = '',
+                    credentials = cred,
                     )
     
     authSession.save()
     return authSession
     
+    
+    '''
+    auth_endpoint = args.get('auth_endpoint', 
+                             cred.auth_endpoint),
+    token_endpoint = args.get('token_endpoint', 
+                              cred.token_endpoint),
+    resource_endpoint = args.get('resource_endpoint', 
+                                 cred.resource_endpoint),
+    user_callback_page = args.get('user_callback_page', 
+                            cred.user_callback_page),
+    client_id = cred.app_api_key,
+    client_secret = cred.app_secret,
+    redirect_uri = cred.redirect_uri,
+    '''
 
 
 def create_session(request, appid):
      
     credential_uid = appid
+    
+    print "creating session for: "+credential_uid
+    
     args = dict(request.REQUEST.iteritems())
         
     try:       
         credentials = AppCredentials.objects.get(uid=credential_uid)
     except AppCredentials.DoesNotExist:
-        return HttpResponse(content="Application identifier not found", status=404)
+        return HttpResponse(content="Application for specified handle not found", status=404)
        
     #Make unique ID for request    
     uid = uuid.uuid4().hex
     
+    #initiate db entry for this session
     auth_session = make_auth_session(credentials, args, uid)
     
     scope = tuple(args.get('scope', credentials.scope).split(" "))    
     
-    #Construct authentication URI using Sanction    
-    c = make_client_from_auth_session(auth_session)    
+    #Initialize sanction client
+    c = make_client(credentials)    
     
+        
     #custom parameters so that we can get refresh_token
     #google calls this offline access
     params = {'access_type': 'offline',
               'approval_prompt':'force'}
     
     
+    #Construct authentication URI using Sanction
     url = c.auth_uri(scope, state = uid,**params)
       
     json_response = json.dumps({"session_id": uid, "url": url})
@@ -89,6 +99,7 @@ def create_session(request, appid):
         
 def login_callback(request):
     
+    print "LOGIN_CALLBACK"
         
     sid = request.REQUEST['state']
     
@@ -98,9 +109,11 @@ def login_callback(request):
         a = AuthSession.objects.get(session_id = sid)
     except AuthSession.DoesNotExist:
         return HttpResponse(content="Session not found", status=404)
-        
+    
+    print "a.credentials.app_dec"
+    print a.credentials.app_desc    
             
-    c = make_client_from_auth_session(a)    
+    c = make_client(a.credentials)    
         
     rdict = request.REQUEST
     print "REQUEST:"
@@ -113,19 +126,20 @@ def login_callback(request):
     print "token received!"
     print c.access_token
              
+    a.access_token = c.access_token;
+    
+        
     try:
         print "refresh token received!: "+ c.refresh_token
         a.refresh_token = c.refresh_token
     except AttributeError:
         print "no refresh token here"
             
-    a.access_token = c.access_token;    
-    
     a.save();
     
     
-    if a.user_callback_page:
-        return HttpResponseRedirect(a.user_callback_page)
+    if a.credentials.user_callback_page:
+        return HttpResponseRedirect(a.credentials.user_callback_page)
     else:
         return render(request, 'restapi/callback.html', {})        
        
