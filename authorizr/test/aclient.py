@@ -4,7 +4,7 @@ import json
 
 _HEROKU = False
 
-_URL_PARAMS = True
+_URL_PARAMS = False
 
 
 _APP_ID = 'f1184ed2c7f04ec8ba81276ab73b63e3'
@@ -20,6 +20,8 @@ def main():
     
     if _URL_PARAMS:
         tg = urllib.urlencode( {
+            'access_type': 'offline',
+            'approval_prompt':'force',
             #"auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
             #"token_endpoint":"https://accounts.google.com/o/oauth2/token",
             #"resource_endpoint":"https://www.googleapis.com/oauth2/v1",
@@ -27,9 +29,9 @@ def main():
             #"scope": "https://www.googleapis.com/auth/drive",
             #"scope": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
          })
-        url = server_url+"/api/v1/create_session/"+_APP_ID+"/" 
+        url = server_url+"/api/v1/create_session/"+_APP_ID+"/?"+tg
          
-         #?"+tg
+         
          
     else:
         url = server_url+"/api/v1/create_session/"+_APP_ID+"/"
@@ -51,13 +53,15 @@ def main():
             
 
 
+    raw_input("Press enter to open URL")
     os.system('xdg-open "%s"'%url)
     
-    raw_input("Press enter")
     
     access_token_url = server_url+"/api/v1/fetch_access_token/"+sid+"/"    
     
     print "access token url: "+ access_token_url +"\n"
+    
+    raw_input("Press enter to fetch access token")
     
     resp = urllib.urlopen(access_token_url).read()
     
@@ -75,10 +79,10 @@ def main():
     print "Revoke Link:"
     print "https://accounts.google.com/o/oauth2/revoke?token="+access_token
    
-    if _URL_PARAMS: 
-        test_url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token="+access_token
-    else:
-        test_url = " https://www.googleapis.com/drive/v2/files?access_token="+access_token 
+    raw_input("Press enter to load data from google")
+   
+     
+    test_url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token="+access_token
     
     test_resp = urllib.urlopen(test_url).read()
     print test_resp

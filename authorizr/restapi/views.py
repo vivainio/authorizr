@@ -31,7 +31,7 @@ def make_client(credentials):
     return c
     
 
-def make_auth_session(cred, args, uid):
+def make_auth_session(cred, uid):
     authSession = AuthSession(
                     session_id = uid,
                     access_token = '',
@@ -43,21 +43,6 @@ def make_auth_session(cred, args, uid):
     return authSession
     
     
-    '''
-    auth_endpoint = args.get('auth_endpoint', 
-                             cred.auth_endpoint),
-    token_endpoint = args.get('token_endpoint', 
-                              cred.token_endpoint),
-    resource_endpoint = args.get('resource_endpoint', 
-                                 cred.resource_endpoint),
-    user_callback_page = args.get('user_callback_page', 
-                            cred.user_callback_page),
-    client_id = cred.app_api_key,
-    client_secret = cred.app_secret,
-    redirect_uri = cred.redirect_uri,
-    '''
-
-
 def create_session(request, appid):
      
     credential_uid = appid
@@ -75,22 +60,21 @@ def create_session(request, appid):
     uid = uuid.uuid4().hex
     
     #initiate db entry for this session
-    auth_session = make_auth_session(credentials, args, uid)
+    auth_session = make_auth_session(credentials, uid)
     
     scope = tuple(args.get('scope', credentials.scope).split(" "))    
     
     #Initialize sanction client
     c = make_client(credentials)    
-    
-        
+            
     #custom parameters so that we can get refresh_token
     #google calls this offline access
-    params = {'access_type': 'offline',
-              'approval_prompt':'force'}
     
-    
+    ##params = {'access_type': 'offline',
+    ##          'approval_prompt':'force'}
+        
     #Construct authentication URI using Sanction
-    url = c.auth_uri(scope, state = uid,**params)
+    url = c.auth_uri(scope, state = uid,**args)
       
     json_response = json.dumps({"session_id": uid, "url": url})
     
