@@ -4,7 +4,7 @@ import json
 
 _HEROKU = False
 
-_URL_PARAMS = False
+_URL_PARAMS = True
 
 
 _APP_ID = 'f1184ed2c7f04ec8ba81276ab73b63e3'
@@ -21,17 +21,9 @@ def main():
     if _URL_PARAMS:
         tg = urllib.urlencode( {
             'access_type': 'offline',
-            'approval_prompt':'force',
-            #"auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
-            #"token_endpoint":"https://accounts.google.com/o/oauth2/token",
-            #"resource_endpoint":"https://www.googleapis.com/oauth2/v1",
-            #"redirect_uri": server_url+"/login/oauth2callback",
-            #"scope": "https://www.googleapis.com/auth/drive",
-            #"scope": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
+            'approval_prompt':'force',           
          })
-        url = server_url+"/api/v1/create_session/"+_APP_ID+"/?"+tg
-         
-         
+        url = server_url+"/api/v1/create_session/"+_APP_ID+"/?"+tg     
          
     else:
         url = server_url+"/api/v1/create_session/"+_APP_ID+"/"

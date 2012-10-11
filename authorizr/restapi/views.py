@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response,render
 
-
+from django.template import Context
 from sanction.client import Client
 
 from django.contrib import auth
@@ -66,13 +66,7 @@ def create_session(request, appid):
     
     #Initialize sanction client
     c = make_client(credentials)    
-            
-    #custom parameters so that we can get refresh_token
-    #google calls this offline access
-    
-    ##params = {'access_type': 'offline',
-    ##          'approval_prompt':'force'}
-        
+                    
     #Construct authentication URI using Sanction
     url = c.auth_uri(scope, state = uid,**args)
       
@@ -103,7 +97,18 @@ def login_callback(request):
     print "REQUEST:"
     print rdict
         
-    d = {'code' : rdict["code"]}
+    #?error=access_denied&state=43d397028ad446cab5ff77fd662eea3
+    
+    try:    
+        d = {'code' : rdict["code"]}
+    except KeyError:
+        if a.credentials.user_callback_page:
+            return HttpResponseRedirect(a.credentials.user_callback_page+"?success=false")
+        else:
+            context = Context({'message': 'Access Denied'})
+            return render(request, 'restapi/callback.html', context)       
+        
+
        
     c.request_token(token_response_parser, **d)
     
@@ -123,9 +128,10 @@ def login_callback(request):
     
     
     if a.credentials.user_callback_page:
-        return HttpResponseRedirect(a.credentials.user_callback_page)
+        return HttpResponseRedirect(a.credentials.user_callback_page+"?success=true")
     else:
-        return render(request, 'restapi/callback.html', {})        
+        context = Context({'message': 'Access Granted'})
+        return render(request, 'restapi/callback.html', context)        
        
 
 
@@ -185,7 +191,7 @@ def refresh_access_token(request, appid):
                                 "refresh_token": new_refresh_token })
      
     return HttpResponse(json_response, "application/json")
-    #https://accounts.google.com/o/oauth2/revoke?token={token}
+  
     
     
 # response parser for Sanction         
