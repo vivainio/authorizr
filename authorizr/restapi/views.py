@@ -18,7 +18,6 @@ from appreg.models import AppCredentials, AuthSession
 import json 
 from urlparse import parse_qsl
 
-from httplib2 import Credentials
 from urllib2 import HTTPError
 
 
@@ -124,6 +123,7 @@ def login_callback(request):
    
     a.access_token = c.access_token;
     
+    #refresh token is received only once i.e. during the first query
     if hasattr(c, 'refresh_token'):
         a.refresh_token = c.refresh_token        
     
