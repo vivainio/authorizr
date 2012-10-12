@@ -17,7 +17,9 @@ from appreg.models import AppCredentials, AuthSession
 
 import json 
 from urlparse import parse_qsl
+
 from httplib2 import Credentials
+from urllib2 import HTTPError
 
 
 def make_client(credentials):
@@ -100,22 +102,26 @@ def login_callback(request):
     success_response = { 'msg' : {'message': 'Access Granted'},
                          'user_cb_query' : "?success=true"}
     
-    fail_response = { 'msg' : {'message': 'Access Denied'},    
+    denied_response = { 'msg' : {'message': 'Access Denied'},    
                       'user_cb_query' : "?success=false"}
-    
-    
+
     #code is included if user granted access
     #?error=access_denied&state=43d397028ad446cab5ff77fd662eea3
     try:
         code = args['code']
     except KeyError:
-        return respond(fail_response)
+        return respond(denied_response)
         
     params = {'code' : code}
            
     c = make_client(a.credentials)    
-    c.request_token(token_response_parser, **params)
-       
+   
+    try:
+        c.request_token(token_response_parser, **params)    
+    except HTTPError as e:        
+        msg ='Token endpoint (%s) responded with %s %s. Check Application key and secret.' %(a.credentials.token_endpoint, e.reason, str(e.code)) 
+        return HttpResponse(content=msg, status=e.code)    
+   
     a.access_token = c.access_token;
     
     if hasattr(c, 'refresh_token'):
