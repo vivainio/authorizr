@@ -77,63 +77,54 @@ def create_session(request, appid):
         
 def login_callback(request):
     
-    print "LOGIN_CALLBACK"
-        
-    sid = request.REQUEST['state']
-    
-    print "SID: "+ sid
-    
-    try:       
+    print "login_callback"
+
+    args = dict(request.REQUEST.iteritems())
+
+    #in create_session uid was sent to server as state parameter         
+    try:
+        sid = args['state']   
         a = AuthSession.objects.get(session_id = sid)
+    except KeyError:
+        return HttpResponse(content="Authorization server did not return state parameter", status=400)
     except AuthSession.DoesNotExist:
         return HttpResponse(content="Session not found", status=404)
     
-    print "a.credentials.app_dec"
-    print a.credentials.app_desc    
-            
-    c = make_client(a.credentials)    
-        
-    rdict = request.REQUEST
-    print "REQUEST:"
-    print rdict
-        
-    #?error=access_denied&state=43d397028ad446cab5ff77fd662eea3
     
-    try:    
-        d = {'code' : rdict["code"]}
-    except KeyError:
+    def respond(response):                    
         if a.credentials.user_callback_page:
-            return HttpResponseRedirect(a.credentials.user_callback_page+"?success=false")
-        else:
-            context = Context({'message': 'Access Denied'})
-            return render(request, 'restapi/callback.html', context)       
-        
-
-       
-    c.request_token(token_response_parser, **d)
+           return HttpResponseRedirect(a.credentials.user_callback_page+response['user_cb_query'])
+        else:           
+           return render(request, 'restapi/callback.html', Context(response['msg']))
     
-    print "token received!"
-    print c.access_token
-             
+    success_response = { 'msg' : {'message': 'Access Granted'},
+                         'user_cb_query' : "?success=true"}
+    
+    fail_response = { 'msg' : {'message': 'Access Denied'},    
+                      'user_cb_query' : "?success=false"}
+    
+    
+    #code is included if user granted access
+    #?error=access_denied&state=43d397028ad446cab5ff77fd662eea3
+    try:
+        code = args['code']
+    except KeyError:
+        return respond(fail_response)
+        
+    params = {'code' : code}
+           
+    c = make_client(a.credentials)    
+    c.request_token(token_response_parser, **params)
+       
     a.access_token = c.access_token;
     
-        
-    try:
-        print "refresh token received!: "+ c.refresh_token
-        a.refresh_token = c.refresh_token
-    except AttributeError:
-        print "no refresh token here"
-            
+    if hasattr(c, 'refresh_token'):
+        a.refresh_token = c.refresh_token        
+    
     a.save();
-    
-    
-    if a.credentials.user_callback_page:
-        return HttpResponseRedirect(a.credentials.user_callback_page+"?success=true")
-    else:
-        context = Context({'message': 'Access Granted'})
-        return render(request, 'restapi/callback.html', context)        
-       
 
+    return respond(success_response)
+        
 
 def fetch_access_token(request, sessionid):
     print "Fetch access token \n"
@@ -143,16 +134,13 @@ def fetch_access_token(request, sessionid):
     except AuthSession.DoesNotExist:
         return HttpResponse(content="Session not found", status=404)
     
-    access_token = auth.access_token
-    refresh_token = auth.refresh_token
-    json_response = json.dumps({"access_token": access_token, "refresh_token":refresh_token})
+    json_response = json.dumps({"access_token": auth.access_token, "refresh_token":auth.refresh_token})
     
     return HttpResponse(json_response, "application/json")
         
 
-def refresh_access_token(request, appid):
-    
-    credential_uid = appid
+def refresh_access_token(request, credential_uid):
+     
     args = dict(request.REQUEST.iteritems())
         
     try:       
@@ -165,8 +153,7 @@ def refresh_access_token(request, appid):
     except KeyError:
         return HttpResponse(content="Refresh token not provided", status=404)
         
-    #provide addtional parameters needed to refresh token
-     
+    #provide addtional parameters needed to refresh token     
     params = {'grant_type': "refresh_token",
               'refresh_token': refresh_token}
     
@@ -174,18 +161,16 @@ def refresh_access_token(request, appid):
     c = Client(   
         token_endpoint = credentials.token_endpoint,       
         client_id = credentials.app_api_key,
-        client_secret = credentials.app_secret,
-        )                    
+        client_secret = credentials.app_secret,)                    
 
     #request a new access token 
     c.request_token(token_response_parser, **params)
             
     #to check if we received a new refresh token as well
-    try:
-        new_refresh_token = c.refresh_token
-    except AttributeError:
+    if hasattr(c, 'refresh_token'):
+        new_refresh_token = c.refresh_token        
+    else:
         new_refresh_token = ""
-        
      
     json_response = json.dumps({"access_token": c.access_token,
                                 "refresh_token": new_refresh_token })
