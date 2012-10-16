@@ -50,7 +50,9 @@ urlpatterns = patterns('',
 
     # subscription api
 
-    url(r'^api/sub/v1/consume/res/(?P<resourceid>\w{1,255})/$', 'subapi.views.consume')
+    url(r'^api/sub/v1/consume/res/(?P<resourceid>\w{1,255})/$', 'subapi.views.consume'),
+
+    url(r'^subreg/resources/','subreg.views.myresources'),
     
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
