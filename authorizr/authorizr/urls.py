@@ -47,8 +47,10 @@ urlpatterns = patterns('',
     url(r'^api/v1/create_session/(?P<appid>\w{1,255})/$', 'restapi.views.create_session'),
     url(r'^api/v1/fetch_access_token/(?P<sessionid>\w{1,255})/$', 'restapi.views.fetch_access_token'),
     url(r'^api/v1/refresh_access_token/(?P<appid>\w{1,255})/$', 'restapi.views.refresh_access_token'),
-    
-    
+
+    # subscription api
+
+    url(r'^api/sub/v1/consume/res/(?P<resourceid>\w{1,255})/$', 'subapi.views.consume')
     
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
