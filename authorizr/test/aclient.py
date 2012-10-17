@@ -2,8 +2,7 @@ import urllib
 import os
 import json
 
-_HEROKU = False
-
+_HEROKU = True
 
 _URL_PARAMS = True
 
