@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 
 
 from django.shortcuts import render_to_response,render
-
+from subapi.models import Resource, Subscription
 
 
 def myresources(request):
