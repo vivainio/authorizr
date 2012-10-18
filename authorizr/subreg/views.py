@@ -27,7 +27,7 @@ def add_resource(request):
                      sub_max_use_count = form.cleaned_data['sub_max_use_count'],
                      owner = request.user
                      )            
-            return HttpResponseRedirect('/subreg/myresources/')
+            return HttpResponseRedirect('/subreg/resources/')
     else:
         form = ResourceForm()
         
