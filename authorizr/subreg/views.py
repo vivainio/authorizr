@@ -13,7 +13,7 @@ from django.views.generic.list import ListView
 
 
 class ResourcesListView(ListView):
-    model = Subscription
+    model = Resource
     template_name = "subreg/reslist.html"
     
     def get_queryset(self):

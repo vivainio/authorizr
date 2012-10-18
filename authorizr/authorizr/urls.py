@@ -8,6 +8,8 @@ import appreg.views
 
 import userreg.views
 
+import subreg.views
+
 from django.contrib.auth.decorators import login_required
 
 
@@ -52,7 +54,7 @@ urlpatterns = patterns('',
 
     url(r'^api/sub/v1/consume/res/(?P<resourceid>\w{1,255})/$', 'subapi.views.consume'),
 
-    url(r'^subreg/resources/','subreg.views.myresources'),
+    url(r'^subreg/resources/',subreg.views.ResourcesListView.as_view()),
     url(r'^subreg/addresource/', "subreg.views.add_resource"),
     
     
