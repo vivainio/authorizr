@@ -50,7 +50,7 @@ def add_resource(request):
 def edit_resource(request, resid):
     
     try:
-        resource = Resource.objects.get(resource=resid)
+        resource = Resource.objects.get(resource_id=resid)
     except Subscription.DoesNotExist:
         return HttpResponse(content="Resource not found", status=404)
     
