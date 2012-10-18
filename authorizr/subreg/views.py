@@ -10,6 +10,7 @@ from subreg.forms import ResourceForm
 from django.template import Context
 
 from django.views.generic.list import ListView
+from django.shortcuts import get_object_or_404
 
 
 class ResourcesListView(ListView):
@@ -66,3 +67,11 @@ def edit_resource(request, resid):
                        'btn_text':'Save',
                        'form': form})
     return render(request, 'subreg/resourceform.html', context)  
+
+def delete_resource(request, resid):
+	resource = get_object_or_404(Resource, resource_id=resid)    
+	resource.delete()
+
+	return HttpResponseRedirect('/subreg/resources/') 
+       
+	

@@ -27,7 +27,7 @@
 		</p>
 	</div>
 	<div class="modal-footer">
-		<a href="#" id="delete_app_lnk" class="btn danger">Yes</a>
+		<a href="#" id="delete_res_lnk" class="btn danger">Yes</a>
 		<a href="#" class="btn secondary discard">No</a>
 	</div>
 </div>
@@ -36,9 +36,9 @@
 	{% for resource in object_list %}
 	<div class="accordion-group">
 		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="#resource_accordion" href="#col_{{resource.client_id}}"><h4> {{ resource.description }} </h4></a>
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#resource_accordion" href="#col_{{resource.resource_id}}"><h4> {{ resource.description }} </h4></a>
 		</div>
-		<div id="col_{{resource.client_id}}" class="accordion-body collapse">
+		<div id="col_{{resource.resource_id}}" class="accordion-body collapse">
 			<div class="accordion-inner">
 
 	<!--description  = models.CharField(max_length = 1024)
@@ -64,7 +64,7 @@
 						</table>
 						<div class="btn-group">
 							<a class="btn" href="/subreg/editres/{{resource.resource_id}}/">Edit</a>
-							<!--<a href="#" class="btn btn-danger confirm_delete" data-target="{{resource.}}" >Remove</a>-->
+							<a href="#" class="btn btn-danger confirm_delete" data-target="{{resource.resource_id}}" >Remove</a>
 						</div>
 					</div>
 					<!--<div class="span6">
@@ -127,9 +127,9 @@
 	$('.confirm_delete').click(function(e) {
 		console.log("Called");
 		e.preventDefault();
-		appid = $(this).data('target');
-		console.log(appid);
-		$("#delete_app_lnk").attr("href", "/appreg/deleteapp/" + appid + "/");
+		resid = $(this).data('target');
+		console.log(resid);
+		$("#delete_res_lnk").attr("href", "/subreg/deleteres/" + resid + "/");
 
 		$('#modal-from-dom').modal('show');
 	});
