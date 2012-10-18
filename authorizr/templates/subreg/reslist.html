@@ -31,7 +31,7 @@
 		<a href="#" class="btn secondary discard">No</a>
 	</div>
 </div>
-
+ 
 <div class="accordion" id="resource_accordion">
 	{% for resource in object_list %}
 	<div class="accordion-group">
@@ -63,7 +63,7 @@
 							
 						</table>
 						<div class="btn-group">
-							<a class="btn" href="subreg/editres/{{resource.resource_id}}/">Edit</a>
+							<a class="btn" href="/subreg/editres/{{resource.resource_id}}/">Edit</a>
 							<!--<a href="#" class="btn btn-danger confirm_delete" data-target="{{resource.}}" >Remove</a>-->
 						</div>
 					</div>
