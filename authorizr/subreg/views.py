@@ -62,6 +62,7 @@ def edit_resource(request, resid):
             return HttpResponseRedirect('/subreg/resources/')
     else:
         form = ResourceForm(instance=resource)
+        form.fields['resource_id'].widget.attrs['readonly'] = True
         
     context = Context({'title': 'Editing Resource',
                        'btn_text':'Save',

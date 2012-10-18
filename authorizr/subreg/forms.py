@@ -14,10 +14,9 @@ class ResourceForm(forms.ModelForm):
                 if type(field.widget) is forms.TextInput:
                     field.widget = forms.TextInput(attrs={
                                                           'placeholder': field.label,                                                          
-                                                          'class':'input-xxlarge'})    
+                                                          'class':'input-xxlarge'})
     
+            
     class Meta:
         model = Resource
-        exclude = ('uid','owner','redirect_uri')
-        
-    
+        exclude = ('uid','owner','redirect_uri')      
