@@ -44,7 +44,7 @@ def add_resource(request):
         form = ResourceForm()
         
     context = Context({'title': 'Add Resource', 'btn_text':'Add', 'form': form})
-    return render(request, 'subreg/resourceform.html', context)  
+    return render(request, '/subreg/resourceform.html', context)  
 
 
 def edit_resource(request, resid):
@@ -58,7 +58,7 @@ def edit_resource(request, resid):
         form = ResourceForm(request.POST, instance=resource)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/appreg/myapps/')
+            return HttpResponseRedirect('/subreg/resources/')
     else:
         form = ResourceForm(instance=resource)
         
