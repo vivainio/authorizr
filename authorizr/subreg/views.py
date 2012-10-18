@@ -9,8 +9,20 @@ from subreg.forms import ResourceForm
 
 from django.template import Context
 
-def myresources(request):
-    return render(request, "subreg/myresources.html", { "loginurl" : '' })
+from django.views.generic.list import ListView
+
+
+class ResourcesListView(ListView):
+    model = Subscription
+    template_name = "subreg/reslist.html"
+    
+    def get_queryset(self):
+        print self.request.user
+        return self.model.objects.filter(owner=self.request.user)
+        #return self.model.users_objects.for_user(self.request.user)
+        
+#def myresources(request):
+    #return render(request, "subreg/myresources.html", { "loginurl" : '' })
 def resource(request):
     return render(request, "subreg/resource.html", { "loginurl" : '' })
 def add_resource(request):
