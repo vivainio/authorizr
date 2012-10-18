@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+
+{% block title %} Add Resource {% endblock %}
+
+{% block scripts %}
+	<link href="{{ STATIC_URL }}js/prefills.js" rel="stylesheet"> 
+{% endblock %}
+
+
+{% block content %}
+
+
+<a href="/subreg/resources">Home</a>
+
+<h1>{{ title }}</h1>
+
+<form method='post' action='.'>
+ {% csrf_token %} 
+	  
+	  
+       <!-- display the form fields -->
+
+		<div id="cred_form_container">
+       {{ form.as_p }}
+       </div>
+ 	  
+
+       <!-- submit button -->
+       <input type='submit' value="{{ btn_text }}">
+      
+</form>
+
+
+{% endblock %}
