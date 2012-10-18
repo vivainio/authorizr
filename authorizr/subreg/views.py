@@ -44,14 +44,14 @@ def add_resource(request):
         form = ResourceForm()
         
     context = Context({'title': 'Add Resource', 'btn_text':'Add', 'form': form})
-    return render(request, '/subreg/resourceform.html', context)  
+    return render(request, 'subreg/resourceform.html', context)  
 
 
 def edit_resource(request, resid):
     
     try:
         resource = Resource.objects.get(resource_id=resid)
-    except Subscription.DoesNotExist:
+    except Resource.DoesNotExist:
         return HttpResponse(content="Resource not found", status=404)
     
     if request.method == "POST":
