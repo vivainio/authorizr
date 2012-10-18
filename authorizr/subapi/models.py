@@ -7,7 +7,7 @@ class Resource(models.Model):
     owner = models.ForeignKey(User)
     
     description  = models.CharField(max_length = 1024)
-    sub_duration = models.IntegerField()
+    sub_duration = models.PositiveIntegerField()
     sub_max_use_count = models.IntegerField()
 
 class Subscription(models.Model):

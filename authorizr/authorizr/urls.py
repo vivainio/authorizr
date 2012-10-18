@@ -53,7 +53,7 @@ urlpatterns = patterns('',
     url(r'^api/sub/v1/consume/res/(?P<resourceid>\w{1,255})/$', 'subapi.views.consume'),
 
     url(r'^subreg/resources/','subreg.views.myresources'),
-    url("^subreg/addresource/", "subreg.views.add_resource"),
+    url(r'^subreg/addresource/', "subreg.views.add_resource"),
     
     
     # Uncomment the admin/doc line below to enable admin documentation:
