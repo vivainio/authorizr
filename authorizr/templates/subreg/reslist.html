@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %} My apps {% endblock %}
+
+{% block content %}
+
+<div class="hero-unit">
+	<h1>Manage resources</h1>
+	<p>
+		Here, you can create or modify your subscription resources
+	</p>
+	<p>
+		<a href="/subreg/addresource" class="btn btn-primary btn-large">New subscription</a>
+
+	</p>
+</div>
+
+<!-- Delete confirm dialog -->
+<div id="modal-from-dom" class="modal hide fade">
+	<div class="modal-header">
+		<a href="#" class="close discard">&times;</a>
+		<h3>Delete Resource</h3>
+	</div>
+	<div class="modal-body">
+		<p>
+			Are you sure you want to delete this resource?
+		</p>
+	</div>
+	<div class="modal-footer">
+		<a href="#" id="delete_app_lnk" class="btn danger">Yes</a>
+		<a href="#" class="btn secondary discard">No</a>
+	</div>
+</div>
+
+<div class="accordion" id="resource_accordion">
+	{% for resource in object_list %}
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#resource_accordion" href="#col_{{resource.client_id}}"><h4> {{ resource.description }} </h4></a>
+		</div>
+		<div id="col_{{resource.client_id}}" class="accordion-body collapse">
+			<div class="accordion-inner">
+
+	<!--description  = models.CharField(max_length = 1024)
+    #sub_duration = models.IntegerField()
+    #sub_max_use_count = models.IntegerField()-->
+				<div class="row">
+					<div class="span6">
+						<h5>Resource Details:</h5>
+						<table class="table table-bordered table-condensed table-striped">
+							<tr>
+								<td>Description</td>
+								<td>{{ resource.description }}</td>
+							</tr>
+							<tr>
+								<td>Duration</td>
+								<td>{{ resource.sub_duration }}</td>
+							</tr>
+							<tr>
+								<td>Max use count</td>
+								<td>{{ resource.sub_max_use_count }}</td>
+							</tr>
+							
+						</table>
+						<div class="btn-group">
+							<a class="btn" href="/subreg/editsub/{{resource.resource_id}}/">Edit</a>
+							<!--<a href="#" class="btn btn-danger confirm_delete" data-target="{{credential.uid}}" >Remove</a>-->
+						</div>
+					</div>
+					<!--<div class="span6">
+						<h5>Authorizer parameters for this application:</h5>
+						<table class="table table-bordered table-condensed table-striped">
+							<tr>
+								<td>Handle</td>
+								<td>{{ credential.uid }}</td>
+							</tr>
+							<tr>
+								<td>Callback URL</td>
+								<td>{{ credential.redirect_uri }}</td>
+							</tr>
+						</table>
+					</div>-->
+				</div>
+				<!--<div class="row">
+					<div class="span12">
+						<div class="well">
+							Usage example:
+							<ol>
+								<li>
+									Make request using Authorizr Handle:
+									<br>
+									<code>
+										[sid, url] = http://authorizr.herokuapp.com/api/v1/create_session/{{credential.uid}}/
+									</code>
+
+								</li>
+								<li>
+									Use browser to open the
+									<code>
+										url
+									</code>
+									received from Authrorizer
+								</li>
+								<li>
+									After user has completed log-in, fetch access token by making a request to Authorizr using
+									<code>
+										sid
+									</code>
+									reveiced in step 1.
+									<br>
+									<code>
+										token = http://authorizr.herokuapp.com/api/v1/fetch_access_token/"+sid+"/"
+									</code>
+								</li>
+							</ol>
+						</div>
+					</div>
+				</div>-->
+
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+<script type="application/javascript">
+	$('.confirm_delete').click(function(e) {
+		console.log("Called");
+		e.preventDefault();
+		appid = $(this).data('target');
+		console.log(appid);
+		$("#delete_app_lnk").attr("href", "/appreg/deleteapp/" + appid + "/");
+
+		$('#modal-from-dom').modal('show');
+	});
+
+	$('.discard').click(function(e) {
+		e.preventDefault();
+		$('#modal-from-dom').modal('hide');
+	}); 
+</script>
+
+{% endblock %}
+
