@@ -70,9 +70,19 @@ def edit_resource(request, resid):
     return render(request, 'subreg/resourceform.html', context)  
 
 def delete_resource(request, resid):
-	resource = get_object_or_404(Resource, resource_id=resid)    
-	resource.delete()
+    resource = get_object_or_404(Resource, resource_id=resid)    
+    resource.delete()
 
-	return HttpResponseRedirect('/subreg/resources/') 
+    return HttpResponseRedirect('/subreg/resources/') 
        
-	
+def subsforresource(request, resid):       
+    #user=request.user
+    #appOwner = AppOwner.objects.filter(uid = 'myuid')    
+    #credentials = AppCredentials.objects.filter(owner = appOwner)
+    res= get_object_or_404(Resource, resource_id=resid)  
+    subscriptions = Subscription.objects.filter(resource = res)
+    
+    #credentials = AppCredentials.objects.all()
+    print subscriptions;
+    
+    return render(request, 'subreg/subsforresource.html', {'subscripts': subscriptions})	

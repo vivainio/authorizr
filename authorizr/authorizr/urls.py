@@ -58,6 +58,7 @@ urlpatterns = patterns('',
     url(r'^subreg/addresource/', "subreg.views.add_resource"),
     url(r'^subreg/editres/(?P<resid>\w{1,255})/$', 'subreg.views.edit_resource'),
     url(r'^subreg/deleteres/(?P<resid>\w{1,255})/$', 'subreg.views.delete_resource'),
+    url(r'^subreg/subscriptions/(?P<resid>\w{1,255})/$', 'subreg.views.subsforresource'),
     
     
     # Uncomment the admin/doc line below to enable admin documentation:
