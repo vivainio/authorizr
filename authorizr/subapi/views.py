@@ -3,6 +3,7 @@
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from models import Resource, Subscription
+from datetime import timedelta, datetime
 
 import json
 
@@ -13,6 +14,7 @@ def consume(request, resourceid, clientid):
         subscription = Subscription.objects.get(resource=resourceid, client_id=clientid)
     except Subscription.DoesNotExist:
         newSubs(resourceid, clientid)
+        subscription = Subscription.objects.get(resource=resourceid, client_id=clientid)
     
     count = subscription.use_counter
     if (count>0):
@@ -27,16 +29,18 @@ def consume(request, resourceid, clientid):
     return HttpResponse(json_response, "application/json")
 
 def newSubs(resid, clientid):
-    subs = Subscription.objects.create()
+    
     try:
-        resource = Resource.objects.get(resource=resid)
+        parentRes = Resource.objects.get(resource_id=resid)
     except Resource.DoesNotExist:
         return HttpResponse(content="Resource not found", status=404)
-        
-    subs.resource = resource
-    
     #TODO validate clientid
-    subs.client_id = clientid
-    subs.use_counter = resource.sub_max_use_count
+    
+    expirity = datetime.today() + timedelta(seconds=parentRes.sub_duration)
+
+    subs = Subscription(resource=parentRes, 
+                        client_id = clientid, 
+                        use_counter = parentRes.sub_max_use_count, 
+                        expires = expirity )
     subs.save()
    
