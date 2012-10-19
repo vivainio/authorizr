@@ -54,7 +54,7 @@ urlpatterns = patterns('',
 
     url(r'^api/sub/v1/consume/res/(?P<resourceid>\w{1,255})/$', 'subapi.views.consume'),
 
-    url(r'^subreg/resources/',subreg.views.ResourcesListView.as_view()),
+    url(r'^subreg/resources/',login_required(subreg.views.ResourcesListView.as_view())),
     url(r'^subreg/addresource/', "subreg.views.add_resource"),
     url(r'^subreg/editres/(?P<resid>\w{1,255})/$', 'subreg.views.edit_resource'),
     url(r'^subreg/deleteres/(?P<resid>\w{1,255})/$', 'subreg.views.delete_resource'),
