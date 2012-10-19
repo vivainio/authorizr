@@ -4,17 +4,18 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from models import Resource, Subscription
 from datetime import timedelta, datetime
-
+from django.shortcuts import get_object_or_404
 import json
 
-def consume(request, resourceid, clientid):
-    print "Fetch access token \n"
+def consume(request, resourceid):
+    args = dict(request.REQUEST.iteritems())
+    clientid = args['client']  
                  
     try:
         subscription = Subscription.objects.get(resource=resourceid, client_id=clientid)
     except Subscription.DoesNotExist:
         newSubs(resourceid, clientid)
-        subscription = Subscription.objects.get(resource=resourceid, client_id=clientid)
+        subscription = get_object_or_404(Subscription, resource=resourceid, client_id=clientid)
     
     count = subscription.use_counter
     if (count>0):
