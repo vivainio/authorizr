@@ -51,7 +51,7 @@ def add_resource(request):
 def edit_resource(request, resid):
     
     try:
-        resource = Resource.objects.get(resource_id=resid)
+        resource = Resource.objects.get(id=resid)
     except Resource.DoesNotExist:
         return HttpResponse(content="Resource not found", status=404)
     
@@ -70,7 +70,7 @@ def edit_resource(request, resid):
     return render(request, 'subreg/resourceform.html', context)  
 
 def delete_resource(request, resid):
-    resource = get_object_or_404(Resource, resource_id=resid)    
+    resource = get_object_or_404(Resource, id=resid)    
     resource.delete()
 
     return HttpResponseRedirect('/subreg/resources/') 

@@ -8,7 +8,7 @@ import json
 
 def consume(request, resourceid):
     args = dict(request.REQUEST.iteritems())
-    clientid = args['client']  
+    clientid = args['client'].replace("/", "")
     res = get_object_or_404(Resource, resource_id = resourceid)             
     
     try:        
