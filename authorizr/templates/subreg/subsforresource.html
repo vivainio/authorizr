@@ -1,24 +1,24 @@
 {% extends "index.html" %}
-
+ 
 {% block title %} Subscriptions {% endblock %}
-
+ 
 {% block content %}
-
-
+ 
+ 
 <a href="/">Home</a>
-
+ 
 <h1>My subscriptions:</h1>
-
+ 
 {% for sub in subscripts %}
-
+ 
 <!--
 <h3><a href="/appreg/editapp/{{credential.uid}}/">{{ credential.app_desc }}</a></h3>
 /-->
 <ul>
-	<li>{{ sub.client_id }}</li>
+                      <li>{{ sub.client_id }}</li>
     <li>{{ sub.use_counter }}</li>
-    <li>{{ sub.expires }}</li>   
+    <li>{{ sub.expires }}</li>  
 </ul>
 {% endfor %}
-
+ 
 {% endblock %}
