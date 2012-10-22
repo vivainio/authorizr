@@ -76,13 +76,7 @@ def delete_resource(request, resid):
     return HttpResponseRedirect('/subreg/resources/') 
        
 def subsforresource(request, resid):       
-    #user=request.user
-    #appOwner = AppOwner.objects.filter(uid = 'myuid')    
-    #credentials = AppCredentials.objects.filter(owner = appOwner)
-    res= get_object_or_404(Resource, resource_id=resid)  
+    res= get_object_or_404(Resource, id=resid)  
     subscriptions = Subscription.objects.filter(resource = res)
-    
-    #credentials = AppCredentials.objects.all()
-    print subscriptions;
-    
+     
     return render(request, 'subreg/subsforresource.html', {'subscripts': subscriptions})	

@@ -5,7 +5,7 @@
 {% block content %}
  
  
-<a href="/">Home</a>
+<a href="/subreg/resources/">Home</a>
  
 <h1>My subscriptions:</h1>
  
@@ -14,11 +14,20 @@
 <!--
 <h3><a href="/appreg/editapp/{{credential.uid}}/">{{ credential.app_desc }}</a></h3>
 /-->
-<ul>
-                      <li>{{ sub.client_id }}</li>
-    <li>{{ sub.use_counter }}</li>
-    <li>{{ sub.expires }}</li>  
-</ul>
+<table class="table table-bordered table-condensed table-striped">
+    <tr>
+    	<td>Client ID</td>
+    	<td>{{ sub.client_id }}</td>
+    </tr>  
+    <tr>
+    	<td>Uses left</td>
+    	<td>{{ sub.use_counter }}</td>
+    </tr>
+    <tr>
+    	<td>Expirity timestamp</td>
+    	<td>{{ sub.expires }}</td>
+    </tr>  
+</table>
 {% endfor %}
  
 {% endblock %}
