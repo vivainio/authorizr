@@ -1,9 +1,8 @@
 # Create your views here.
 
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from models import Resource, Subscription
-from datetime import timedelta, datetime
+import time
 from django.shortcuts import get_object_or_404
 import json
 
@@ -18,14 +17,24 @@ def consume(request, resourceid):
         subscription = get_object_or_404(Subscription, resource=resourceid, client_id=clientid)
     
     count = subscription.use_counter
+    if( count == None):
+        count = -1
     if (count>0):
         count -= 1 
-        subscription.use_counter = count           
-    expirity = subscription.expires
+    subscription.use_counter = count    
+    
+    timestamp = subscription.expires  
+    if timestamp == -1:
+        expires = -1
+    else:          
+        expires = timestamp - time.time()
+        if (expires <= 0):
+            expires = 0    
+          
     subscription.save()
-        
+    
     json_response = json.dumps({"uses_left": subscription.use_counter,
-                                "expires": expirity.strftime('%Y-%m-%dT%H:%M:%S') })
+                                "expires": int(expires) })
     
     return HttpResponse(json_response, "application/json")
 
@@ -36,12 +45,14 @@ def newSubs(resid, clientid):
     except Resource.DoesNotExist:
         return HttpResponse(content="Resource not found", status=404)
     #TODO validate clientid
-    
-    expirity = datetime.today() + timedelta(seconds=parentRes.sub_duration)
-
+    duration = parentRes.sub_duration 
+    if ( duration == None ):
+        timestamp = -1
+    else:      
+        timestamp = time.time() + duration
     subs = Subscription(resource=parentRes, 
                         client_id = clientid, 
                         use_counter = parentRes.sub_max_use_count, 
-                        expires = expirity )
+                        expires = timestamp )
     subs.save()
    

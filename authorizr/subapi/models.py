@@ -15,6 +15,6 @@ class Subscription(models.Model):
     resource = models.ForeignKey(Resource)
     
     client_id = models.CharField(primary_key = True, max_length = 1024)
-    use_counter = models.IntegerField()
-    expires = models.DateTimeField()    
+    use_counter = models.PositiveIntegerField(null=True, blank = True)
+    expires = models.PositiveIntegerField(null=True, blank = True)   
     
