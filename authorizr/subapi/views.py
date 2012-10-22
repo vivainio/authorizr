@@ -9,12 +9,13 @@ import json
 def consume(request, resourceid):
     args = dict(request.REQUEST.iteritems())
     clientid = args['client']  
-                 
-    try:
-        subscription = Subscription.objects.get(resource=resourceid, client_id=clientid)
+    res = get_object_or_404(Resource, resource_id = resourceid)             
+    
+    try:        
+        subscription = Subscription.objects.get(resource = res, client_id=clientid)
     except Subscription.DoesNotExist:
         newSubs(resourceid, clientid)
-        subscription = get_object_or_404(Subscription, resource=resourceid, client_id=clientid)
+        subscription = get_object_or_404(Subscription, resource=res, client_id=clientid)
     
     count = subscription.use_counter
     if( count == None):
