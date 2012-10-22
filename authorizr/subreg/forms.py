@@ -19,4 +19,4 @@ class ResourceForm(forms.ModelForm):
             
     class Meta:
         model = Resource
-        exclude = ('uid','owner','redirect_uri')      
+        exclude = ('id','owner')      

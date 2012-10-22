@@ -11,7 +11,7 @@ def validate_res(value):
 
 class Resource(models.Model):
     
-    resource_id = models.CharField(primary_key = True, max_length = 1024,validators=[validate_res])
+    resource_id = models.CharField(max_length = 1024,validators=[validate_res])
     owner = models.ForeignKey(User)
     
     description  = models.CharField(max_length = 1024)
