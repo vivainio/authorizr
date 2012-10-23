@@ -17,16 +17,20 @@ from appreg.models import AppCredentials, AuthSession
 import json 
 from urlparse import parse_qsl
 
+from django.conf import settings
+
 
 def make_google_client():
+        
     client = Client(
         auth_endpoint = "https://accounts.google.com/o/oauth2/auth",
         token_endpoint= "https://accounts.google.com/o/oauth2/token",
         resource_endpoint = "https://www.googleapis.com/oauth2/v1",
-        client_id = "172254031599.apps.googleusercontent.com",
-        client_secret = "UuJfm-vgRxTNdfxxZFPcydy8",
-        redirect_uri = "http://127.0.0.1:8000/userreg/userlogincallback"
+        client_id = settings._CLIENT_ID,
+        client_secret = settings._CLIENT_SECRET,
+        redirect_uri = settings._REDIRECT_URI
         )
+    
     return client
 
 def create_google_session(request):

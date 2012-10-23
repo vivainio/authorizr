@@ -8,10 +8,17 @@ import dj_database_url
 _HEROKU = False
 
 if _HEROKU:
-	_CALLBACK_URL = 'http://authorizr.herokuapp.com/login/oauth2callback'
+	_SERVER_URL = 'http://authorizr.herokuapp.com'
 else:
-    _CALLBACK_URL = 'http://127.0.0.1:8000/login/oauth2callback'
- 
+    _SERVER_URL = 'http://127.0.0.1:8000'
+
+#Hard coded callback for app added via form
+_CALLBACK_URL = _SERVER_URL+'/login/oauth2callback'
+
+#Google login related stuff
+_CLIENT_ID = "172254031599.apps.googleusercontent.com"
+_CLIENT_SECRET = "UuJfm-vgRxTNdfxxZFPcydy8"
+_REDIRECT_URI = _SERVER_URL+"/userreg/userlogincallback"
 
 # calculated paths for django and the site
 # used as starting points for various other paths
