@@ -19,7 +19,8 @@ import json
 from urlparse import parse_qsl
 
 from urllib2 import HTTPError
-
+from datetime import datetime, timedelta
+import time
 
 def make_client(credentials):
     c = Client(
@@ -198,4 +199,15 @@ def token_response_parser(s):
             val = dict(parse_qsl(s))
         
         return val
+    
+def run_maintenance(request, period):  
+    deleted = 0    
+    for obj in AuthSession.objects.all():
+        timestamp = obj.created_at       
+        delta = timedelta(seconds=time.time() - timestamp )
+        if (int(delta.days) >= int(period)):            
+            obj.delete()
+            deleted += 1
+    json_response = json.dumps({"removed": deleted})
+    return HttpResponse(json_response, "application/json")
                                 

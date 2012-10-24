@@ -49,6 +49,7 @@ urlpatterns = patterns('',
     url(r'^api/v1/create_session/(?P<appid>\w{1,255})/$', 'restapi.views.create_session'),
     url(r'^api/v1/fetch_access_token/(?P<sessionid>\w{1,255})/$', 'restapi.views.fetch_access_token'),
     url(r'^api/v1/refresh_access_token/(?P<appid>\w{1,255})/$', 'restapi.views.refresh_access_token'),
+    url(r'^api/v1/maintenance/(?P<period>\w{1,255})/$', 'restapi.views.run_maintenance'),
 
     # subscription api
 

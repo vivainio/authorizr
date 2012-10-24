@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import time
 # Create your models here.
 '''
 class AppOwner(models.Model):
@@ -45,6 +45,7 @@ class AppCredentials(models.Model):
     users_objects = AppCredentialsManager() # The user-specific manager.
     
 class AuthSession(models.Model):
+    created_at = models.PositiveIntegerField(default=time.time())
     session_id = models.CharField(primary_key = True,max_length = 255)
     access_token = models.CharField(max_length = 255)
     refresh_token = models.CharField(max_length = 255)
