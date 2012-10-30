@@ -7,6 +7,7 @@ import random
 import json
 import requests
 from urlparse import parse_qs
+import pickle
 
 # Insert this package's path in the PYTHON PATH as first route
 path = os.path.dirname(os.getcwd())
@@ -27,6 +28,8 @@ OAuthHook.consumer_secret = TWITTER_CONSUMER_SECRET
 oauth_hook = OAuthHook(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
 client = requests.session(hooks={'pre_request': oauth_hook})
 
+saved_token = "TeXNvrEVL2U59ov4okczoCxASNyooZvmr8E3Eq5b6k"
+saved_verifier = "0pWKfUfMsI3kEl3pJogOc5nWky8MAayXGQks3PfpEY" 
 
 class TwitterOAuthTestSuite(unittest.TestCase):
     #def setUp(self):
@@ -46,13 +49,13 @@ class TwitterOAuthTestSuite(unittest.TestCase):
     #    oauth_hook.header_auth = False
     #    self.test_status_POST()
     #
-    def test_status_POST(self):       
-        message = "Kind of a random message %s" % random.random()
-        response = client.post('http://api.twitter.com/1/statuses/update.json',
-            {'status': message, 'wrap_links': True})
-        self.assertEqual(response.status_code, 200)
-        print response
-        self.assertEqual(json.loads(response.content)['text'], message)
+#    def test_status_POST(self):       
+#        message = "Kind of a random message %s" % random.random()
+#        response = client.post('http://api.twitter.com/1/statuses/update.json',
+#            {'status': message, 'wrap_links': True})
+#        self.assertEqual(response.status_code, 200)
+#        print response
+#        self.assertEqual(json.loads(response.content)['text'], message)
     #
     #def test_status_GET_with_data_urlencoded(self):
     #    oauth_hook.header_auth = False
@@ -105,7 +108,9 @@ class TwitterOAuthTestSuite(unittest.TestCase):
         oauth_hook.header_auth = True
 
         client = requests.session(hooks={'pre_request': twitter_oauth_hook})
-        response = client.post('http://api.twitter.com/oauth/request_token', data={'oauth_callback': 'oob'})
+        response = client.post('http://api.twitter.com/oauth/request_token', data={'oauth_callback': 'http://localhost:8000/dump'})
+        
+        print response
         self.assertEqual(response.status_code, 200)
         response = parse_qs(response.content)
         self.assertTrue(response['oauth_token'])
@@ -117,9 +122,18 @@ class TwitterOAuthTestSuite(unittest.TestCase):
         # Step 2: Redirecting the user
         print "Go to https://api.twitter.com/oauth/authenticate?oauth_token=%s and sign in into the application, then enter your PIN" % oauth_token[0]
         oauth_verifier = raw_input('Please enter your PIN:')
-
+        
+        #response = client.post('https://api.twitter.com/oauth/authenticate', data={'oauth=token': oauth_token[0]})
+        #self.assertEqual(response.status_code, 200)
+        
+        saved_verifier = pickle.load( open( "/tmp/save.p", "r" ) )
+        saved_token = pickle.load( open( "/tmp/save2.p", "r" ) )
+        print saved_verifier
+        print saved_token
+        
         # Step 3: Authenticate
-        response = client.post('http://api.twitter.com/oauth/access_token', {'oauth_verifier': oauth_verifier, 'oauth_token': oauth_token[0]})
+        response = client.post('http://api.twitter.com/oauth/access_token', {'oauth_verifier': saved_verifier, 'oauth_token': saved_token})
+        print response
         response = parse_qs(response.content)
         self.assertTrue(response['oauth_token'])
         self.assertTrue(response['oauth_token_secret'])
