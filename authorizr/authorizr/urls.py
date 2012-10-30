@@ -44,7 +44,7 @@ urlpatterns = patterns('',
     #After login, user is redirected to profile. Let's make it to point front page
     url(r'^accounts/profile/$', 'appreg.views.frontpage'), 
         
-    #REST API URLs
+    # OAuth2
     url(r'^login/oauth2callback/', 'restapi.views.login_callback'),
     url(r'^api/v1/create_session/(?P<appid>\w{1,255})/$', 'restapi.views.create_session'),
     url(r'^api/v1/fetch_access_token/(?P<sessionid>\w{1,255})/$', 'restapi.views.fetch_access_token'),
@@ -61,7 +61,10 @@ urlpatterns = patterns('',
     url(r'^subreg/deleteres/(?P<resid>\w{1,255})/$', 'subreg.views.delete_resource'),
     url(r'^subreg/subscriptions/(?P<resid>\w{1,255})/$', 'subreg.views.subsforresource'),
     
+    # OAuth1
     
+    url(r'^dump', 'oauth1api.views.dump_request'),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
