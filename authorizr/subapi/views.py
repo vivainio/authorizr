@@ -5,8 +5,9 @@ from models import Resource, Subscription
 import time
 from django.shortcuts import get_object_or_404
 import json
-from django.http import Http404
+import django.http
 
+    
 def consume(request, resourceid):
     args = dict(request.REQUEST.iteritems())
     clientid = args['client']
@@ -17,10 +18,10 @@ def consume(request, resourceid):
         if args.has_key('count'):
             count_par = int(args['count'])
     except ValueError:
-        raise Http404
+        return django.http.HttpResponseBadRequest()
             
     if(count_par <= 0):
-        raise Http404
+        return django.http.HttpResponseBadRequest()
          
     #count validation end
     
