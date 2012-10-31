@@ -12,6 +12,12 @@
 
 <h1>{{ title }}</h1>
 
+<div class="btn-group" data-toggle="buttons-radio">
+	<button class="btn">OAuth2</button>
+	<button class="btn">OAuth</button>
+</div>
+​
+
 {% if appuid %}
 
 <div id="modal-from-dom" class="modal hide fade">
@@ -44,12 +50,12 @@
 </div>
 
 
+
 <form method='post' action='.'>
  {% csrf_token %} 
 	  
-	  
-       <!-- display the form fields -->
-
+	      
+  		
 		<div id="cred_form_container">
        {{ form.as_p }}
        </div>
@@ -61,6 +67,15 @@
 </form>
 
 <script type="application/javascript">
+$('.btn').on("click", function(){
+    var value = $(this).text();
+    if(value == "OAuth")	    	    
+    	$("#cred_form_container").hide();    	  
+    else
+    	$("#cred_form_container").show();  
+});
+
+
 $('.confirm-delete').click(function(e) {
 	e.preventDefault();
 	$('#modal-from-dom').modal('show');
@@ -68,7 +83,8 @@ $('.confirm-delete').click(function(e) {
 $('.discard').click(function(e) {
 	e.preventDefault();
 	$('#modal-from-dom').modal('hide');
-});		
+});	
+
 </script>
 
 
