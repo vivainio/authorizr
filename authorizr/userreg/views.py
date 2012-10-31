@@ -9,8 +9,8 @@ from django.shortcuts import render_to_response,render
 from restapi.sanction.client import Client
 
 from django.contrib import auth
-from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate, login
+from userreg.models import OIConnectUser 
 
 from appreg.models import AppCredentials, AuthSession
 
@@ -18,6 +18,7 @@ import json
 from urlparse import parse_qsl
 
 from django.conf import settings
+from desktopcouch.application.replication_services.example import is_active
 
 
 def make_google_client():
@@ -33,7 +34,7 @@ def make_google_client():
     
     return client
 
-def create_google_session(request):
+def google_oi_connect_login(request):
          
     args = dict(request.REQUEST.iteritems())
     #cred_id = args['cred_id']        
@@ -47,7 +48,7 @@ def create_google_session(request):
     # get authorization
     return HttpResponseRedirect(url)
     
-def google_profile_callback(request):
+def google_oi_connect_login_callback(request):
     
     client = make_google_client()
     
@@ -68,40 +69,48 @@ def google_profile_callback(request):
     client.request_token(tries_parser, **d)
     
     # if all goes well in previous call
-    info = client.request("/userinfo")
-    print info    
+    userinfo = client.request("/userinfo")
+    print userinfo    
     
-    user = check_user(info)
-
-    print user.is_active
+    user = authenticate(user_info=userinfo)
     
-    if user.is_active:  
-        user.backend = 'django.contrib.auth.backends.ModelBackend'    
+    if user is not None:
         login(request, user)
-
+    else:
+        #store data to session, user is only created if adding is confirmed
+        request.session['userinfo'] = userinfo 
+        return render(request, 'userreg/confirm.html', {'info': userinfo})
     
     return HttpResponseRedirect("/")   
+   
+    
+def confirm_and_make_user(request):
+        
+        userinfo = request.session.get('userinfo', None)
+        print "session userinfo"
+        
+        print userinfo
+        
+        new_user = OIConnectUser.objects.create(
+                                            user_id = userinfo["id"], 
+                                            username = userinfo["name"],
+                                            email = userinfo["email"],
+                                            first_name = userinfo.get("given_name", " "),
+                                            last_name = userinfo.get("family_name", " "),
+                                            is_active = True,
+                                            is_staff = False,
+                                            password = uuid.uuid4().hex)
+                                            
+        new_user.save()        
+        print "user created"
+        
+        user = authenticate(user_info=userinfo)
 
-def check_user(google_user):
+        if user is not None:
+            print "new user found"
+            login(request, user)
+            
+        return HttpResponseRedirect("/")
     
-    try:        
-        u = User.objects.get(email = google_user["email"])
-        print "user exists"       
-        return u
-    except User.DoesNotExist:
-        print "user does not exist"
-        return make_user(google_user)
-    
-    
-    
-    
-def make_user(google_user):
-        user = User.objects.create_user(google_user["name"], google_user["email"], uuid.uuid4().hex )
-        user.is_staff = False
-        
-        print "user created "
-        print user
-        user.save()
-        return user
-        
+
        

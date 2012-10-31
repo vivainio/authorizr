@@ -32,14 +32,14 @@ urlpatterns = patterns('',
     url("^appreg/deleteapp/(?P<appuid>\w{1,255})/$", "appreg.views.delete_application"),
     url("^appreg/addapp/", "appreg.views.add_application"),
             
-    #Google Login 
-    url("^userreg/login/", "userreg.views.create_google_session"),
-    url("^userreg/userlogincallback/", "userreg.views.google_profile_callback"),
-            
+    #Google OpenId Connect login 
+    url("^userreg/login/", "userreg.views.google_oi_connect_login"),
+    url("^userreg/userlogincallback/", "userreg.views.google_oi_connect_login_callback"),
+    url("^userreg/confirm/", "userreg.views.confirm_and_make_user"),            
     #Authentication    
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^accounts/login/$', 'appreg.views.login'),
     url(r'^accounts/logout/$', 'appreg.views.logout_view'),
-    url(r'^login/startlogin/', 'appreg.views.startlogin'),    
+    #url(r'^login/startlogin/', 'appreg.views.startlogin'),    
     
     #After login, user is redirected to profile. Let's make it to point front page
     url(r'^accounts/profile/$', 'appreg.views.frontpage'), 

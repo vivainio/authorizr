@@ -95,9 +95,9 @@ def login_callback(request):
     
     def respond(response):                    
         if a.credentials.user_callback_page:
-           return HttpResponseRedirect(a.credentials.user_callback_page+response['user_cb_query'])
+            return HttpResponseRedirect(a.credentials.user_callback_page+response['user_cb_query'])
         else:           
-           return render(request, 'restapi/callback.html', Context(response['msg']))
+            return render(request, 'restapi/callback.html', Context(response['msg']))
     
     success_response = { 'msg' : {'message': 'Access Granted'},
                          'user_cb_query' : "?success=true"}

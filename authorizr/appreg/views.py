@@ -24,8 +24,8 @@ from django.conf import settings
 def frontpage(request):   
     return render(request, 'index.html')
  
-def startlogin(request):
-    return render(request, "appreg/startlogin.html", { "loginurl" : '' })
+def login(request):
+    return render(request, "appreg/login.html", { })
     
 def logout_view(request):
     auth.logout(request)
