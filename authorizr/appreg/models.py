@@ -20,6 +20,7 @@ class AppCredentialsManager(models.Manager):
         print user 
         return self.get_query_set().filter(owner=user.pk)
     
+PROTOCOL_CHOICES = (("oauth1", "OAuth1"), ("oauth2","OAuth2"))
 
 class AppCredentials(models.Model):
     
@@ -31,6 +32,9 @@ class AppCredentials(models.Model):
     app_api_key = models.CharField(max_length = 255)
     app_secret = models.CharField(max_length = 255)
     
+    protocol = models.CharField(max_length = 10, choices = PROTOCOL_CHOICES,
+        default="oauth2")
+
     scope = models.CharField(max_length = 1024, blank=True)    
     auth_endpoint = models.CharField(max_length = 255, blank=True)
     token_endpoint = models.CharField(max_length = 255, blank=True)
