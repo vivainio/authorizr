@@ -28,9 +28,6 @@ OAuthHook.consumer_secret = TWITTER_CONSUMER_SECRET
 oauth_hook = OAuthHook(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
 client = requests.session(hooks={'pre_request': oauth_hook})
 
-saved_token = "TeXNvrEVL2U59ov4okczoCxASNyooZvmr8E3Eq5b6k"
-saved_verifier = "0pWKfUfMsI3kEl3pJogOc5nWky8MAayXGQks3PfpEY" 
-
 class TwitterOAuthTestSuite(unittest.TestCase):
     #def setUp(self):
         # twitter prefers that you use header_auth
@@ -138,14 +135,19 @@ class TwitterOAuthTestSuite(unittest.TestCase):
         self.assertTrue(response['oauth_token'])
         self.assertTrue(response['oauth_token_secret'])
         
+        gotToken = response['oauth_token'][0]
+        gotSecret = response['oauth_token_secret'][0]
+        print gotToken
+        print gotSecret
         
+        post_outh_hook = OAuthHook(gotToken, gotSecret, TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, True)
+        client2 = requests.session(hooks={'pre_request': post_outh_hook})
         
-        #message = "Kind of a random message %s" % random.random()
-        #response = client.post('http://api.twitter.com/1/statuses/update.json',
-        #    {'status': message, 'wrap_links': True})
-        #self.assertEqual(response.status_code, 200)
-        #print response
-        #self.assertEqual(json.loads(response.content)['text'], message)
+        message = "Kind of a random message %s" % random.random()
+        response = client2.post('http://api.twitter.com/1/statuses/update.json',{'status': message, 'wrap_links': True})
+        self.assertEqual(response.status_code, 200)
+        print response
+        self.assertEqual(json.loads(response.content)['text'], message)
         
         
 

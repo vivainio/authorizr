@@ -64,6 +64,9 @@ urlpatterns = patterns('',
     # OAuth1
     
     url(r'^dump', 'oauth1api.views.dump_request'),
+    url(r'^api/oauth1/v1/create_session/(?P<appid>\w{1,255})/$', 'oauth1api.views.create_session'),
+    url(r'^login/v1/oauth1callback', 'oauth1api.views.login_callback'),
+    url(r'^api/oauth1/v1/fetch_access_token/(?P<sessionid>\w{1,255})/$', 'oauth1api.views.fetch_access_token'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

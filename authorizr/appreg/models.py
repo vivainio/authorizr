@@ -62,3 +62,10 @@ class AuthSession(models.Model):
     #user_callback_page = models.CharField(max_length = 255)
     credentials = models.ForeignKey(AppCredentials)
 
+class OAuth1Session(models.Model):
+    created_at = models.PositiveIntegerField(default=time.time())
+    session_id = models.CharField(primary_key = True,max_length = 255)
+    oauth_verifier = models.CharField(max_length = 255)
+    oauth_token = models.CharField(max_length = 255)
+    credentials = models.ForeignKey(AppCredentials)
+   
