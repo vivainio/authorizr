@@ -5,10 +5,26 @@ from models import Resource, Subscription
 import time
 from django.shortcuts import get_object_or_404
 import json
+import django.http
 
+    
 def consume(request, resourceid):
     args = dict(request.REQUEST.iteritems())
     clientid = args['client']
+    count_par = 1
+    
+    #count validation (value needs to be > 0)
+    try:
+        if args.has_key('count'):
+            count_par = int(args['count'])
+    except ValueError:
+        return django.http.HttpResponseBadRequest()
+            
+    if(count_par <= 0):
+        return django.http.HttpResponseBadRequest()
+         
+    #count validation end
+    
     res = get_object_or_404(Resource, resource_id = resourceid)             
     
     try:        
@@ -20,8 +36,12 @@ def consume(request, resourceid):
     count = subscription.use_counter
     if( count == None):
         count = -1
-    if (count>0):
-        count -= 1 
+    
+    if (count>count_par):
+        count -= count_par
+    else: 
+        count = 0
+        
     subscription.use_counter = count    
     
     timestamp = subscription.expires  
