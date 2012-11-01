@@ -18,7 +18,6 @@ import json
 from urlparse import parse_qsl
 
 from django.conf import settings
-from desktopcouch.application.replication_services.example import is_active
 
 
 def make_google_client():

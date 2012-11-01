@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %} Confirm Registration {% endblock %}
+
+{% block content %}
+
+
+<div class="span6">
+		<h5>Register with following details:</h5>
+		<table class="table table-bordered table-condensed table-striped">
+			<tr>
+				<td>Name:</td>
+				<td>{{ info.name }}</td>
+			</tr>
+			<tr>
+				<td>email:</td>
+				<td>{{ info.email }}</td>
+			</tr>		
+		</table>
+		<div class="btn-group">
+			<a class="btn" href="/userreg/confirm/">Confirm</a>			
+		</div>
+</div>
+{% endblock %}
+
