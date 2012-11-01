@@ -8,15 +8,3 @@ class OIConnectUser(User):
     expires = models.FloatField(default=-1)
 
 
-'''
-{u'family_name': u'Salento',
- u'name': u'Ilkka Salento',
-  u'locale': u'fi',
-   u'gender': u'male', 
-   u'email': u'isalento@gmail.com', 
-   u'link': u'https://plus.google.com/109784351796539945220', 
-   u'given_name': u'Ilkka', 
-   u'id': u'109784351796539945220',
-    u'verified_email': True}
-    
-'''
