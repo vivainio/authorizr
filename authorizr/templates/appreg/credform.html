@@ -53,13 +53,17 @@
 
 <form method='post' action='.'>
  {% csrf_token %} 
-		<div class="cred_form_container oauth2">
-      <p>OAuth2 parameters</p>
-       {{ form.as_p }}
+		<div class="cred_form_container oauth1">      
+        {{ form.non_field_errors }}
+        <div class="fieldWrapper">
+          <label for="id_app_desc">Description</label>
+
+          <p>{{ form.app_desc }}</p>
+        </div>
+       
     </div>
 
-    <div class="cred_form_container oauth1">
-      <p>OAuth1 parameters</p>
+    <div class="cred_form_container oauth2">      
       {{ form.as_p }}
     </div>
  	  
