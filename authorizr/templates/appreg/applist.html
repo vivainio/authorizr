@@ -32,9 +32,10 @@
 	</div>
 </div>
 
-<div class="accordion" id="app_accordion">
-	{% for credential in object_list %}
-	<div class="accordion-group">
+	{% if object_list|length > 0 %}	
+	<div class="accordion" id="app_accordion">
+		{% for credential in object_list %}
+		<div class="accordion-group">
 		<div class="accordion-heading">
 			<a class="accordion-toggle" data-toggle="collapse" data-parent="#app_accordion" href="#col_{{credential.uid}}"><h4> {{ credential.app_desc }} </h4></a>
 		</div>
@@ -104,6 +105,7 @@
 									<br>
 									<code>
 										[sid, url] = http://authorizr.herokuapp.com/api/v1/create_session/{{credential.uid}}/
+										
 										[sid, url] = http://localhost:8000/api/oauth1/v1/create_session/{{credential.uid}}/
 									</code>
 
@@ -133,9 +135,12 @@
 
 			</div>
 		</div>
+		</div>
+		{% endfor %}
 	</div>
-	{% endfor %}
-</div>
+	{% else %}
+	<div><h4>No apps yet, please create one</h4></div>
+	{% endif %}
 
 <script type="application/javascript">
 	$('.confirm_delete').click(function(e) {
