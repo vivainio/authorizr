@@ -1,24 +1,17 @@
 
 
 import uuid
-
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response,render
-
-from restapi.sanction.client import Client
-
-from django.contrib import auth
-from django.contrib.auth import authenticate, login
-from userreg.models import OIConnectUser 
-
-from appreg.models import AppCredentials, AuthSession
-
 import json 
-from urlparse import parse_qsl
 
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login
 from django.conf import settings
 
+from restapi.sanction.client import Client
+from urlparse import parse_qsl
+
+from userreg.models import OIConnectUser 
 
 def make_google_client():
         
@@ -92,15 +85,18 @@ def confirm_and_make_user(request):
         
         new_user = OIConnectUser.objects.create(
                                             user_id = userinfo["id"], 
-                                            username = userinfo["email"],
+                                            #username = userinfo["email"],
                                             email = userinfo["email"],
                                             first_name = userinfo.get("given_name", " "),
                                             last_name = userinfo.get("family_name", " "),
                                             is_active = True,
                                             is_staff = False,
                                             password = uuid.uuid4().hex)
-                                            
+        
+        new_user.save()
+        new_user.username = "user_"+ str(new_user.pk)                                    
         new_user.save()        
+        
         print "user created"
         
         user = authenticate(user_info=userinfo)
