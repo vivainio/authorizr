@@ -92,7 +92,7 @@ def confirm_and_make_user(request):
         
         new_user = OIConnectUser.objects.create(
                                             user_id = userinfo["id"], 
-                                            username = userinfo["name"],
+                                            username = userinfo["email"],
                                             email = userinfo["email"],
                                             first_name = userinfo.get("given_name", " "),
                                             last_name = userinfo.get("family_name", " "),

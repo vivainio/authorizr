@@ -21,7 +21,7 @@ class OIConnectAuthenticationBackend(object):
         
         try:
             #return OIConnectUser.objects.get(pk=user_id)
-            return User.objects.get(id=user_id)
+            return OIConnectUser.objects.get(user_ptr_id=user_id)
         except OIConnectUser.DoesNotExist:
             print "user not found"
             return None

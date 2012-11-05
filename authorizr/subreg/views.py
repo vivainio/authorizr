@@ -37,7 +37,7 @@ def add_resource(request):
                      resource_id = form.cleaned_data['resource_id'],
                      description = form.cleaned_data['description'],
                      sub_duration = form.cleaned_data['sub_duration'],
-                     sub_max_use_count = form.cleaned_data['sub_max_use_count'],
+                     sub_max_credits_count = form.cleaned_data['sub_max_credits_count'],
                      owner = request.user
                      )            
             return HttpResponseRedirect('/subreg/resources/')
