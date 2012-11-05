@@ -53,11 +53,14 @@
 
 <form method='post' action='.'>
  {% csrf_token %} 
-	  
-	      
-  		
-		<div id="cred_form_container">
+		<div class="cred_form_container oauth2">
+      <p>OAuth2 parameters</p>
        {{ form.as_p }}
+    </div>
+
+    <div class="cred_form_container oauth1">
+      <p>OAuth1 parameters</p>
+      {{ form.as_p }}
     </div>
  	  
 
@@ -69,10 +72,11 @@
 <script type="application/javascript">
 $('.btn').on("click", function(){
     var value = $(this).text();
+    $(".cred_form_container").hide();
     if(value == "OAuth")	    	    
-    	$("#cred_form_container").hide();    	  
+    	$(".cred_form_container.oauth1").show();    	  
     else
-    	$("#cred_form_container").show();  
+    	$(".cred_form_container.oauth2").show();  
 });
 
 
