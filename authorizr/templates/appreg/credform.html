@@ -12,11 +12,6 @@
 
 <h1>{{ title }}</h1>
 
-<div class="btn-group" data-toggle="buttons-radio">
-	<button class="btn">OAuth2</button>
-	<button class="btn">OAuth</button>
-</div>
-​
 
 {% if appuid %}
 
@@ -35,11 +30,7 @@
 </div>
 
 
-
-
-
 {% endif %}
-
 
 <div class="container">
 	
@@ -56,19 +47,11 @@
 	</div>
 </div>
 
-<div class="cred_form_container oauth2 row">      
+<div class="cred_form_row">      
     	<div class="span9">      
 			<form method='post' action='.'>
 			 {% csrf_token %} 
-					<div class="cred_form_container oauth1">      
-			        {{ form.non_field_errors }}
-			        <div class="fieldWrapper">
-			          <label for="id_app_desc">Description</label>
-			
-			          <p>{{ form.app_desc }}</p>
-			        </div>
-			       
-			    </div>								
+			 							
 					    {% for hidden in form.hidden_fields %}
 					    {{ hidden }}
 					    {% endfor %}
@@ -98,13 +81,21 @@
 </div>
 
 <script type="application/javascript">
-$('.btn').on("click", function(){
-    var value = $(this).text();
-    $(".cred_form_container").hide();
-    if(value == "OAuth")	    	    
-    	$(".cred_form_container.oauth1").show();    	  
-    else
-    	$(".cred_form_container.oauth2").show();  
+
+$(function() {
+  $('#id_protocol').change();
+});
+
+$('#id_protocol').change(function() {
+	 
+    if($(this).val() == "oauth1"){    	
+    	$(".oauth2").parents("tr").hide();	    	    
+    	$(".oauth1").parents("tr").show();    	  
+    }else{    	
+    	$(".oauth1").parents("tr").hide();
+    	$(".oauth2").parents("tr").show();  
+    }
+    
 });
 
 
