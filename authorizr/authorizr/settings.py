@@ -3,6 +3,10 @@ import os
 import django
 import dj_database_url
 
+from memcacheify import memcacheify
+
+CACHES = memcacheify()
+
 # keep as false for dev on local machine for now...
 
 _HEROKU = False
