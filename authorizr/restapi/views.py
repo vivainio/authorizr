@@ -45,6 +45,18 @@ def make_auth_session(cred, uid):
     
     authSession.save()
     return authSession
+
+def get_credentials(credid):
+    credentials = cache.get("cr_" + credid)    
+    if not credentials:
+        try:       
+            credentials = AppCredentials.objects.get(uid=credid)
+
+        except AppCredentials.DoesNotExist:
+            return None
+
+        cache.set("cr_" + credid, credentials)  
+    return credentials      
     
     
 def create_session(request, appid):
@@ -56,13 +68,9 @@ def create_session(request, appid):
     
     args = dict(request.REQUEST.iteritems())
     
-    credentials = cache.get("cr_" + credential_uid)    
-    if not credentials:
-        try:       
-            credentials = AppCredentials.objects.get(uid=credential_uid)
-        except AppCredentials.DoesNotExist:
+    credentials = get_credentials(credential_uid)
+    if credentials is None:
             return HttpResponse(content="Application for specified handle not found", status=404)
-        cache.set("cr_" + credential_uid, credentials)        
        
     #Make unique ID for request    
     uid = uuid.uuid4().hex
@@ -155,10 +163,9 @@ def fetch_access_token(request, sessionid):
 def refresh_access_token(request, credential_uid):
      
     args = dict(request.REQUEST.iteritems())
-        
-    try:       
-        credentials = AppCredentials.objects.get(uid=credential_uid)
-    except AppCredentials.DoesNotExist:
+
+    credentials = get_credentials(credential_uid)        
+    if credentials is None:
         return HttpResponse(content="Application identifier not found", status=404)
        
     try:
