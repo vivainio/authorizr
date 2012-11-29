@@ -13,6 +13,8 @@ from django.contrib import auth
 from django.contrib.auth.models import User 
 from django.contrib.auth.decorators import login_required
 
+from django.core.cache import cache
+
 from appreg.models import AppCredentials, AuthSession
 
 import json 
@@ -49,14 +51,18 @@ def create_session(request, appid):
      
     credential_uid = appid
     
+
     print "creating session for: "+credential_uid
     
     args = dict(request.REQUEST.iteritems())
-        
-    try:       
-        credentials = AppCredentials.objects.get(uid=credential_uid)
-    except AppCredentials.DoesNotExist:
-        return HttpResponse(content="Application for specified handle not found", status=404)
+    
+    credentials = cache.get("cr_" + credential_uid)    
+    if not credentials:
+        try:       
+            credentials = AppCredentials.objects.get(uid=credential_uid)
+        except AppCredentials.DoesNotExist:
+            return HttpResponse(content="Application for specified handle not found", status=404)
+        cache.set("cr_" + credential_uid, credentials)        
        
     #Make unique ID for request    
     uid = uuid.uuid4().hex
