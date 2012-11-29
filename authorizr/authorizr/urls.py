@@ -45,7 +45,12 @@ urlpatterns = patterns('',
     url(r'^accounts/profile/$', 'appreg.views.frontpage'), 
         
     # OAuth2
+
+
+    #insp: change to api/oauth2/v1/oauth2callback
     url(r'^login/oauth2callback/', 'restapi.views.login_callback'),
+    
+    # insp: change to api/oauth2/v1/create_session etc
     url(r'^api/v1/create_session/(?P<appid>\w{1,255})/$', 'restapi.views.create_session'),
     url(r'^api/v1/fetch_access_token/(?P<sessionid>\w{1,255})/$', 'restapi.views.fetch_access_token'),
     url(r'^api/v1/refresh_access_token/(?P<credential_uid>\w{1,255})/$', 'restapi.views.refresh_access_token'),
@@ -65,6 +70,8 @@ urlpatterns = patterns('',
     
     url(r'^dump', 'oauth1api.views.dump_request'),
     url(r'^api/oauth1/v1/create_session/(?P<appid>\w{1,255})/$', 'oauth1api.views.create_session'),
+    
+    # insp: change to api/oauth1/v1/oauth1callback
     url(r'^login/v1/oauth1callback', 'oauth1api.views.login_callback'),
     url(r'^api/oauth1/v1/fetch_access_token/(?P<sessionid>\w{1,255})/$', 'oauth1api.views.fetch_access_token'),
 
