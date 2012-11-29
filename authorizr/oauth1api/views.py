@@ -2,7 +2,7 @@
 import pickle
 from django.http import HttpResponse,HttpResponseRedirect
 from restapi import views
-from appreg.models import AppCredentials, OAuth1Session
+from appreg.models import OAuth1AppCredentials, OAuth1Session
 import requests
 from urlparse import parse_qs
 import uuid
@@ -37,8 +37,8 @@ def create_session(request, appid):
     args = dict(request.REQUEST.iteritems())
         
     try:       
-        credentials = AppCredentials.objects.get(uid=credential_uid)
-    except AppCredentials.DoesNotExist:
+        credentials = OAuth1AppCredentials.objects.get(uid=credential_uid)
+    except OAuth1AppCredentials.DoesNotExist:
         return HttpResponse(content="Application for specified handle not found", status=404)
        
     #Make unique ID for request    
@@ -47,8 +47,8 @@ def create_session(request, appid):
     #initiate db entry for this session
     auth_session = make_auth_session(credentials, uid)
     
-    OAuthHook.consumer_key = credentials.app_api_key
-    OAuthHook.consumer_secret = credentials.app_secret
+    OAuthHook.consumer_key = credentials.consumer_key
+    OAuthHook.consumer_secret = credentials.consumer_secret
     twitter_oauth_hook = OAuthHook()
         
     #for header_auth in (True, False):

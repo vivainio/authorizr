@@ -32,6 +32,8 @@
 
 {% endif %}
 
+
+
 <div class="container">
 	
 <div class="row">
@@ -47,56 +49,154 @@
 	</div>
 </div>
 
-<div class="cred_form_row">      
-    	<div class="span9">      
-			<form method='post' action='.'>
-			 {% csrf_token %} 
-			 							
-					    {% for hidden in form.hidden_fields %}
-					    {{ hidden }}
-					    {% endfor %}
-						<table class="table table-bordered table-condensed table-striped">
-									
-					    {% for field in form.visible_fields %}
-					        <tr>
-								<td>
-								{{ field.label_tag }}            				
-								</td>        	
-								<td>				
-					            {{ field }}
-					            <br>
-					            {{ field.errors }}
-								</td>			
-					        </tr>
-					    {% endfor %}  
-						</table>
-					  
-			
-			     <!-- submit button -->
-			     <input type='submit' value="{{ btn_text }}">
-			     <a id="btn-delete-app" href="#" class="btn btn-danger confirm-delete">Remove this application</a>
-			</form>
-		</div>    
-	</div>
+<div id="protocolToggle" class="btn-group"> 
+  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" id="protoBtn">
+    Protocol
+    <span class="caret"></span>
+  </a>
+
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="protoDd">
+    <li class="active"><a href="#oauth2">OAuth2</a></li>
+  <li><a href="#oauth1">OAuth1</a></li>  
+  </ul>
 </div>
+
+<!--<ul class="nav nav-tabs" id="protocolTab">
+  <li class="active"><a href="#oauth2">OAuth2</a></li>
+  <li><a href="#oauth1">OAuth1</a></li>  
+</ul>-->
+
+
+  <div class="cred_form_row" id="oa2">
+     <form method='post' action='.'>
+      {% csrf_token %} 
+      <table class="table table-bordered table-condensed table-striped">
+                  
+              {% for field in formOauth2.visible_fields %}
+                  <tr>
+                <td>
+                {{ field.label_tag }}                   
+                </td>         
+                <td>        
+                      {{ field }}
+                      <br>
+                      {{ field.errors }}
+                </td>     
+                  </tr>
+              {% endfor %}  
+            </table>
+
+
+           
+           <input type='submit' name='oa2' value="{{ btn_text }}">
+           <a id="btn-delete-app" href="#" class="btn btn-danger confirm-delete">Remove this application</a>
+      </form>
+  </div>
+    <div class="cred_form_row" id="oa1">
+    <form method='post' action='.'>
+      {% csrf_token %} 
+      <table class="table table-bordered table-condensed table-striped">
+                  
+              {% for field in formOauth1.visible_fields %}
+                  <tr>
+                <td>
+                {{ field.label_tag }}                   
+                </td>         
+                <td>        
+                      {{ field }}
+                      <br>
+                      {{ field.errors }}
+                </td>     
+                  </tr>
+              {% endfor %}  
+            </table>
+           
+           <input type='submit' name='oa1' value="{{ btn_text }}">
+           <a id="btn-delete-app" href="#" class="btn btn-danger confirm-delete">Remove this application</a>
+      </form>
+  </div>
+</div>
+
+
+	<!--<div class="cred_form_row_oauth1">      
+      <div class="span9">      
+      <form method='post' action='.'>
+       {% csrf_token %} 
+
+              <{% for hidden in formOauth1.hidden_fields %}
+              {{ hidden }}
+              {% endfor %}
+            <table class="table table-bordered table-condensed table-striped">
+
+              {% for field in formOauth1.visible_fields %}
+                  <tr>
+                <td>
+                {{ field.label_tag }}                   
+                </td>         
+                <td>        
+                      {{ field }}
+                      <br>
+                      {{ field.errors }}
+                </td>     
+                  </tr>
+              {% endfor %}  
+            </table>
+
+
+           <input type='submit' value="{{ btn_text }}">
+           <a id="btn-delete-app" href="#" class="btn btn-danger confirm-delete">Remove this application</a>
+      </form>
+    </div>    
+  </div>
+</div>
+<<div id="oa2" class="cred_form_row_oauth2">      
+     <div class="span9">      
+      <form method='post' action='.'>
+      {% csrf_token %} 
+      <table class="table table-bordered table-condensed table-striped">
+                  
+              {% for field in formOauth2.visible_fields %}
+                  <tr>
+                <td>
+                {{ field.label_tag }}                   
+                </td>         
+                <td>        
+                      {{ field }}
+                      <br>
+                      {{ field.errors }}
+                </td>     
+                  </tr>
+              {% endfor %}  
+            </table>
+
+
+           
+           <input type='submit' value="{{ btn_text }}">
+           <a id="btn-delete-app" href="#" class="btn btn-danger confirm-delete">Remove this application</a>
+      </form>
+    </div>    
+  </div>
+</div>-->
 
 <script type="application/javascript">
 
-$(function() {
-  $('#id_protocol').change();
-});
 
-$('#id_protocol').change(function() {
-	 
-    if($(this).val() == "oauth1"){    	
-    	$(".oauth2").parents("tr").hide();	    	    
-    	$(".oauth1").parents("tr").show();    	  
-    }else{    	
-    	$(".oauth1").parents("tr").hide();
-    	$(".oauth2").parents("tr").show();  
-    }
+
+$("#protoDd a").click(function(event) {
     
-});
+      event.preventDefault();
+      key = $(this).attr('href').substring(1); 
+      
+      if(key=='oauth1') {
+        $('#oa1').show();
+        $('#oa2').hide();
+      }
+      else
+      {
+        $('#oa2').show();
+        $('#oa1').hide(); 
+      }
+    })
 
 
 $('.confirm-delete').click(function(e) {

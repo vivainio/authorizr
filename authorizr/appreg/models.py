@@ -32,14 +32,30 @@ class AppCredentials(models.Model):
     app_api_key = models.CharField(max_length = 255)
     app_secret = models.CharField(max_length = 255)
     
-    protocol = models.CharField(max_length = 10, choices = PROTOCOL_CHOICES,
-        default="oauth2")
-
+   
     scope = models.CharField(max_length = 1024, blank=True)    
     auth_endpoint = models.CharField(max_length = 255, blank=True)
     token_endpoint = models.CharField(max_length = 255, blank=True)
     resource_endpoint = models.CharField(max_length = 255, blank=True)
         
+    redirect_uri = models.CharField(max_length = 255, blank=True) #fixed to Authorizr URL    
+    user_callback_page = models.URLField(max_length = 255, blank=True) #points to users page
+            
+    owner = models.ForeignKey(User)
+            
+    objects = models.Manager() # The default manager.
+    users_objects = AppCredentialsManager() # The user-specific manager.
+
+class OAuth1AppCredentials(models.Model):
+    
+    def __unicode__(self):
+        return self.app_desc
+        
+    uid = models.CharField(primary_key = True, max_length = 255)
+    app_desc = models.CharField(max_length = 255)
+    consumer_key = models.CharField(max_length = 255)
+    consumer_secret = models.CharField(max_length = 255)
+       
     redirect_uri = models.CharField(max_length = 255, blank=True) #fixed to Authorizr URL    
     user_callback_page = models.URLField(max_length = 255, blank=True) #points to users page
             
@@ -67,5 +83,5 @@ class OAuth1Session(models.Model):
     session_id = models.CharField(primary_key = True,max_length = 255)
     oauth_verifier = models.CharField(max_length = 255)
     oauth_token = models.CharField(max_length = 255)
-    credentials = models.ForeignKey(AppCredentials)
+    credentials = models.ForeignKey(OAuth1AppCredentials)
    
