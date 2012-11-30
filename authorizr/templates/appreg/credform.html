@@ -49,7 +49,13 @@
 	</div>
 </div>
 
-<div id="protocolToggle" class="btn-group"> 
+
+<div class="btn-group" data-toggle="buttons-radio">
+  <button class="btn active" id="protoOa2">OAuth2</button>
+  <button class="btn" id="protoOa1">OAuth</button>
+</div>
+
+<!--<div id="protocolToggle" class="btn-group"> 
   <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" id="protoBtn">
     Protocol
     <span class="caret"></span>
@@ -59,12 +65,7 @@
     <li class="active"><a href="#oauth2">OAuth2</a></li>
   <li><a href="#oauth1">OAuth1</a></li>  
   </ul>
-</div>
-
-<!--<ul class="nav nav-tabs" id="protocolTab">
-  <li class="active"><a href="#oauth2">OAuth2</a></li>
-  <li><a href="#oauth1">OAuth1</a></li>  
-</ul>-->
+</div>-->
 
 
   <div class="cred_form_row" id="oa2">
@@ -92,7 +93,7 @@
            <a id="btn-delete-app" href="#" class="btn btn-danger confirm-delete">Remove this application</a>
       </form>
   </div>
-    <div class="cred_form_row" id="oa1">
+    <div class="cred_form_row" id="oa1" style="display: none">
     <form method='post' action='.'>
       {% csrf_token %} 
       <table class="table table-bordered table-condensed table-striped">
@@ -118,73 +119,13 @@
 </div>
 
 
-	<!--<div class="cred_form_row_oauth1">      
-      <div class="span9">      
-      <form method='post' action='.'>
-       {% csrf_token %} 
-
-              <{% for hidden in formOauth1.hidden_fields %}
-              {{ hidden }}
-              {% endfor %}
-            <table class="table table-bordered table-condensed table-striped">
-
-              {% for field in formOauth1.visible_fields %}
-                  <tr>
-                <td>
-                {{ field.label_tag }}                   
-                </td>         
-                <td>        
-                      {{ field }}
-                      <br>
-                      {{ field.errors }}
-                </td>     
-                  </tr>
-              {% endfor %}  
-            </table>
-
-
-           <input type='submit' value="{{ btn_text }}">
-           <a id="btn-delete-app" href="#" class="btn btn-danger confirm-delete">Remove this application</a>
-      </form>
-    </div>    
-  </div>
-</div>
-<<div id="oa2" class="cred_form_row_oauth2">      
-     <div class="span9">      
-      <form method='post' action='.'>
-      {% csrf_token %} 
-      <table class="table table-bordered table-condensed table-striped">
-                  
-              {% for field in formOauth2.visible_fields %}
-                  <tr>
-                <td>
-                {{ field.label_tag }}                   
-                </td>         
-                <td>        
-                      {{ field }}
-                      <br>
-                      {{ field.errors }}
-                </td>     
-                  </tr>
-              {% endfor %}  
-            </table>
-
-
-           
-           <input type='submit' value="{{ btn_text }}">
-           <a id="btn-delete-app" href="#" class="btn btn-danger confirm-delete">Remove this application</a>
-      </form>
-    </div>    
-  </div>
-</div>-->
-
 <script type="application/javascript">
 
 
 
-$("#protoDd a").click(function(event) {
+/*$("#protoDd a").click(function(event) {
     
-      event.preventDefault();
+      //event.preventDefault();
       key = $(this).attr('href').substring(1); 
       
       if(key=='oauth1') {
@@ -196,8 +137,31 @@ $("#protoDd a").click(function(event) {
         $('#oa2').show();
         $('#oa1').hide(); 
       }
-    })
+    })*/
 
+/*$('.btn').on("click", function(){
+    var value = $(this).text();
+    if(value == "OAuth") {            
+       $('#oa1').show();
+       $('#oa2').hide();  
+       }   
+    else {
+      $('#oa2').show();
+      $('#oa1').hide();
+    }
+
+});*/
+$('#protoOa1').click(function(e) 
+{
+ $('#oa1').show();
+ $('#oa2').hide();  
+}); 
+
+$('#protoOa2').click(function(e) 
+{
+ $('#oa2').show();
+ $('#oa1').hide();
+}); 
 
 $('.confirm-delete').click(function(e) {
 	e.preventDefault();
