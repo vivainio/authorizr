@@ -32,9 +32,9 @@
 	</div>
 </div>
 
-	{% if object_list or oa1_object_list %}	
+	{% if oa2credentials or oa1credentials %}	
 	<div class="accordion" id="app_accordion">
-		{% for credential in object_list %}
+		{% for credential in oa2credentials %}
 		<div class="accordion-group">
 		<div class="accordion-heading">
 			<a class="accordion-toggle" data-toggle="collapse" data-parent="#app_accordion" href="#col_{{credential.uid}}"><h4> {{ credential.app_desc }} </h4></a>
@@ -142,7 +142,7 @@
 	<!--jorma-->
 		
 	<div class="accordion" id="app_accordion">
-		{% for credential in oa1_object_list %}
+		{% for credential in oa1credentials %}
 		<div class="accordion-group">
 		<div class="accordion-heading">
 			<a class="accordion-toggle" data-toggle="collapse" data-parent="#app_accordion" href="#col_{{credential.uid}}"><h4> {{ credential.app_desc }} </h4></a>
@@ -161,6 +161,10 @@ a
 							<tr>
 								<td>Consumer Secret</td>
 								<td>{{ credential.consumer_secret }}</td>
+							</tr>
+							<tr>
+								<td>Authentication endpoint</td>
+								<td>{{ credential.auth_endpoint }}</td>
 							</tr>							
 							<tr>
 								<td>Redirect site</td>

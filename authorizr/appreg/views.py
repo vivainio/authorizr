@@ -51,14 +51,14 @@ def myapps(request):
     #appOwner = AppOwner.objects.filter(uid = 'myuid')    
     #credentials = AppCredentials.objects.filter(owner = appOwner)
     
-    OA2credentials = AppCredentials.users_objects.for_user(request.user)
-    OA1credentials = OAuth1AppCredentials.users_objects.for_user(request.user)
+    oa2credentials = AppCredentials.users_objects.for_user(request.user)
+    oa1credentials = OAuth1AppCredentials.users_objects.for_user(request.user)
     #credentials = AppCredentials.objects.all()
-    print request.user,
+    #print request.user,
     #print 'Credentials', len(credentials)
     #print credentials
-    
-    return render(request, 'appreg/applist.html', {'object_list': OA2credentials, 'oa1_object_list' : OA1credentials})
+    print oa1credentials
+    return render(request, 'appreg/applist.html', {'oa2credentials': oa2credentials, 'oa1credentials' : oa1credentials})
 
 
 def edit_app_credentials(request, appuid):
@@ -100,6 +100,7 @@ def add_application(request):
                          app_desc = form.cleaned_data['app_desc'],
                          consumer_key = form.cleaned_data['consumer_key'],
                          consumer_secret = form.cleaned_data['consumer_secret'],
+                         auth_endpoint = form.cleaned_data['auth_endpoint'],
                                                   
                          user_callback_page = form.cleaned_data['user_callback_page'],
                          redirect_uri = settings._CALLBACK_URL,

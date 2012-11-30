@@ -55,19 +55,6 @@
   <button class="btn" id="protoOa1">OAuth</button>
 </div>
 
-<!--<div id="protocolToggle" class="btn-group"> 
-  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" id="protoBtn">
-    Protocol
-    <span class="caret"></span>
-  </a>
-
-  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="protoDd">
-    <li class="active"><a href="#oauth2">OAuth2</a></li>
-  <li><a href="#oauth1">OAuth1</a></li>  
-  </ul>
-</div>-->
-
-
   <div class="cred_form_row" id="oa2">
      <form method='post' action='.'>
       {% csrf_token %} 
@@ -121,36 +108,6 @@
 
 <script type="application/javascript">
 
-
-
-/*$("#protoDd a").click(function(event) {
-    
-      //event.preventDefault();
-      key = $(this).attr('href').substring(1); 
-      
-      if(key=='oauth1') {
-        $('#oa1').show();
-        $('#oa2').hide();
-      }
-      else
-      {
-        $('#oa2').show();
-        $('#oa1').hide(); 
-      }
-    })*/
-
-/*$('.btn').on("click", function(){
-    var value = $(this).text();
-    if(value == "OAuth") {            
-       $('#oa1').show();
-       $('#oa2').hide();  
-       }   
-    else {
-      $('#oa2').show();
-      $('#oa1').hide();
-    }
-
-});*/
 $('#protoOa1').click(function(e) 
 {
  $('#oa1').show();
