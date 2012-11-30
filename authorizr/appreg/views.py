@@ -16,6 +16,7 @@ from django.views.generic.list import ListView
 #from myproject.apps.users.models import LoggedInMixin
 
 import uuid
+from django.core.cache import cache
 
 #Callback URL
 from django.conf import settings
@@ -65,6 +66,8 @@ def edit_app_credentials(request, appuid):
     cred = get_object_or_404(AppCredentials, uid=appuid)
     
     if request.method == "POST":
+        
+        cache.delete("cr_" + appuid)
         form = AppCredentialFormOauth2(request.POST, instance=cred)
         if form.is_valid():
             form.save()

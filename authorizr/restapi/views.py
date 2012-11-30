@@ -13,6 +13,8 @@ from django.contrib import auth
 from django.contrib.auth.models import User 
 from django.contrib.auth.decorators import login_required
 
+from django.core.cache import cache
+
 from appreg.models import AppCredentials, AuthSession
 
 import json 
@@ -43,20 +45,32 @@ def make_auth_session(cred, uid):
     
     authSession.save()
     return authSession
+
+def get_credentials(credid):
+    credentials = cache.get("cr_" + credid)    
+    if not credentials:
+        try:       
+            credentials = AppCredentials.objects.get(uid=credid)
+
+        except AppCredentials.DoesNotExist:
+            return None
+
+        cache.set("cr_" + credid, credentials)  
+    return credentials      
     
     
 def create_session(request, appid):
      
     credential_uid = appid
     
+
     print "creating session for: "+credential_uid
     
     args = dict(request.REQUEST.iteritems())
-        
-    try:       
-        credentials = AppCredentials.objects.get(uid=credential_uid)
-    except AppCredentials.DoesNotExist:
-        return HttpResponse(content="Application for specified handle not found", status=404)
+    
+    credentials = get_credentials(credential_uid)
+    if credentials is None:
+            return HttpResponse(content="Application for specified handle not found", status=404)
        
     #Make unique ID for request    
     uid = uuid.uuid4().hex
@@ -149,10 +163,9 @@ def fetch_access_token(request, sessionid):
 def refresh_access_token(request, credential_uid):
      
     args = dict(request.REQUEST.iteritems())
-        
-    try:       
-        credentials = AppCredentials.objects.get(uid=credential_uid)
-    except AppCredentials.DoesNotExist:
+
+    credentials = get_credentials(credential_uid)        
+    if credentials is None:
         return HttpResponse(content="Application identifier not found", status=404)
        
     try:

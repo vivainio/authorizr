@@ -2,20 +2,24 @@ import urllib
 import os
 import json
 
-_HEROKU = True
+_HEROKU = False
 
 _URL_PARAMS = True
 
 
 #_APP_ID = '281ad6fa1f51430ea5e6d094a23c401f'
 
-_APP_ID = '486f832ea89e487cb9e3405b60632c31'
+# below works on heroku atm
+
+#_APP_ID = '486f832ea89e487cb9e3405b60632c31'
 def main():
     
     if _HEROKU:    
         server_url = "http://authorizr.herokuapp.com"
+        _APP_ID = "fdfe9bee210d49cea0a9044ff16d4c8f"
     else:       
         server_url = "http://127.0.0.1:8000"
+        _APP_ID = "3ec5a98706854d809fa650b71743fb88"
     
     url= ''
     

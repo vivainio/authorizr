@@ -3,9 +3,16 @@ import os
 import django
 import dj_database_url
 
+from memcacheify import memcacheify
+
+CACHES = memcacheify()
+
 # keep as false for dev on local machine for now...
 
-_HEROKU = False
+if os.environ.get("DATABASE_URL","").startswith("postgres:"):
+    _HEROKU = True
+else:
+    _HEROKU = False
 
 if _HEROKU:
 	_SERVER_URL = 'http://authorizr.herokuapp.com'
