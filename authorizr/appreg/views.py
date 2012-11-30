@@ -51,14 +51,14 @@ def myapps(request):
     #appOwner = AppOwner.objects.filter(uid = 'myuid')    
     #credentials = AppCredentials.objects.filter(owner = appOwner)
     
-    credentials = AppCredentials.users_objects.for_user(request.user)
-    
+    OA2credentials = AppCredentials.users_objects.for_user(request.user)
+    OA1credentials = OAuth1AppCredentials.users_objects.for_user(request.user)
     #credentials = AppCredentials.objects.all()
     print request.user,
-    print 'Credentials', len(credentials)
-    print credentials
+    #print 'Credentials', len(credentials)
+    #print credentials
     
-    return render(request, 'appreg/myapps.html', {'credentials': credentials})
+    return render(request, 'appreg/applist.html', {'object_list': OA2credentials, 'oa1_object_list' : OA1credentials})
 
 
 def edit_app_credentials(request, appuid):
@@ -105,6 +105,7 @@ def add_application(request):
                          redirect_uri = settings._CALLBACK_URL,
                          owner = request.user
                          )
+                print jorma;
                 return HttpResponseRedirect('/appreg/myapps/') 
 
 

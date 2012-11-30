@@ -9,12 +9,21 @@
 
 <h1>My Applications:</h1>
 
-{% for credential in credentials %}
+{% for credential in OA2credentials %}
 
 <h3><a href="/appreg/editapp/{{credential.uid}}/">{{ credential.app_desc }}</a></h3>
 <ul>
     <li>{{ credential.app_api_key }}</li>
     <li>{{ credential.app_secret }}</li>   
+</ul>
+{% endfor %}
+
+{% for credential in OA1credentials %}
+
+<h3><a href="/appreg/editapp/{{credential.uid}}/">{{ credential.app_desc }}</a></h3>
+<ul>
+    <li>{{ credential.consumer_key }}</li>
+    <li>{{ credential.consumer_secret }}</li>   
 </ul>
 {% endfor %}
 

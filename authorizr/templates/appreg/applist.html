@@ -32,7 +32,7 @@
 	</div>
 </div>
 
-	{% if object_list|length > 0 %}	
+	{% if object_list or oa1_object_list %}	
 	<div class="accordion" id="app_accordion">
 		{% for credential in object_list %}
 		<div class="accordion-group">
@@ -138,6 +138,99 @@
 		</div>
 		{% endfor %}
 	</div>
+
+	<!--jorma-->
+		
+	<div class="accordion" id="app_accordion">
+		{% for credential in oa1_object_list %}
+		<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" data-parent="#app_accordion" href="#col_{{credential.uid}}"><h4> {{ credential.app_desc }} </h4></a>
+		</div>
+		<div id="col_{{credential.uid}}" class="accordion-body collapse">
+			<div class="accordion-inner">
+a
+				<div class="row">
+					<div class="span6">
+						<h5>Application Details:</h5>
+						<table class="table table-bordered table-condensed table-striped">
+							<tr>
+								<td>Consumer key</td>
+								<td>{{ credential.consumer_key }}</td>
+							</tr>
+							<tr>
+								<td>Consumer Secret</td>
+								<td>{{ credential.consumer_secret }}</td>
+							</tr>							
+							<tr>
+								<td>Redirect site</td>
+								<td>{{ credential.user_callback_page }}</td>
+							</tr>
+
+						</table>
+						<div class="btn-group">
+							<a class="btn" href="/appreg/editapp/{{credential.uid}}/">Edit</a>
+							<a href="#" class="btn btn-danger confirm_delete" data-target="{{credential.uid}}" >Remove</a>
+						</div>
+					</div>
+					<div class="span6">
+						<h5>Authorizer parameters for this application:</h5>
+						<table class="table table-bordered table-condensed table-striped">
+							<tr>
+								<td>Handle</td>
+								<td>{{ credential.uid }}</td>
+							</tr>
+							<tr>
+								<td>Callback URL</td>
+								<td>{{ credential.redirect_uri }}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span12">
+						<div class="well">
+							Usage example:
+							<ol>
+								<li>
+									Make request using Authorizr Handle:
+									<br>
+									<code>
+										[sid, url] = http://authorizr.herokuapp.com/api/v1/create_session/{{credential.uid}}/
+										
+										[sid, url] = http://localhost:8000/api/oauth1/v1/create_session/{{credential.uid}}/
+									</code>
+
+								</li>
+								<li>
+									Use browser to open the
+									<code>
+										url
+									</code>
+									received from Authrorizer
+								</li>
+								<li>
+									After user has completed log-in, fetch access token by making a request to Authorizr using
+									<code>
+										sid
+									</code>
+									reveiced in step 1.
+									<br>
+									<code>
+										token = http://authorizr.herokuapp.com/api/v1/fetch_access_token/"+sid+"/"
+									</code>
+								</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		</div>
+		{% endfor %}
+	</div>
+	<!--jorma-->
 	{% else %}
 	<div><h4>No apps yet, please create one</h4></div>
 	{% endif %}
