@@ -104,8 +104,7 @@ def add_application(request):
                          user_callback_page = form.cleaned_data['user_callback_page'],
                          redirect_uri = settings._CALLBACK_URL,
                          owner = request.user
-                         )
-                print jorma;
+                         )               
                 return HttpResponseRedirect('/appreg/myapps/') 
 
 
