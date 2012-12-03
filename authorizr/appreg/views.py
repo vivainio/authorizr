@@ -65,42 +65,54 @@ def myapps(request):
 def edit_app_credentials(request, appuid):
     
     editing = True
-   
+    oa1 = False
+    form = None
     try :
-        AppCredentials.objects.get(uid=appuid)
+        cred = AppCredentials.objects.get(uid=appuid)
     except django.core.exceptions.ObjectDoesNotExist:
         cred = get_object_or_404(OAuth1AppCredentials, uid=appuid)
+        oa1 = True
                       
-    if request.method == "POST":
-        
+    if request.method == "POST":        
         cache.delete("cr_" + appuid)
-        if (oa1):
-            form = AppCredentialFormOauth1(request.POST, instance=cred)
+        if (oa1):          
+            form = AppCredentialFormOauth1(request.POST, instance=cred)            
         else:
             form = AppCredentialFormOauth2(request.POST, instance=cred)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/appreg/myapps/')
-    else:
-        formOauth2 = AppCredentialFormOauth2(instance=cred)
-        formOauth1 = AppCredentialFormOauth2(instance=cred)
+    
+    if( form is None):
+        formOauth2 = AppCredentialFormOauth2(instance=cred) 
+        formOauth1 = AppCredentialFormOauth1(instance=cred)
         
-    context = Context({'title': 'Editing Application:'+cred.app_desc ,
-                       'btn_text':'Save',
-                       'appuid': cred.uid, 
-                       'formOauth1': formOauth1,
-                       'formOauth2': formOauth2,
-                       'editing': editing})
+        context = Context({'title': 'Editing Application:'+cred.app_desc ,
+                           'btn_text':'Save',
+                           'appuid': cred.uid, 
+                           'formOauth1': formOauth1,
+                           'formOauth2': formOauth2,
+                           'editing': editing,
+                           'oa1default' : oa1})
+    else:
+        context = Context({'title': 'Editing Application:'+cred.app_desc ,
+                           'btn_text':'Save',
+                           'appuid': cred.uid, 
+                           'formOauth1': form,
+                           'formOauth2': form,
+                           'editing': editing,
+                           'oa1default' : oa1})
     
     return render(request, 'appreg/credform.html', context)
 
 def add_application(request):
     
+    form = None
     if request.method == "POST":
         if 'oa1' in request.POST:
 
             form = AppCredentialFormOauth1(request.POST)
-
+            oa1default = True
             if form.is_valid():                
                  # create a new item
                 uid = uuid.uuid4().hex
@@ -116,16 +128,16 @@ def add_application(request):
                          redirect_uri = settings._CALLBACK_URL,
                          owner = request.user
                          )               
-                return HttpResponseRedirect('/appreg/myapps/') 
+                return HttpResponseRedirect('/appreg/myapps/')             
 
 
         elif 'oa2' in request.POST:
             form = AppCredentialFormOauth2(request.POST)
-
+            oa1default = False
             if form.is_valid():
                  # create a new item
                 uid = uuid.uuid4().hex
-            
+                
                 item = AppCredentials.objects.create(
                          uid = uid,
                          app_desc = form.cleaned_data['app_desc'],
@@ -140,17 +152,22 @@ def add_application(request):
                          redirect_uri = settings._CALLBACK_URL,
                          owner = request.user
                          )            
-            return HttpResponseRedirect('/appreg/myapps/')
+                return HttpResponseRedirect('/appreg/myapps/')
+    
+    if( form is None):
+        formOauth2 = AppCredentialFormOauth2(prefix='oa2')
+        formOauth1 = AppCredentialFormOauth1(prefix='oa1')        
+        context = Context({'title': 'New Application', 'btn_text':'Add Application', 'formOauth2':formOauth2, 'formOauth1': formOauth1})
     else:
-        formOauth2 = AppCredentialFormOauth2()
-        formOauth1 = AppCredentialFormOauth1()
-        
-    context = Context({'title': 'New Application', 'btn_text':'Add Application', 'formOauth2':formOauth2, 'formOauth1': formOauth1})
+        context = Context({'title': 'New Application', 'btn_text':'Add Application', 'formOauth2':form, 'formOauth1': form, 'editing':True, 'oa1default':oa1default})
     return render(request, 'appreg/credform.html', context)   
   
 def delete_application(request, appuid):
     
-    cred = get_object_or_404(AppCredentials, uid=appuid)    
+    try :
+        cred = AppCredentials.objects.get(uid=appuid)
+    except django.core.exceptions.ObjectDoesNotExist:
+        cred = get_object_or_404(OAuth1AppCredentials, uid=appuid)
     cred.delete()
     
     return HttpResponseRedirect('/appreg/myapps/')
