@@ -50,7 +50,11 @@
 </div>
 
 
+{% if editing %}
+<div class="btn-group" data-toggle="buttons-radio" style="display: none">
+{% else %}
 <div class="btn-group" data-toggle="buttons-radio">
+{% endif %}
   <button class="btn active" id="protoOa2">OAuth2</button>
   <button class="btn" id="protoOa1">OAuth</button>
 </div>

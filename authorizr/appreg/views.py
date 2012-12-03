@@ -20,6 +20,7 @@ from django.core.cache import cache
 
 #Callback URL
 from django.conf import settings
+import django.core.exceptions
 
 
 def frontpage(request):   
@@ -63,12 +64,20 @@ def myapps(request):
 
 def edit_app_credentials(request, appuid):
     
-    cred = get_object_or_404(AppCredentials, uid=appuid)
-    
+    editing = True
+   
+    try :
+        AppCredentials.objects.get(uid=appuid)
+    except django.core.exceptions.ObjectDoesNotExist:
+        cred = get_object_or_404(OAuth1AppCredentials, uid=appuid)
+                      
     if request.method == "POST":
         
         cache.delete("cr_" + appuid)
-        form = AppCredentialFormOauth2(request.POST, instance=cred)
+        if (oa1):
+            form = AppCredentialFormOauth1(request.POST, instance=cred)
+        else:
+            form = AppCredentialFormOauth2(request.POST, instance=cred)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/appreg/myapps/')
@@ -80,7 +89,8 @@ def edit_app_credentials(request, appuid):
                        'btn_text':'Save',
                        'appuid': cred.uid, 
                        'formOauth1': formOauth1,
-                       'formOauth2': formOauth2})
+                       'formOauth2': formOauth2,
+                       'editing': editing})
     
     return render(request, 'appreg/credform.html', context)
 
