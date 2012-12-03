@@ -1,4 +1,4 @@
-var endpoints ={ 
+var oauth2_endpoints ={ 
 	"Google":{
 			"auth_endpoint":"https://accounts.google.com/o/oauth2/auth",
 			"token_endpoint":"https://accounts.google.com/o/oauth2/token",
@@ -43,29 +43,52 @@ var endpoints ={
         "resource_endpoint" : "",
         "redirect_uri": "http://127.0.0.1:8000/login/v1/oauth1callback"
      }
-
 };
 
+
+
+var oauth1_endpoints ={ 
+	"Twitter":{
+			"auth_endpoint":"https://api.twitter.com/oauth/authorize",			
+			"user_callback_page": "http://authorizr.herokuapp.com/login/oauth1callback"
+	}
+};
 
 $(function() {
 
 	//build menu
-	for(var provider in endpoints ){
-  		$("#dropdownLinks").append($('<li><a href="#'+provider+'">'+provider+'</a></li>'));
+	for(var provider in oauth2_endpoints ){
+  		$("#dropdownLinksOa2").append($('<li><a href="#'+provider+'">'+provider+'</a></li>'));
     }
 	          
-    $("#dropdownLinks a").click(function(event) {
+    $("#dropdownLinksOa2 a").click(function(event) {
     
     	event.preventDefault();
   		
   		key = $(this).attr('href').substring(1); 		  		   		
   		
-  		endpoint = endpoints[key];	    
+  		endpoint = oauth2_endpoints[key];	    
   		     	
      	for(var k in endpoint ){	     
-      		$("#id_"+k).val(endpoint[k]);
+      		$("#id_oa2-"+k).val(endpoint[k]);
     	}
-    	
     });
     
+    //build menu
+	for(var provider in oauth1_endpoints ){
+  		$("#dropdownLinksOa1").append($('<li><a href="#'+provider+'">'+provider+'</a></li>'));
+    }
+	          
+    $("#dropdownLinksOa1 a").click(function(event) {
+    
+    	event.preventDefault();
+  		
+  		key = $(this).attr('href').substring(1); 		  		   		
+  		
+  		endpoint = oauth1_endpoints[key];	    
+  		     	
+     	for(var k in endpoint ){	     
+      		$("#id_oa1-"+k).val(endpoint[k]);
+    	}
+    });
 });
