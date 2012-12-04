@@ -42,23 +42,16 @@ class AppListView(ListView):
     def get_queryset(self):
         print self.request.user
         return self.model.objects.filter(owner=self.request.user)
-        #return self.model.users_objects.for_user(self.request.user)
 
             
   
 #@login_required
 def myapps(request):       
-    #user=request.user
-    #appOwner = AppOwner.objects.filter(uid = 'myuid')    
-    #credentials = AppCredentials.objects.filter(owner = appOwner)
+   
     
     oa2credentials = AppCredentials.users_objects.for_user(request.user)
     oa1credentials = OAuth1AppCredentials.users_objects.for_user(request.user)
-    #credentials = AppCredentials.objects.all()
-    #print request.user,
-    #print 'Credentials', len(credentials)
-    #print credentials
-    print oa1credentials
+    
     return render(request, 'appreg/applist.html', {'oa2credentials': oa2credentials, 'oa1credentials' : oa1credentials})
 
 
@@ -76,16 +69,16 @@ def edit_app_credentials(request, appuid):
     if request.method == "POST":        
         cache.delete("cr_" + appuid)
         if (oa1):          
-            form = AppCredentialFormOauth1(request.POST, instance=cred)            
+            form = AppCredentialFormOauth1(request.POST, instance=cred, prefix='oa1')            
         else:
-            form = AppCredentialFormOauth2(request.POST, instance=cred)
+            form = AppCredentialFormOauth2(request.POST, instance=cred, prefix='oa2')
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/appreg/myapps/')
     
     if( form is None):
-        formOauth2 = AppCredentialFormOauth2(instance=cred) 
-        formOauth1 = AppCredentialFormOauth1(instance=cred)
+        formOauth2 = AppCredentialFormOauth2(instance=cred, prefix='oa2') 
+        formOauth1 = AppCredentialFormOauth1(instance=cred, prefix='oa1')
         
         context = Context({'title': 'Editing Application:'+cred.app_desc ,
                            'btn_text':'Save',
@@ -111,7 +104,7 @@ def add_application(request):
     if request.method == "POST":
         if 'oa1' in request.POST:
 
-            form = AppCredentialFormOauth1(request.POST)
+            form = AppCredentialFormOauth1(request.POST, prefix='oa1')
             oa1default = True
             if form.is_valid():                
                  # create a new item
@@ -125,14 +118,14 @@ def add_application(request):
                          auth_endpoint = form.cleaned_data['auth_endpoint'],
                          token_endpoint = form.cleaned_data['token_endpoint'],                         
                          user_callback_page = form.cleaned_data['user_callback_page'],
-                         redirect_uri = settings._OAUTH1_CALLBACK_URL,
+                         redirect_uri = "oa1_" + settings._OAUTH1_CALLBACK_URL,
                          owner = request.user
                          )               
-                return HttpResponseRedirect('/appreg/myapps/')             
-
+                return HttpResponseRedirect('/appreg/myapps/') 
+            
 
         elif 'oa2' in request.POST:
-            form = AppCredentialFormOauth2(request.POST)
+            form = AppCredentialFormOauth2(request.POST, prefix='oa2')
             oa1default = False
             if form.is_valid():
                  # create a new item
@@ -154,9 +147,9 @@ def add_application(request):
                          )            
                 return HttpResponseRedirect('/appreg/myapps/')
     
-    if( form is None):
-        formOauth2 = AppCredentialFormOauth2()
-        formOauth1 = AppCredentialFormOauth1()        
+    if( form is None):        
+        formOauth2 = AppCredentialFormOauth2(prefix='oa2')
+        formOauth1 = AppCredentialFormOauth1(prefix='oa1')        
         context = Context({'title': 'New Application', 'btn_text':'Add Application', 'formOauth2':formOauth2, 'formOauth1': formOauth1})
     else:
         context = Context({'title': 'New Application', 'btn_text':'Add Application', 'formOauth2':form, 'formOauth1': form, 'editing':True, 'oa1default':oa1default})
