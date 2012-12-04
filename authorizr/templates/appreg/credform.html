@@ -38,12 +38,31 @@
 	
 <div class="row">
 	<div class="span1">
-		<div id="prefiller" class="btn-group">
+		
+		
+		{% if oa1default %}
+			<div id="prefiller_oa1" class="btn-group oa1">
+		{% else %}
+			<div id="prefiller_oa1" class="btn-group oa1" style="display: none" >
+		{% endif %}
 		    <button class="btn">Prefill fields</button>
 		    <button class="btn dropdown-toggle" data-toggle="dropdown">
 		    	<span class="caret"></span>
 		    </button>
-		    <ul class="dropdown-menu" id="dropdownLinks">        
+		    <ul class="dropdown-menu" id="dropdownLinksOa1">        
+		   	</ul>
+		</div>
+		
+		{% if oa1default %}
+			<div id="prefiller_oa2" class="btn-group oa2" style="display: none" >
+		{% else %}
+			<div id="prefiller_oa2" class="btn-group oa2" >
+		{% endif %}
+		    <button class="btn">Prefill fields</button>
+		    <button class="btn dropdown-toggle" data-toggle="dropdown">
+		    	<span class="caret"></span>
+		    </button>
+		    <ul class="dropdown-menu" id="dropdownLinksOa2">        
 		   	</ul>
 		</div>
 	</div>
@@ -51,31 +70,38 @@
 
 
 {% if editing %}
-<div class="btn-group" data-toggle="buttons-radio" >
-{% if oa1default %}
-  <button class="btn disabled">OAuth2</button>
-  <button class="btn active">OAuth</button>
+
+	<div class="btn-group" data-toggle="buttons-radio" >
+
+	{% if oa1default %}
+  		<button class="btn disabled">OAuth2</button>
+  		<button class="btn active">OAuth</button>
+	{% else %}
+  		<button class="btn active">OAuth2</button>
+  		<button class="btn disabled">OAuth</button>
+	{% endif %}
+	</div>
+		
 {% else %}
-  <button class="btn active">OAuth2</button>
-  <button class="btn disabled">OAuth</button>
-{% endif %}
-{% else %}
-<div class="btn-group" data-toggle="buttons-radio">
-{% if oa1default %}
-  <button class="btn" id="protoOa2">OAuth2</button>
-  <button class="btn active" id="protoOa1">OAuth</button>
-{% else %}
-  <button class="btn active" id="protoOa2">OAuth2</button>
-  <button class="btn" id="protoOa1">OAuth</button>
-{% endif %}
+
+	<div class="btn-group" data-toggle="buttons-radio">
+	
+	{% if oa1default %}
+  		<button class="btn" id="protoOa2">OAuth2</button>
+  		<button class="btn active" id="protoOa1">OAuth</button>
+	{% else %}	
+		<button class="btn active" id="protoOa2">OAuth2</button>
+		<button class="btn" id="protoOa1">OAuth</button>
+	{% endif %}
+	</div>
+
 {% endif %} 
 
-</div>
 
 {% if oa1default %}
-<div class="cred_form_row" id="oa2" style="display: none">
+<div class="cred_form_row oa2" style="display: none">
 {% else %}
-<div class="cred_form_row" id="oa2">
+<div class="cred_form_row oa2">
 {% endif %}
   
      <form method='post' action='.'>
@@ -105,9 +131,9 @@
   </div>
 
 {% if oa1default %}
-<div class="cred_form_row" id="oa1">
+<div class="cred_form_row oa1">
 {% else %}
-<div class="cred_form_row" id="oa1" style="display: none">
+<div class="cred_form_row oa1" style="display: none">
 {% endif %}    
     <form method='post' action='.'>
       {% csrf_token %} 
@@ -141,15 +167,15 @@
 $('#protoOa1').click(function(e) 
 {
   e.preventDefault();
- $('#oa1').show();
- $('#oa2').hide();  
+ $('.oa1').show();
+ $('.oa2').hide();  
 }); 
 
 $('#protoOa2').click(function(e) 
 {
  e.preventDefault();
- $('#oa2').show();
- $('#oa1').hide();
+ $('.oa2').show();
+ $('.oa1').hide();
 }); 
 
 $('.confirm-delete').click(function(e) {
