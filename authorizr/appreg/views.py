@@ -123,9 +123,9 @@ def add_application(request):
                          consumer_key = form.cleaned_data['consumer_key'],
                          consumer_secret = form.cleaned_data['consumer_secret'],
                          auth_endpoint = form.cleaned_data['auth_endpoint'],
-                                                  
+                         token_endpoint = form.cleaned_data['token_endpoint'],                         
                          user_callback_page = form.cleaned_data['user_callback_page'],
-                         redirect_uri = settings._CALLBACK_URL,
+                         redirect_uri = settings._OAUTH1_CALLBACK_URL,
                          owner = request.user
                          )               
                 return HttpResponseRedirect('/appreg/myapps/')             
@@ -149,14 +149,14 @@ def add_application(request):
                          token_endpoint = form.cleaned_data['token_endpoint'],
                          resource_endpoint = form.cleaned_data['resource_endpoint'],
                          user_callback_page = form.cleaned_data['user_callback_page'],
-                         redirect_uri = settings._CALLBACK_URL,
+                         redirect_uri = settings._OAUTH2_CALLBACK_URL,
                          owner = request.user
                          )            
                 return HttpResponseRedirect('/appreg/myapps/')
     
     if( form is None):
-        formOauth2 = AppCredentialFormOauth2(prefix='oa2')
-        formOauth1 = AppCredentialFormOauth1(prefix='oa1')        
+        formOauth2 = AppCredentialFormOauth2()
+        formOauth1 = AppCredentialFormOauth1()        
         context = Context({'title': 'New Application', 'btn_text':'Add Application', 'formOauth2':formOauth2, 'formOauth1': formOauth1})
     else:
         context = Context({'title': 'New Application', 'btn_text':'Add Application', 'formOauth2':form, 'formOauth1': form, 'editing':True, 'oa1default':oa1default})

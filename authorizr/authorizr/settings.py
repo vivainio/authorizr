@@ -20,7 +20,8 @@ else:
     _SERVER_URL = 'http://127.0.0.1:8000'
 
 #Hard coded callback for app added via form
-_CALLBACK_URL = _SERVER_URL+'/login/oauth2callback'
+_OAUTH2_CALLBACK_URL = _SERVER_URL+'/login/oauth2callback'
+_OAUTH1_CALLBACK_URL = _SERVER_URL+'/login/v1/oauth1callback'
 
 #Google login related stuff
 _CLIENT_ID = "172254031599.apps.googleusercontent.com"

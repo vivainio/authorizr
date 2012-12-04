@@ -28,6 +28,8 @@ OAuthHook.consumer_secret = TWITTER_CONSUMER_SECRET
 oauth_hook = OAuthHook(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
 client = requests.session(hooks={'pre_request': oauth_hook})
 
+
+
 class TwitterOAuthTestSuite(unittest.TestCase):
     #def setUp(self):
         # twitter prefers that you use header_auth

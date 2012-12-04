@@ -56,9 +56,9 @@ def create_session(request, appid):
     # Step 1: Obtaining a request token
     #twitter_oauth_hook.header_auth = True
     oauth_hook.header_auth = True
-
+    print credentials.redirect_uri
     client = requests.session(hooks={'pre_request': twitter_oauth_hook})   
-    response = client.post(credentials.auth_endpoint, data={'oauth_callback': credentials.redirect_uri + "?az_session_id=" + uid})
+    response = client.post(credentials.token_endpoint, data={'oauth_callback': credentials.redirect_uri + "?az_session_id=" + uid})
     
     print response
     assert(response.status_code == 200)
@@ -69,8 +69,8 @@ def create_session(request, appid):
     oauth_token = response['oauth_token']
     oauth_secret = response['oauth_token_secret']
     
-    # Step 2: Redirecting the user
-    url = credentials.token_endpoint+"?oauth_token="+oauth_token[0]
+    # Step 2: Redirecting the user auth_endpoint
+    url = credentials.auth_endpoint+"?oauth_token="+oauth_token[0]
       
     json_response = json.dumps({"session_id": uid, "url": url})
     
