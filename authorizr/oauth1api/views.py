@@ -50,15 +50,17 @@ def create_session(request, appid):
     OAuthHook.consumer_key = credentials.consumer_key
     OAuthHook.consumer_secret = credentials.consumer_secret
     twitter_oauth_hook = OAuthHook()
-        
+    print "consumer key ",credentials.consumer_key    
+    print "consumer secret ",credentials.consumer_secret
+
     #for header_auth in (True, False):
     # See https://dev.twitter.com/docs/auth/implementing-sign-twitter
     # Step 1: Obtaining a request token
     #twitter_oauth_hook.header_auth = True
     oauth_hook.header_auth = True
-    print credentials.redirect_uri
+    print "redirect_uri",credentials.redirect_uri
     client = requests.session(hooks={'pre_request': twitter_oauth_hook})   
-    response = client.post(credentials.token_endpoint, data={'oauth_callback': credentials.redirect_uri + "?az_session_id=" + uid})
+    response = client.post(credentials.request_token_endpoint, data={'oauth_callback': credentials.redirect_uri + "?az_session_id=" + uid})
     
     print response
     assert(response.status_code == 200)
@@ -83,7 +85,7 @@ def login_callback(request):
     sid = request.REQUEST["az_session_id"]
 
     a = OAuth1Session.objects.get(session_id = sid)
-    a.oauth_verifier = request.REQUEST["oauth_verifier"]
+    a.oauth_verifier= request.REQUEST["oauth_verifier"]
     a.oauth_token = request.REQUEST["oauth_token"]
     a.save()
 
@@ -95,7 +97,7 @@ def fetch_access_token(request, sessionid):
     except AuthSession.DoesNotExist:
         return HttpResponse(content="Session not found", status=404)
     
-    json_response = json.dumps({"oauth_token": auth.oauth_verifier, "oauth_token_secret":auth.oauth_token})
+    json_response = json.dumps({"oauth_token": auth.oauth_token, "oauth_verifier":auth.oauth_verifier})
     
     return HttpResponse(json_response, "application/json")
 
