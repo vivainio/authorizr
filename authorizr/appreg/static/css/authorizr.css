@@ -30,3 +30,7 @@
 .btn-group.oa2, .btn-group.oa1 {
   margin-left: 0px;
 }
+
+.cred_form_row td {
+  min-width: 15em;
+}
