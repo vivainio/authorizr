@@ -26,3 +26,7 @@
   vertical-align: middle;
   margin-bottom: 25px;
 }
+
+.btn-group.oa2, .btn-group.oa1 {
+  margin-left: 0px;
+}
