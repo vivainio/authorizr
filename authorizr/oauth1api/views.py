@@ -69,7 +69,7 @@ def create_session(request, appid):
     oauth_secret = response['oauth_token_secret']
     
     # Step 2: Redirecting the user auth_endpoint
-    url = credentials.auth_endpoint+"?oauth_token="+oauth_token[0]
+    url = credentials.authorize_url+"?oauth_token="+oauth_token[0]
       
     json_response = json.dumps({"session_id": uid, "url": url})
     
@@ -80,21 +80,26 @@ def login_callback(request):
     print "login_callback"
 
     sid = request.REQUEST["az_session_id"]
-
-    a = OAuth1Session.objects.get(session_id = sid)
+    try:
+        a = OAuth1Session.objects.get(session_id = sid)
+    except AuthSession.DoesNotExist:
+        return HttpResponse(content="Session not found", status=404)
+        
     a.oauth_verifier= request.REQUEST["oauth_verifier"]
     a.oauth_token = request.REQUEST["oauth_token"]
     a.save()
 
-    return HttpResponse(content="You can close your browser window now", status=400)
+    #return HttpResponseRedirect(content="You can close your browser window now", status=400)
+    return HttpResponseRedirect(a.credentials.user_callback_page)
 
-def fetch_access_token(request, sessionid):             
+def fetch_request_token(request, sessionid):             
     try:       
         auth = OAuth1Session.objects.get(session_id = sessionid)
     except AuthSession.DoesNotExist:
         return HttpResponse(content="Session not found", status=404)
     
-    json_response = json.dumps({"oauth_token": auth.oauth_token, "oauth_verifier":auth.oauth_verifier})
+    json_response = json.dumps({"oauth_token": auth.oauth_token, "oauth_verifier":auth.oauth_verifier,
+                                "consumer_key":auth.credentials.consumer_key, "consumer_secret":auth.credentials.consumer_secret})
     
     return HttpResponse(json_response, "application/json")
 

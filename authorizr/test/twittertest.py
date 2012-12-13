@@ -232,7 +232,7 @@ class TwAuth(object):
 def main():
     # Step 1: Creating a request token for a new session
     server_url = "http://127.0.0.1:8000"
-    _APP_ID = "a9d546bffb4d45ba9305da5b16db3672"
+    _APP_ID = "13fbedde75b74bfc97b7f76797421b37"
     
     url= ''
     
@@ -256,7 +256,7 @@ def main():
     
     sid =  data["session_id"]
     url =  data["url"]
-    print sid, url
+    print "sid:",sid, " url:",url
 
     # Step 2: Redirecting the user
     raw_input("Press enter to open URL")
@@ -266,21 +266,23 @@ def main():
 
     # Step 3: Authenticate
     #get request token from Authorizr
-    access_token_url = server_url+"/api/oauth1/v1/fetch_access_token/"+sid +"/"    
-    data = urllib.urlopen(access_token_url).read()   
+    fetch_tokens_url = server_url+"/api/oauth1/v1/fetch_request_token/"+sid +"/"    
+    print "fetch_tokens_url:", fetch_tokens_url
+    data = urllib.urlopen(fetch_tokens_url).read()   
     data = json.loads(data)
-
+    print data
     verifier = data["oauth_verifier"]
     token = data["oauth_token"]
-
+    consumer_key = data["consumer_key"]
+    consumer_secret = data["consumer_secret"]
     print "verifier from authorizr ", verifier
-    print "verifier from token ", token
+    print "token from authorizr ", token
+    print "consumer_key from authorizr ", consumer_key
+    print "consumer_secret from authorizr ", consumer_key
 
     
     #Converting the request token to an access token
-    api_url = 'https://api.twitter.com'
-    consumer_key = 'few1OrMA7uprQmhmY5uDg'
-    consumer_secret = 'GUjAT1rTEqiSRkDJaKU7MHUDuUyHTPx1Eod1rAvcQ'
+    api_url = 'https://api.twitter.com'   
     authorized_token = token
     authorized_token_secret = verifier
 
