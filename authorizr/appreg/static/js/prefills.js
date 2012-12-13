@@ -36,13 +36,7 @@ var oauth2_endpoints ={
         "token_endpoint" : "https://api.instagram.com/oauth/access_token",
         "resource_endpoint" : "https://api.instagram.com/v1",
         "redirect_uri": "http://authorizr.herokuapp.com/login/oauth2callback"
-     },
-     "Twitter" : {
-        "auth_endpoint" : "http://api.twitter.com/oauth/request_token",
-        "token_endpoint" : "http://api.twitter.com/oauth/authenticate",
-        "resource_endpoint" : "",
-        "redirect_uri": "http://127.0.0.1:8000/login/v1/oauth1callback"
-     }
+     }    
 };
 
 
