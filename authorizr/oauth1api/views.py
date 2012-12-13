@@ -84,7 +84,7 @@ def login_callback(request):
         a = OAuth1Session.objects.get(session_id = sid)
     except AuthSession.DoesNotExist:
         return HttpResponse(content="Session not found", status=404)
-        
+
     a.oauth_verifier= request.REQUEST["oauth_verifier"]
     a.oauth_token = request.REQUEST["oauth_token"]
     a.save()
@@ -102,6 +102,36 @@ def fetch_request_token(request, sessionid):
                                 "consumer_key":auth.credentials.consumer_key, "consumer_secret":auth.credentials.consumer_secret})
     
     return HttpResponse(json_response, "application/json")
+
+def fetch_access_token(request, sessionid):             
+    try:       
+        auth = OAuth1Session.objects.get(session_id = sessionid)
+    except AuthSession.DoesNotExist:
+        return HttpResponse(content="Session not found", status=404)
+
+    OAuthHook.consumer_key = auth.credentials.consumer_key
+    OAuthHook.consumer_secret = auth.credentials.consumer_secret
+    oauth_hook = OAuthHook()
+    
+    oauth_hook.header_auth = True
+    client = requests.session(hooks={'pre_request': oauth_hook})   
+
+    response = client.post(auth.credentials.access_token_endpoint, {'oauth_verifier': auth.oauth_verifier, 'oauth_token': auth.oauth_token})
+    print response
+    response = parse_qs(response.content)
+    assert(response['oauth_token'])
+    assert(response['oauth_token_secret'])
+    
+    gotToken = response['oauth_token'][0]
+    gotSecret = response['oauth_token_secret'][0]
+    print gotToken
+    print gotSecret   
+    
+    json_response = json.dumps({"access_token": gotToken, "access_token_secret":gotSecret,
+                                "consumer_key":auth.credentials.consumer_key, "consumer_secret":auth.credentials.consumer_secret})
+    
+    return HttpResponse(json_response, "application/json")
+
 
 
 

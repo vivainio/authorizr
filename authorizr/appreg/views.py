@@ -116,7 +116,8 @@ def add_application(request):
                          consumer_key = form.cleaned_data['consumer_key'],
                          consumer_secret = form.cleaned_data['consumer_secret'],
                          authorize_url = form.cleaned_data['authorize_url'],                                            
-                         request_token_endpoint = form.cleaned_data['request_token_endpoint'],                         
+                         request_token_endpoint = form.cleaned_data['request_token_endpoint'],   
+                         access_token_endpoint = form.cleaned_data['access_token_endpoint'],                      
                          user_callback_page = form.cleaned_data['user_callback_page'],
                          redirect_uri = settings._OAUTH1_CALLBACK_URL,
                          owner = request.user

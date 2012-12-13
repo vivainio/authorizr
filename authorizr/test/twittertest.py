@@ -232,7 +232,7 @@ class TwAuth(object):
 def main():
     # Step 1: Creating a request token for a new session
     server_url = "http://127.0.0.1:8000"
-    _APP_ID = "13fbedde75b74bfc97b7f76797421b37"
+    _APP_ID = "4aaba2155b1a4a4d876178383b458c71"
     
     url= ''
     
@@ -266,37 +266,39 @@ def main():
 
     # Step 3: Authenticate
     #get request token from Authorizr
-    fetch_tokens_url = server_url+"/api/oauth1/v1/fetch_request_token/"+sid +"/"    
+    #fetch_tokens_url = server_url+"/api/oauth1/v1/fetch_request_token/"+sid +"/"    
+    fetch_tokens_url = server_url+"/api/oauth1/v1/fetch_access_token/"+sid +"/"  
     print "fetch_tokens_url:", fetch_tokens_url
     data = urllib.urlopen(fetch_tokens_url).read()   
     data = json.loads(data)
     print data
-    verifier = data["oauth_verifier"]
-    token = data["oauth_token"]
+    access_token = data["access_token"]
+    access_token_secret = data["access_token_secret"]
     consumer_key = data["consumer_key"]
     consumer_secret = data["consumer_secret"]
-    print "verifier from authorizr ", verifier
-    print "token from authorizr ", token
+    print "access_token from authorizr ", access_token
+    print "access_token_secret from authorizr ", access_token_secret
     print "consumer_key from authorizr ", consumer_key
     print "consumer_secret from authorizr ", consumer_key
-
+    api_url = 'https://api.twitter.com'
     
     #Converting the request token to an access token
-    api_url = 'https://api.twitter.com'   
-    authorized_token = token
-    authorized_token_secret = verifier
+    # api_url = 'https://api.twitter.com'   
+    # authorized_token = token
+    # authorized_token_secret = verifier
 
-    oauth_credential = OAuthConsumerCredential(consumer_key, consumer_secret, authorized_token, authorized_token_secret)
-    t = TwAuth(oauth_credential, api_url = api_url)
-    response = t.get_access_token()
-    print response
+    # oauth_credential = OAuthConsumerCredential(consumer_key, consumer_secret, authorized_token, authorized_token_secret)
+    # t = TwAuth(oauth_credential, api_url = api_url)
+    # response = t.get_access_token()
+    # print response
    
-    assert(response['oauth_token'])
-    assert(response['oauth_token_secret'])
-    access_token = response['oauth_token']
-    access_token_secret = response['oauth_token_secret']
-    print "access_token ", access_token
-    print "access_token_secret ", access_token_secret
+    # assert(response['oauth_token'])
+    # assert(response['oauth_token_secret'])
+    # access_token = response['oauth_token']
+    # access_token_secret = response['oauth_token_secret']
+    # print "access_token ", access_token
+    # print "access_token_secret ", access_token_secret
+
 
     #Making authorized request
     oauth_credential = OAuthConsumerCredential(consumer_key, consumer_secret, access_token, access_token_secret)

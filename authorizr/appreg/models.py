@@ -57,7 +57,7 @@ class OAuth1AppCredentials(models.Model):
     consumer_secret = models.CharField(max_length = 255)
     authorize_url = models.CharField(max_length = 255, blank=True)  
     request_token_endpoint = models.CharField(max_length = 255, blank=True)
-    #access_token_endpoint = models.CharField(max_length = 255, blank=True)
+    access_token_endpoint = models.CharField(max_length = 255, blank=True)
     redirect_uri = models.CharField(max_length = 255, blank=True) #fixed to Authorizr URL    
     user_callback_page = models.URLField(max_length = 255, blank=True) #points to users page
             

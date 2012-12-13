@@ -45,7 +45,8 @@ var oauth1_endpoints ={
 	"Twitter":{
 			"authorize_url":"https://api.twitter.com/oauth/authorize",			
 			"user_callback_page": "http://authorizr.herokuapp.com/login/oauth1callback",
-      "request_token_endpoint": "https://api.twitter.com/oauth/request_token"
+      "request_token_endpoint": "https://api.twitter.com/oauth/request_token",
+      "access_token_endpoint": "https://api.twitter.com/oauth/access_token"
 	}
 };
 
