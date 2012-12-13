@@ -200,9 +200,9 @@ a
 									Make request using Authorizr Handle:
 									<br>
 									<code>
-										[sid, url] = http://authorizr.herokuapp.com/api/v1/create_session/{{credential.uid}}/
+										[sid, url] = http://authorizr.herokuapp.com/api/oauth1/v1/create_session/{{credential.uid}}/
 										
-										[sid, url] = http://localhost:8000/api/oauth1/v1/create_session/{{credential.uid}}/
+										
 									</code>
 
 								</li>
@@ -214,14 +214,14 @@ a
 									received from Authrorizer
 								</li>
 								<li>
-									After user has completed log-in, fetch access token by making a request to Authorizr using
+									After user has completed log-in, fetch request token by making a request to Authorizr using
 									<code>
 										sid
 									</code>
 									reveiced in step 1.
 									<br>
 									<code>
-										token = http://authorizr.herokuapp.com/api/v1/fetch_access_token/"+sid+"/"
+										token = http://authorizr.herokuapp.com/api/oauth1/v1/fetch_request_token/"+sid+"/"
 									</code>
 								</li>
 							</ol>
