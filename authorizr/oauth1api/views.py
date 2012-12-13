@@ -60,7 +60,10 @@ def create_session(request, appid):
     response = client.post(credentials.request_token_endpoint, data={'oauth_callback': credentials.redirect_uri + "?az_session_id=" + uid})
     
     print response
-    assert(response.status_code == 200)
+    print response.content
+    if response.status_code != 200:
+        return HttpResponse(content=response.content, status = response.status_code)
+    
     response = parse_qs(response.content)
     assert(response['oauth_token'])
     assert(response['oauth_token_secret'])
