@@ -231,8 +231,8 @@ class TwAuth(object):
 
 def main():
     # Step 1: Creating a request token for a new session
-    server_url = "http://127.0.0.1:8000"
-    _APP_ID = "4aaba2155b1a4a4d876178383b458c71"
+    server_url = "http://authorizr.herokuapp.com"
+    _APP_ID = "bb12b17040c24ff68304da3124f3bda5"
     
     url= ''
     
